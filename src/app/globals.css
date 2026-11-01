@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* One accent: the gold of the Hoshi star. Neutrals are cool greys. */
+:root {
+  --bg: #f6f6f7;
+  --surface: #fdfdfd;
+  --ink: #18181b;
+  --muted: #5b5b66;
+  --line: #e2e2e6;
+  --star: #e3a008;
+  --star-ink: #8a5a00;
+  --star-soft: #fbf1d6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1013;
+    --surface: #17181c;
+    --ink: #ececf0;
+    --muted: #a1a1ab;
+    --line: #2a2b31;
+    --star: #f2b53a;
+    --star-ink: #f2c25e;
+    --star-soft: #251f12;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-star: var(--star);
+  --color-star-ink: var(--star-ink);
+  --color-star-soft: var(--star-soft);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--star);
+  outline-offset: 3px;
+}
+
+/* Motion: the hero settles in on load and sections rise as they scroll in.
+   Nothing moves for people who ask for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+
+  .rise {
+    animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
