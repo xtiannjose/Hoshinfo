@@ -5,7 +5,7 @@ import { site } from "@/content/site";
 
 export function SiteHeader() {
   return (
-    <header className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
+    <header className="mx-auto flex h-16 w-full max-w-page items-center justify-between px-4 sm:px-6 lg:px-8">
       <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
         <StarIcon weight="fill" className="size-5 text-star" aria-hidden />
         {site.brand}

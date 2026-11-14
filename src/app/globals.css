@@ -25,6 +25,11 @@
   }
 }
 
+/* Page width: one value, used as max-w-page everywhere. */
+@theme {
+  --container-page: 88rem;
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -69,6 +74,17 @@ body {
   .rise {
     animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  /* Hero slideshow timer: the bar fills, and its animationend moves to the next project. */
+  @keyframes fill {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  .timer {
+    animation: fill 6s linear both;
   }
 
   @supports (animation-timeline: view()) {

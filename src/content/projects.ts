@@ -1,3 +1,17 @@
+import {
+  siAlpinedotjs,
+  siBetterauth,
+  siLaravel,
+  siNextdotjs,
+  siPhp,
+  siPostgresql,
+  siPrisma,
+  siTailwindcss,
+  siTypescript,
+  siVercel,
+  siVitest,
+} from "simple-icons";
+
 export type Shot = {
   src: string;
   alt: string;
@@ -10,6 +24,8 @@ export type Shot = {
 export type Project = {
   slug: string;
   name: string;
+  /** Two or three words for the hero tabs. */
+  label: string;
   tagline: string;
   summary: string;
   stack: string[];
@@ -27,7 +43,8 @@ export type WorkItem = {
   name: string;
   summary: string;
   stack: string[];
-  shot?: Shot;
+  /** Empty when the screens cannot be shown. */
+  shots: Shot[];
 };
 
 const desktop = (folder: string, file: string, alt: string, caption: string): Shot => ({
@@ -56,6 +73,7 @@ export const projects: Project[] = [
   {
     slug: "hoshikopi",
     name: "Hoshikopi",
+    label: "Cafe ordering",
     tagline: "A concept cafe in Pasig with order-ahead pickup and a Stars loyalty card.",
     summary:
       "The full website of an invented cafe: the menu, ordering ahead for a pickup time, Stars, events and a Bar Screen for the baristas. It is a portfolio piece, so the cafe is labelled as a concept and payments run in PayMongo test mode.",
@@ -106,6 +124,7 @@ export const projects: Project[] = [
   {
     slug: "hoshimono",
     name: "Hoshimono",
+    label: "Online grocery",
     tagline: "An online supermarket for Metro Manila households, with same-day delivery slots.",
     summary:
       "Groceries from browsing to the doorstep: a searchable catalogue, a cart, delivery slots, cash on delivery or online payment, and the staff screens that pick, pack and send every order from one hub.",
@@ -161,6 +180,7 @@ export const projects: Project[] = [
   {
     slug: "hoshiask",
     name: "Hoshiask",
+    label: "Help desk",
     tagline: "A help desk for organisations with field offices: a client portal and a staff console.",
     summary:
       "Clients file tickets in their own portal. Staff assign, answer, escalate, merge and close them, with SLA reminders, a knowledge base, reports and a full audit trail.",
@@ -215,14 +235,55 @@ export const work: WorkItem[] = [
     summary:
       "The new company site for an ICT provider, replacing an old WordPress site: solutions, case studies, a news section with an online editor, and a meeting request form.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
-    shot: desktop("ione", "website", "iOne Resources website home page", "The iOne Resources home page."),
+    shots: [desktop("ione", "website", "iOne Resources website home page", "The iOne Resources home page.")],
   },
   {
     name: "iOne Helpdesk",
     summary:
       "The support desk iOne runs with its clients: separate client and staff portals, SLA tracking, escalation, a knowledge base and audit logging.",
     stack: ["Laravel", "PHP", "PostgreSQL"],
+    shots: [],
   },
 ];
+
+/** Tools for the Toolbox section. `logo` is a Simple Icons path; tools it lacks get a generic glyph. */
+export type Tool = { name: string; logo?: string };
+
+export const toolbox: { group: string; tools: Tool[] }[] = [
+  {
+    group: "Frontend",
+    tools: [
+      { name: "Next.js", logo: siNextdotjs.path },
+      { name: "TypeScript", logo: siTypescript.path },
+      { name: "Tailwind CSS", logo: siTailwindcss.path },
+      { name: "Alpine.js", logo: siAlpinedotjs.path },
+    ],
+  },
+  {
+    group: "Backend and data",
+    tools: [
+      { name: "Laravel", logo: siLaravel.path },
+      { name: "PHP", logo: siPhp.path },
+      { name: "PostgreSQL", logo: siPostgresql.path },
+      { name: "Prisma", logo: siPrisma.path },
+      { name: "Better Auth", logo: siBetterauth.path },
+    ],
+  },
+  {
+    group: "Testing and shipping",
+    tools: [
+      { name: "Vitest", logo: siVitest.path },
+      { name: "Playwright" },
+      { name: "PHPUnit" },
+      { name: "Vercel", logo: siVercel.path },
+    ],
+  },
+];
+
+/** Names of the projects and work whose stack lists this tool, at any version ("Next.js 16" counts, "PHPUnit" is not "PHP"). */
+export const usedIn = (tool: string) =>
+  [...projects, ...work]
+    .filter((item) => item.stack.some((entry) => entry === tool || entry.startsWith(`${tool} `)))
+    .map((item) => item.name);
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);

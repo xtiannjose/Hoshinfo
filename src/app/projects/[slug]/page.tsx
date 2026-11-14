@@ -25,7 +25,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   const next = projects[(projects.indexOf(project) + 1) % projects.length];
 
   return (
-    <article className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
+    <article className="mx-auto max-w-page px-4 pt-8 sm:px-6 lg:px-8">
       <Link href="/#projects" className="inline-flex items-center gap-2 text-sm text-muted hover:text-ink">
         <ArrowLeftIcon className="size-4" aria-hidden /> All projects
       </Link>
@@ -50,7 +50,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       </header>
 
       <figure className="rise mt-12">
-        <Shot shot={project.cover} sizes="(min-width: 1152px) 1104px, 100vw" preload />
+        <Shot shot={project.cover} sizes="(min-width: 1408px) 1344px, 100vw" preload />
         <figcaption className="mt-3 text-sm text-muted">{project.cover.caption}</figcaption>
       </figure>
 
@@ -90,7 +90,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <div className="mt-8 grid gap-x-8 gap-y-12 md:grid-cols-2">
             {desktops.map((shot, i) => (
               <figure key={shot.src} className={`reveal ${i === 0 && desktops.length % 2 === 1 ? "md:col-span-2" : ""}`}>
-                <Shot shot={shot} sizes={i === 0 && desktops.length % 2 === 1 ? "(min-width: 1152px) 1104px, 100vw" : "(min-width: 768px) 540px, 100vw"} />
+                <Shot shot={shot} sizes={i === 0 && desktops.length % 2 === 1 ? "(min-width: 1408px) 1344px, 100vw" : "(min-width: 768px) 660px, 100vw"} />
                 <figcaption className="mt-3 text-sm text-muted">{shot.caption}</figcaption>
               </figure>
             ))}
