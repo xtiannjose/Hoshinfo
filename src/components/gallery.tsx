@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useState, type PointerEvent } from "react";
+import { useState, type PointerEvent, type ReactNode } from "react";
 
 import { Shot } from "@/components/shot";
 import type { Shot as ShotData } from "@/content/projects";
@@ -17,6 +17,8 @@ export function Gallery({
   sizes,
   href,
   bare = false,
+  preload = false,
+  overlay,
 }: {
   shots: ShotData[];
   /** Names the group of buttons and, with `href`, the link. */
@@ -25,6 +27,10 @@ export function Gallery({
   href?: string;
   /** Mounted inside a frame: no lift, inset controls, smaller caption. */
   bare?: boolean;
+  /** Load the first shot early (it is the largest thing on screen). */
+  preload?: boolean;
+  /** Drawn over the picture and kept there while the shots change, e.g. a phone screen in a corner. */
+  overlay?: ReactNode;
 }) {
   const [index, setIndex] = useState(0);
   // The other shots load once someone shows interest, not with the page.
@@ -48,12 +54,14 @@ export function Gallery({
           transition={{ duration: 0.25, ease: "easeOut" }}
           aria-hidden={i !== index}
         >
-          <Shot shot={shot} sizes={sizes} bare={bare} />
+          <Shot shot={shot} sizes={sizes} bare={bare} preload={preload && i === 0} />
         </motion.div>
       ),
   );
 
-  const frame = bare ? "grid" : "grid transition duration-300 ease-out hover:-translate-y-1";
+  const frame = bare
+    ? "relative grid"
+    : "relative grid transition duration-300 ease-out hover:-translate-y-1 motion-reduce:transition-none";
   const controls = bare ? "mt-1 px-3" : "mt-3";
   const gap = shots.length > 1 ? (bare ? "" : "mt-1") : bare ? "mt-2" : "mt-3";
 
@@ -63,10 +71,12 @@ export function Gallery({
       {href ? (
         <Link href={href} aria-label={label} onPointerMove={scrub} className={frame}>
           {stack}
+          {overlay}
         </Link>
       ) : (
         <div onPointerMove={scrub} className={frame}>
           {stack}
+          {overlay}
         </div>
       )}
       {shots.length > 1 && (
@@ -80,9 +90,10 @@ export function Gallery({
               aria-pressed={i === index}
               className="group flex-1 py-3"
             >
+              {/* 3:1 against the page in both schemes; the current one is also thicker, not only gold. */}
               <span
-                className={`block h-0.5 rounded-full transition-colors ${
-                  i === index ? "bg-star" : "bg-line group-hover:bg-muted"
+                className={`block rounded-full transition-colors ${
+                  i === index ? "h-1 bg-star-ink" : "h-0.5 bg-muted/70 group-hover:bg-muted"
                 }`}
               />
             </button>

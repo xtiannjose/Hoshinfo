@@ -7,10 +7,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
- * The id of the section crossing a thin horizontal band, on the home page. `band` is an
- * IntersectionObserver rootMargin; the default band runs across the middle of the viewport.
+ * The current section on the home page: of the sections inside a band from 12% to 50% down the
+ * viewport, the last one in `ids` order. "Last" lets a nested section (Work inside Experience)
+ * win while it is in view, and lets the final section win at the bottom of a tall window, where
+ * it can never scroll up to the top. Both navs use the same band, so they always agree.
  */
-function useActiveSection(ids: string[], band = "-45% 0px -50% 0px") {
+function useActiveSection(ids: string[]) {
   const pathname = usePathname();
   const [active, setActive] = useState<string | null>(null);
   const key = ids.join(" ");
@@ -22,30 +24,29 @@ function useActiveSection(ids: string[], band = "-45% 0px -50% 0px") {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) inBand.set(entry.target.id, entry.isIntersecting);
-        setActive(list.find((id) => inBand.get(id)) ?? null);
+        setActive(list.findLast((id) => inBand.get(id)) ?? null);
       },
-      { rootMargin: band },
+      { rootMargin: "-12% 0px -50% 0px" },
     );
     for (const id of list) {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, [pathname, key, band]);
+  }, [pathname, key]);
 
   return pathname === "/" ? active : null;
 }
 
-// `show` sets where each header link appears. Experience steps aside on wide screens,
-// where the Experience band has its own nav, so only one marker moves at a time.
+// `show` sets where each header link appears; the bar stays on one line on a phone.
 const headerLinks = [
-  { id: "experience", label: "Experience", show: "hidden md:block lg:hidden" },
+  { id: "experience", label: "Experience", show: "hidden md:block" },
   { id: "projects", label: "Projects", show: "" },
   { id: "work", label: "Work", show: "" },
   { id: "toolbox", label: "Toolbox", show: "hidden md:block" },
 ];
 
-/** Header links; a pill marks the current section. */
+/** Header links; a pill marks the current section, below lg (from lg the band's own nav marks it). */
 export function SectionNav() {
   const current = useActiveSection(headerLinks.map((l) => l.id));
 
@@ -61,7 +62,7 @@ export function SectionNav() {
       {current === id && (
         <motion.span
           layoutId="nav-current"
-          className="absolute inset-0 -z-10 rounded-full border border-line bg-surface"
+          className="absolute inset-0 -z-10 rounded-full border border-line bg-surface lg:hidden"
           transition={{ type: "spring", bounce: 0.15, visualDuration: 0.35 }}
         />
       )}
@@ -72,11 +73,7 @@ export function SectionNav() {
 
 /** The Experience band's own vertical nav (wide screens); a small gold star slides to the current row. */
 export function BandNav({ items }: { items: { id: string; label: string }[] }) {
-  // Band just under the header: a section reached through this nav sits at the top, so it counts as current.
-  const current = useActiveSection(
-    items.map((i) => i.id),
-    "-12% 0px -87% 0px",
-  );
+  const current = useActiveSection(items.map((i) => i.id));
 
   return (
     <nav aria-label="Sections">

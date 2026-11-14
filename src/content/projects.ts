@@ -24,8 +24,6 @@ export type Shot = {
 export type Project = {
   slug: string;
   name: string;
-  /** Two or three words for the hero tabs. */
-  label: string;
   tagline: string;
   summary: string;
   stack: string[];
@@ -73,7 +71,6 @@ export const projects: Project[] = [
   {
     slug: "hoshikopi",
     name: "Hoshikopi",
-    label: "Cafe ordering",
     tagline: "A concept cafe in Pasig with order-ahead pickup and a Stars loyalty card.",
     summary:
       "The full website of an invented cafe: the menu, ordering ahead for a pickup time, Stars, events and a Bar Screen for the baristas. It is a portfolio piece, so the cafe is labelled as a concept and payments run in PayMongo test mode.",
@@ -124,7 +121,6 @@ export const projects: Project[] = [
   {
     slug: "hoshimono",
     name: "Hoshimono",
-    label: "Online grocery",
     tagline: "An online supermarket for Metro Manila households, with same-day delivery slots.",
     summary:
       "Groceries from browsing to the doorstep: a searchable catalogue, a cart, delivery slots, cash on delivery or online payment, and the staff screens that pick, pack and send every order from one hub.",
@@ -180,7 +176,6 @@ export const projects: Project[] = [
   {
     slug: "hoshiask",
     name: "Hoshiask",
-    label: "Help desk",
     tagline: "A help desk for organisations with field offices: a client portal and a staff console.",
     summary:
       "Clients file tickets in their own portal. Staff assign, answer, escalate, merge and close them, with SLA reminders, a knowledge base, reports and a full audit trail.",
