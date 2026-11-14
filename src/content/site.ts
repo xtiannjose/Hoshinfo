@@ -3,18 +3,11 @@
 export const site = {
   brand: "Hoshinfo",
   name: "Christian Jose",
-  role: "Full-stack developer",
+  role: "Software developer",
   github: "https://github.com/xtiannjose",
   linkedin: "https://www.linkedin.com/in/xtianjose/",
   url: "https://hoshinfo.vercel.app",
 };
-
-/** The About section, one string per paragraph. */
-export const about = [
-  "I'm Christian, a full-stack developer in the Philippines. I build web apps for the parts of a business that hurt when they break: orders, stock, payments and support tickets.",
-  "At iOne Resources I build the company website and the help desk it runs with its clients, plus the monitoring and automation behind its field projects: live dashboards for a satellite internet rollout across more than 3,000 DepEd schools, and tooling for the devices used in the 2025 national and 2026 BARMM elections.",
-  "I studied Computer Science at STI College Ortigas-Cainta. In my own time I design and build complete products test-first, and I write down the business rules and every hard-to-reverse choice before the code.",
-];
 
 export type Role = {
   /** Shown in the date column, e.g. "Nov 2025 - Now". */
@@ -63,25 +56,4 @@ export const experience: Role[] = [
       "Designed Figma wireframes for a point-of-sale system (inventory, sales tracking and payments), revised them with the developers as they built the features, and tested web and mobile apps before release.",
     stack: ["Figma"],
   },
-];
-
-export const education = {
-  period: "2021 - 2025",
-  school: "STI College Ortigas-Cainta",
-  degree: "BS Computer Science",
-  thesis:
-    "Thesis: a Messenger chatbot that answers school questions on admissions, enrollment, schedules and requirements, trained with Rasa to understand English and Filipino, with a fallback to admin staff.",
-  stack: ["Python", "Rasa", "Facebook Messenger"],
-};
-
-// Newest first, names as issued.
-export const certifications = [
-  { date: "Oct 2026", name: "TP-Link Omada OCI for OCNA Wireless" },
-  { date: "Jan 2026", name: "TP-Link Omada OCNA Routing & Switching" },
-  { date: "Jan 2026", name: "TP-Link Omada OCNA Wireless" },
-  { date: "Dec 2025", name: "Akamai Brand Protector Basic Services & Support Certification for Partners" },
-  { date: "Dec 2025", name: "Akamai Content Protector Basic Services & Support Certification for Partners" },
-  { date: "Dec 2025", name: "Peplink Certified Engineer (PCE) 4.0" },
-  { date: "Nov 2025", name: "Akamai Bot Manager & Account Protector Basic APP Enablement Certification for Partner Support Engineer" },
-  { date: "Nov 2025", name: "freeCodeCamp Legacy Responsive Web Design V8" },
 ];
