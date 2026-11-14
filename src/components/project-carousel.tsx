@@ -258,29 +258,27 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
                 i === current ? "" : "opacity-40"
               } ${i === n ? "[scroll-initial-target:nearest]" : ""}`}
             >
-              {/* Centred in the page column, sized so the whole card fits under the header on a desktop screen. */}
+              {/* The card fills the page column, as wide as the sections below it. */}
               <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8">
-                <div className="mx-auto lg:w-[min(100%,calc((100dvh-22rem)*1.6))]">
-                  <div className="mb-2 flex items-baseline gap-3 text-sm">
-                    <h2 className="shrink-0 font-medium text-ink">{slide.name}</h2>
-                    <p className="min-w-0 truncate text-muted">{slide.tagline}</p>
-                  </div>
-                  {/* Mounted look: a 4px rim and 12px corners around 8px-cornered media. */}
-                  <div className="rounded-xl border border-line bg-surface p-1">
-                    <Gallery
-                      bare
-                      preload={i === n}
-                      shots={slide.shots}
-                      label={`${slide.name} case study`}
-                      href={`/projects/${slide.slug}`}
-                      sizes="(min-width: 1024px) min(84rem, calc(160vh - 35.2rem)), 100vw"
-                      phones
-                    />
-                    <div className="mt-1 flex gap-1">
-                      <TierLink href={`/projects/${slide.slug}`}>Case study</TierLink>
-                      {slide.live && <TierLink href={slide.live}>Live site</TierLink>}
-                      <TierLink href={slide.code}>Code</TierLink>
-                    </div>
+                <div className="mb-3 flex items-baseline gap-3">
+                  <h2 className="shrink-0 text-lg font-semibold tracking-tight text-ink">{slide.name}</h2>
+                  <p className="min-w-0 truncate text-muted">{slide.tagline}</p>
+                </div>
+                {/* Mounted look: a 4px rim and 12px corners around 8px-cornered media. */}
+                <div className="rounded-xl border border-line bg-surface p-1">
+                  <Gallery
+                    bare
+                    preload={i === n}
+                    shots={slide.shots}
+                    label={`${slide.name} case study`}
+                    href={`/projects/${slide.slug}`}
+                    sizes="(min-width: 1408px) 1344px, 100vw"
+                    phones
+                  />
+                  <div className="mt-1 flex gap-1">
+                    <TierLink href={`/projects/${slide.slug}`}>Case study</TierLink>
+                    {slide.live && <TierLink href={slide.live}>Live site</TierLink>}
+                    <TierLink href={slide.code}>Code</TierLink>
                   </div>
                 </div>
               </div>
