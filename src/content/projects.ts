@@ -19,6 +19,8 @@ export type Shot = {
   kind: "desktop" | "phone";
   /** Pixel size of the file: shots are taken at 2x. */
   size: [number, number];
+  /** For a desktop shot: the same page on a phone, if there is one. */
+  phone?: Shot;
 };
 
 export type Project = {
@@ -47,12 +49,20 @@ export type WorkItem = {
   shots: Shot[];
 };
 
-const desktop = (folder: string, file: string, alt: string, caption: string): Shot => ({
+// `onPhone` names the phone screenshot of the same page (and its size, if not 780x1688).
+const desktop = (
+  folder: string,
+  file: string,
+  alt: string,
+  caption: string,
+  onPhone?: { file: string; size?: [number, number] },
+): Shot => ({
   src: `/shots/${folder}/${file}.png`,
   alt,
   caption,
   kind: "desktop",
   size: [2880, 1800],
+  ...(onPhone && { phone: phone(folder, onPhone.file, `${alt}, on a phone`, caption, onPhone.size) }),
 });
 
 const phone = (
@@ -79,14 +89,14 @@ export const projects: Project[] = [
     stack: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma 7", "Tailwind CSS 4", "Vitest", "Playwright", "Vercel"],
     live: "https://hoshikopi.vercel.app",
     code: "https://github.com/xtiannjose/Hoshikopi",
-    cover: desktop("hoshikopi", "home-night", "Hoshikopi home page in the Night palette", "Home after 6 PM Manila time, in the Night palette."),
+    cover: desktop("hoshikopi", "home-night", "Hoshikopi home page in the Night palette", "Home after 6 PM Manila time, in the Night palette.", { file: "home-night-phone" }),
     phone: phone("hoshikopi", "item-phone", "Hoshi Latte page on a phone", "A drink page on a phone."),
     gallery: [
-      desktop("hoshikopi", "home", "Hoshikopi home page in the Day palette", "The same home page by day: the palette follows the cafe's clock."),
-      desktop("hoshikopi", "menu", "Coffee section of the Hoshikopi menu", "The menu, with prices from the server and Barista Pick badges."),
-      desktop("hoshikopi", "item", "Hoshi Latte with size, milk, sugar and ice choices", "Build a drink: every choice and its price change is checked again at checkout."),
-      desktop("hoshikopi", "events", "Hoshikopi events page", "Events with sign-ups, plus the weekly ones that need no booking."),
-      desktop("hoshikopi", "cafe", "Hoshikopi visit page with hours and amenities", "Hours, directions and amenities for planning a visit."),
+      desktop("hoshikopi", "home", "Hoshikopi home page in the Day palette", "The same home page by day: the palette follows the cafe's clock.", { file: "home-phone" }),
+      desktop("hoshikopi", "menu", "Coffee section of the Hoshikopi menu", "The menu, with prices from the server and Barista Pick badges.", { file: "menu-phone" }),
+      desktop("hoshikopi", "item", "Hoshi Latte with size, milk, sugar and ice choices", "Build a drink: every choice and its price change is checked again at checkout.", { file: "item-day-phone" }),
+      desktop("hoshikopi", "events", "Hoshikopi events page", "Events with sign-ups, plus the weekly ones that need no booking.", { file: "events-phone" }),
+      desktop("hoshikopi", "cafe", "Hoshikopi visit page with hours and amenities", "Hours, directions and amenities for planning a visit.", { file: "cafe-phone" }),
       phone("hoshikopi", "home-phone", "Hoshikopi home page on a phone", "Home on a phone."),
     ],
     features: [
@@ -128,12 +138,12 @@ export const projects: Project[] = [
       "Groceries from browsing to the doorstep: a searchable catalogue, a cart, delivery slots, cash on delivery or online payment, and the staff screens that pick, pack and send every order from one hub.",
     stack: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma 7", "Better Auth", "Tailwind CSS 4", "Vitest", "Playwright"],
     code: "https://github.com/xtiannjose/Hoshimono",
-    cover: desktop("hoshimono", "home", "Hoshimono storefront home page", "The storefront: aisles, fresh picks and the delivery promise up top."),
+    cover: desktop("hoshimono", "home", "Hoshimono storefront home page", "The storefront: aisles, fresh picks and the delivery promise up top.", { file: "home-phone-412", size: [824, 1830] }),
     phone: phone("hoshimono", "home-phone-412", "Hoshimono storefront on a phone", "The storefront on a phone.", [824, 1830]),
     gallery: [
       desktop("hoshimono", "recipe", "Chicken Adobo recipe with its ingredients list", "Recipe to cart: ingredients scale with the servings, and pantry staples start unticked."),
       desktop("hoshimono", "search", "Search results for gatas", "Search understands Filipino and typos: \"gatas\" finds six kinds of milk."),
-      desktop("hoshimono", "product", "Carabao Mangoes product page, sold by weight", "A Product sold by weight, with a plain note on how the final price is set."),
+      desktop("hoshimono", "product", "Carabao Mangoes product page, sold by weight", "A Product sold by weight, with a plain note on how the final price is set.", { file: "product-phone-412", size: [824, 1830] }),
       desktop("hoshimono", "cart", "Hoshimono cart with substitution choices", "The cart, with a substitute choice and picker notes for every item."),
       desktop("hoshimono", "checkout", "Checkout with two-hour delivery slots", "Checkout holds the chosen two-hour slot while the shopper pays."),
       desktop("hoshimono", "stock", "Staff stock screen", "Staff see what is on the shelf, reserved and free, with low stock flagged."),
@@ -188,7 +198,7 @@ export const projects: Project[] = [
     gallery: [
       desktop("hoshiask", "tickets", "Hoshiask staff ticket list with filters", "The ticket list: tabs, saved views, filters by office and severity, and bulk actions."),
       desktop("hoshiask", "ticket", "A ticket with public replies and internal notes", "What staff see: public replies and internal notes on one thread."),
-      desktop("hoshiask", "client-ticket", "The same ticket in the client portal", "What the client sees: the same ticket, public replies only."),
+      desktop("hoshiask", "client-ticket", "The same ticket in the client portal", "What the client sees: the same ticket, public replies only.", { file: "ticket-phone" }),
       desktop("hoshiask", "reports", "Hoshiask monthly reports chart", "Reports compare tickets received and completed over 12 months."),
       desktop("hoshiask", "dashboard-dark", "Hoshiask staff dashboard in dark mode", "The staff dashboard in dark mode."),
       phone("hoshiask", "ticket-phone", "A client ticket on a phone", "A ticket and its conversation on a phone."),

@@ -1,11 +1,15 @@
-import { ArrowRightIcon, ArrowUpRightIcon, LockSimpleIcon, TestTubeIcon } from "@phosphor-icons/react/ssr";
+import {
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+  BuildingsIcon,
+  LockSimpleIcon,
+  StarIcon,
+  TestTubeIcon,
+} from "@phosphor-icons/react/ssr";
 
 import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
 import { ProjectCarousel } from "@/components/project-carousel";
-import { BandNav } from "@/components/section-nav";
-import { PhoneInset } from "@/components/shot";
-import { SocialLinks } from "@/components/social-links";
 import { projects, toolbox, usedIn, work, type Project, type WorkItem } from "@/content/projects";
 import { experience, site } from "@/content/site";
 
@@ -18,7 +22,6 @@ const slides = projects.map((project) => ({
   tagline: project.tagline,
   live: project.live,
   code: project.code,
-  phone: project.phone,
   shots: screens(project),
 }));
 
@@ -34,48 +37,22 @@ export default function Home() {
   );
 }
 
-/** Small label that names a section: pinned under the header on narrow screens, read-only for screen readers on wide ones. */
-function BandLabel({ id, children }: { id: string; children: string }) {
+function SectionTitle({ id, children }: { id: string; children: string }) {
   return (
-    <h2
-      id={id}
-      className="sticky top-16 z-10 -mx-4 mb-6 bg-bg/80 px-4 py-3 text-sm font-semibold backdrop-blur-md sm:-mx-6 sm:px-6 lg:sr-only"
-    >
+    <h2 id={id} className="text-3xl font-semibold tracking-tight md:text-4xl">
       {children}
     </h2>
   );
 }
 
-/**
- * Everything under the carousel: a pinned column on the left (who, and a nav whose star follows
- * the section in view) and Experience, Projects and Toolbox scrolling on the right.
- */
+/** Everything under the carousel, full width. The header nav's star marks the section in view. */
 function Story() {
-  const now = experience[0];
   return (
-    // scroll-mt-28 on links and buttons: keyboard focus never lands hidden under the sticky header and labels.
-    <div className="mx-auto grid max-w-page gap-x-10 px-4 pt-24 sm:px-6 md:pt-28 lg:grid-cols-12 lg:px-8 [&_:is(a,button)]:scroll-mt-28">
-      <aside className="hidden lg:col-span-3 lg:block">
-        <div className="sticky top-28 flex flex-col gap-8">
-          <p className="max-w-[26ch] text-sm leading-relaxed text-muted">
-            {now.title} at <span className="text-ink">{now.org}</span>, and maker of Hoshikopi, Hoshimono and Hoshiask.
-          </p>
-          <BandNav
-            items={[
-              { id: "experience", label: "Experience" },
-              { id: "projects", label: "Projects" },
-              { id: "toolbox", label: "Toolbox" },
-            ]}
-          />
-          <SocialLinks />
-        </div>
-      </aside>
-
-      <div className="lg:col-span-9">
-        <Experience />
-        <Projects />
-        <Toolbox />
-      </div>
+    // scroll-mt-28 on links and buttons: keyboard focus never lands hidden under the sticky header.
+    <div className="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-28 lg:px-8 [&_:is(a,button)]:scroll-mt-28">
+      <Experience />
+      <Projects />
+      <Toolbox />
     </div>
   );
 }
@@ -83,10 +60,10 @@ function Story() {
 function Experience() {
   return (
     <section id="experience" aria-labelledby="experience-title" className="scroll-mt-20">
-      <BandLabel id="experience-title">Experience</BandLabel>
+      <SectionTitle id="experience-title">Experience</SectionTitle>
       {/* Pointing at one linked entry dims the others a little on wide screens (90% keeps muted text above 4.5:1).
           isolate keeps each card layer inside the list. */}
-      <ol className="reveal group/list isolate space-y-10 lg:space-y-4">
+      <ol className="reveal group/list isolate mt-10 space-y-10 lg:space-y-4">
         {experience.map((role) => {
           const external = role.href?.startsWith("http");
           const Arrow = external ? ArrowUpRightIcon : ArrowRightIcon;
@@ -146,8 +123,8 @@ function Experience() {
 function Projects() {
   return (
     <section id="projects" aria-labelledby="projects-title" className="scroll-mt-20 pt-24 md:pt-32">
-      <BandLabel id="projects-title">Projects</BandLabel>
-      <p className="max-w-[60ch] text-muted">
+      <SectionTitle id="projects-title">Projects</SectionTitle>
+      <p className="mt-3 max-w-[60ch] text-muted">
         Three products of my own, designed and built end to end, and two I build at iOne Resources.
       </p>
       <div className="mt-12 space-y-24">
@@ -162,59 +139,70 @@ function Projects() {
   );
 }
 
-/** One project's own showcase: its screens (phone in the corner), what it does, how it is built, and the links. */
+/** Says whose project it is: a clear badge above the name. */
+function Kind({ icon, children }: { icon: "star" | "company"; children: string }) {
+  const Icon = icon === "star" ? StarIcon : BuildingsIcon;
+  return (
+    <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-base font-medium text-ink">
+      <Icon weight="fill" className="size-4 text-star" aria-hidden />
+      {children}
+    </p>
+  );
+}
+
+/** One project's own showcase: its screens (phone in the corner) beside what it does, how it is built, and the links. */
 function ProjectShowcase({ project }: { project: Project }) {
   return (
-    <article id={project.slug} aria-labelledby={`${project.slug}-title`} className="reveal scroll-mt-20">
-      <p className="text-sm text-muted">Personal project</p>
-      <h3 id={`${project.slug}-title`} className="mt-1 text-2xl font-semibold tracking-tight">
-        {project.name}
-      </h3>
-      <p className="mt-2 max-w-[60ch] text-lg text-muted">{project.tagline}</p>
-      <div className="mt-6">
+    <article
+      id={project.slug}
+      aria-labelledby={`${project.slug}-title`}
+      className="reveal grid scroll-mt-20 gap-8 lg:grid-cols-12 lg:gap-12"
+    >
+      <div className="lg:col-span-7">
         <Gallery
           shots={screens(project)}
           label={`${project.name} case study`}
           href={`/projects/${project.slug}`}
-          sizes="(min-width: 1024px) 960px, 100vw"
-          overlay={<PhoneInset shot={project.phone} />}
+          sizes="(min-width: 1024px) 780px, 100vw"
+          phones
         />
       </div>
-      <div className="mt-8 grid gap-8 md:grid-cols-2 md:gap-10">
-        <div>
-          <p className="leading-relaxed text-muted">{project.summary}</p>
-          <ul className="mt-4 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted marker:text-star">
-            {project.features.slice(0, 3).map((feature) => (
-              <li key={feature}>{feature}</li>
-            ))}
-          </ul>
+      <div className="lg:col-span-5">
+        <Kind icon="star">Personal project</Kind>
+        <h3 id={`${project.slug}-title`} className="mt-4 text-3xl font-semibold tracking-tight">
+          {project.name}
+        </h3>
+        <p className="mt-2 text-lg text-muted">{project.tagline}</p>
+        <p className="mt-5 leading-relaxed text-muted">{project.summary}</p>
+        <ul className="mt-4 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted marker:text-star">
+          {project.features.slice(0, 3).map((feature) => (
+            <li key={feature}>{feature}</li>
+          ))}
+        </ul>
+        <dl className="mt-6 space-y-4">
+          {project.build.slice(0, 2).map((item) => (
+            <div key={item.title}>
+              <dt className="text-sm font-medium">{item.title}</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-muted">{item.body}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mt-5">
+          <StackList items={project.stack} />
         </div>
-        <div>
-          <dl className="space-y-4">
-            {project.build.slice(0, 2).map((item) => (
-              <div key={item.title}>
-                <dt className="text-sm font-medium">{item.title}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted">{item.body}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="mt-5">
-            <StackList items={project.stack} />
-          </div>
-        </div>
-      </div>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <LinkButton href={`/projects/${project.slug}`}>
-          Case study <ArrowRightIcon className="size-4" aria-hidden />
-        </LinkButton>
-        {project.live && (
-          <LinkButton href={project.live} variant="secondary">
-            Live site <ArrowUpRightIcon className="size-4" aria-hidden />
+        <div className="mt-7 flex flex-wrap gap-3">
+          <LinkButton href={`/projects/${project.slug}`}>
+            Case study <ArrowRightIcon className="size-4" aria-hidden />
           </LinkButton>
-        )}
-        <LinkButton href={project.code} variant="secondary">
-          Code <ArrowUpRightIcon className="size-4" aria-hidden />
-        </LinkButton>
+          {project.live && (
+            <LinkButton href={project.live} variant="secondary">
+              Live site <ArrowUpRightIcon className="size-4" aria-hidden />
+            </LinkButton>
+          )}
+          <LinkButton href={project.code} variant="secondary">
+            Code <ArrowUpRightIcon className="size-4" aria-hidden />
+          </LinkButton>
+        </div>
       </div>
     </article>
   );
@@ -223,25 +211,31 @@ function ProjectShowcase({ project }: { project: Project }) {
 /** A project built at iOne Resources: shown, not linked, because the code is the company's. */
 function CompanyShowcase({ item }: { item: WorkItem }) {
   return (
-    <article id={item.slug} aria-labelledby={`${item.slug}-title`} className="reveal scroll-mt-20">
-      <p className="text-sm text-muted">Company work at iOne Resources</p>
-      <h3 id={`${item.slug}-title`} className="mt-1 text-2xl font-semibold tracking-tight">
-        {item.name}
-      </h3>
-      <div className="mt-6">
+    <article
+      id={item.slug}
+      aria-labelledby={`${item.slug}-title`}
+      className="reveal grid scroll-mt-20 gap-8 lg:grid-cols-12 lg:gap-12"
+    >
+      <div className="lg:col-span-7">
         {item.shots.length > 0 ? (
-          <Gallery shots={item.shots} label={item.name} sizes="(min-width: 1024px) 960px, 100vw" />
+          <Gallery shots={item.shots} label={item.name} sizes="(min-width: 1024px) 780px, 100vw" />
         ) : (
-          <div className="flex aspect-[16/7] flex-col items-center justify-center gap-3 rounded-xl border border-line bg-surface p-6 text-center">
+          <div className="flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-xl border border-line bg-surface p-6 text-center">
             <LockSimpleIcon className="size-6 text-star" aria-hidden />
             <p className="max-w-[36ch] text-sm text-muted">Screens from this one stay with the company.</p>
           </div>
         )}
       </div>
-      <p className="mt-6 max-w-[65ch] leading-relaxed text-muted">{item.summary}</p>
-      <p className="mt-2 text-sm text-muted">The code belongs to the company, so there are no links.</p>
-      <div className="mt-5">
-        <StackList items={item.stack} />
+      <div className="lg:col-span-5">
+        <Kind icon="company">Company work at iOne Resources</Kind>
+        <h3 id={`${item.slug}-title`} className="mt-4 text-3xl font-semibold tracking-tight">
+          {item.name}
+        </h3>
+        <p className="mt-5 leading-relaxed text-muted">{item.summary}</p>
+        <p className="mt-2 text-sm text-muted">The code belongs to the company, so there are no links.</p>
+        <div className="mt-5">
+          <StackList items={item.stack} />
+        </div>
       </div>
     </article>
   );
@@ -250,9 +244,9 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
 function Toolbox() {
   return (
     <section id="toolbox" aria-labelledby="toolbox-title" className="scroll-mt-20 pt-24 md:pt-32">
-      <BandLabel id="toolbox-title">Toolbox</BandLabel>
-      <p className="max-w-[60ch] text-muted">What I build with, and where each tool is used.</p>
-      <div className="reveal mt-10 grid gap-10 sm:grid-cols-3">
+      <SectionTitle id="toolbox-title">Toolbox</SectionTitle>
+      <p className="mt-3 max-w-[60ch] text-muted">What I build with, and where each tool is used.</p>
+      <div className="reveal mt-10 grid gap-10 sm:grid-cols-3 lg:gap-14">
         {toolbox.map(({ group, tools }) => (
           <div key={group}>
             <h3 className="text-sm text-muted">{group}</h3>
