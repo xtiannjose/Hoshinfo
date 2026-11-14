@@ -125,14 +125,14 @@ function Projects() {
     <section id="projects" aria-labelledby="projects-title" className="scroll-mt-20 pt-24 md:pt-32">
       <SectionTitle id="projects-title">Projects</SectionTitle>
       <p className="mt-3 max-w-[60ch] text-muted">
-        Three products of my own, designed and built end to end, and two I build at iOne Resources.
+        Two I build at iOne Resources, and three products of my own, designed and built end to end.
       </p>
       <div className="mt-12 space-y-24">
-        {projects.map((project) => (
-          <ProjectShowcase key={project.slug} project={project} />
-        ))}
         {work.map((item) => (
           <CompanyShowcase key={item.slug} item={item} />
+        ))}
+        {projects.map((project) => (
+          <ProjectShowcase key={project.slug} project={project} />
         ))}
       </div>
     </section>
