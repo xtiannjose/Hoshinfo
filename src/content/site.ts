@@ -3,7 +3,7 @@
 export const site = {
   brand: "Hoshinfo",
   name: "Christian Jose",
-  role: "Full-stack developer",
+  role: "Software developer",
   github: "https://github.com/xtiannjose",
   linkedin: "https://www.linkedin.com/in/xtianjose/",
   url: "https://hoshinfo.vercel.app",
@@ -11,7 +11,7 @@ export const site = {
 
 /** The About section, one string per paragraph. */
 export const about = [
-  "I'm Christian, a full-stack developer in the Philippines. I build web apps for the parts of a business that hurt when they break: orders, stock, payments and support tickets.",
+  "I'm Christian, a software developer in the Philippines. I build web apps for the parts of a business that hurt when they break: orders, stock, payments and support tickets.",
   "At iOne Resources I build the company website and the help desk it runs with its clients, plus the monitoring and automation behind its field projects: live dashboards for a satellite internet rollout across more than 3,000 DepEd schools, and tooling for the devices used in the 2025 national and 2026 BARMM elections.",
   "I studied Computer Science at STI College Ortigas-Cainta. In my own time I design and build complete products test-first, and I write down the business rules and every hard-to-reverse choice before the code.",
 ];
