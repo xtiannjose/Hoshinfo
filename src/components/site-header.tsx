@@ -1,4 +1,4 @@
-import { GithubLogoIcon, StarIcon } from "@phosphor-icons/react/ssr";
+import { GithubLogoIcon, LinkedinLogoIcon, StarIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 
 import { Boop } from "@/components/boop";
@@ -18,17 +18,23 @@ export function SiteHeader() {
         </Link>
         <nav aria-label="Main" className="flex items-center gap-1 text-sm">
           <SectionNav />
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noreferrer"
-            className="ml-1 rounded-full p-2 text-muted hover:text-ink"
-            aria-label="GitHub"
-          >
-            <Boop rotate={-10} scale={1.1} fromParent>
-              <GithubLogoIcon className="size-5" aria-hidden />
-            </Boop>
-          </a>
+          {[
+            { href: site.github, label: "GitHub", Icon: GithubLogoIcon },
+            { href: site.linkedin, label: "LinkedIn", Icon: LinkedinLogoIcon },
+          ].map(({ href, label, Icon }, i) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className={`flex rounded-full p-2 text-muted hover:text-ink ${i === 0 ? "ml-1" : ""}`}
+              aria-label={label}
+            >
+              <Boop rotate={-10} scale={1.1} fromParent>
+                <Icon className="size-5" aria-hidden />
+              </Boop>
+            </a>
+          ))}
         </nav>
       </div>
     </header>

@@ -1,13 +1,14 @@
-import { ArrowRightIcon, ArrowUpRightIcon, GithubLogoIcon, TestTubeIcon } from "@phosphor-icons/react/ssr";
+import { ArrowRightIcon, ArrowUpRightIcon, TestTubeIcon } from "@phosphor-icons/react/ssr";
 import type { CSSProperties } from "react";
 
 import { HeroShowcase } from "@/components/hero-showcase";
 import { LinkButton, StackList } from "@/components/link-button";
 import { ProjectRail } from "@/components/project-rail";
 import { BandNav } from "@/components/section-nav";
+import { SocialLinks } from "@/components/social-links";
 import { WorkShowcase } from "@/components/work-showcase";
 import { projects, toolbox, usedIn, work } from "@/content/projects";
-import { about, experience, site } from "@/content/site";
+import { about, certifications, education, experience, site } from "@/content/site";
 
 // Stagger for the hero's load-in (see .rise in globals.css).
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -29,7 +30,7 @@ export default function Home() {
       <Story />
       <ProjectRail
         title="Projects"
-        intro="Three products I designed and built end to end, from the first planning doc to the deployed app."
+        intro="Three products I designed and built end to end, from the first planning doc to tested, working code."
         slides={slides}
         more={site.github}
       />
@@ -61,13 +62,11 @@ function Hero() {
         <p className="rise mt-6 max-w-[46ch] text-lg leading-relaxed text-muted" style={step(2)}>
           Next.js, Laravel and Postgres, built test-first with the business rules written down before the code.
         </p>
-        <div className="rise mt-8 flex flex-wrap gap-3" style={step(3)}>
+        <div className="rise mt-8 flex flex-wrap items-center gap-3" style={step(3)}>
           <LinkButton href="#projects">
             See projects <ArrowRightIcon className="size-4" aria-hidden />
           </LinkButton>
-          <LinkButton href={site.github} variant="secondary">
-            <GithubLogoIcon className="size-4" aria-hidden /> GitHub
-          </LinkButton>
+          <SocialLinks />
         </div>
       </div>
       <div className="rise" style={step(2)}>
@@ -89,7 +88,7 @@ function BandLabel({ id, children }: { id: string; children: string }) {
   );
 }
 
-/** About and Experience share one band: a pinned column on the left, the story scrolling on the right. */
+/** About, Experience and Education share one band: a pinned column on the left, the story scrolling on the right. */
 function Story() {
   const [lead, ...rest] = about;
   const now = experience[0];
@@ -104,8 +103,10 @@ function Story() {
             items={[
               { id: "about", label: "About" },
               { id: "experience", label: "Experience" },
+              { id: "education", label: "Education" },
             ]}
           />
+          <SocialLinks />
         </div>
       </aside>
 
@@ -120,6 +121,9 @@ function Story() {
               </p>
             ))}
           </div>
+          <div className="mt-8 lg:hidden">
+            <SocialLinks />
+          </div>
         </section>
 
         <section id="experience" aria-labelledby="experience-title" className="scroll-mt-20 pt-24 md:pt-32">
@@ -128,34 +132,48 @@ function Story() {
               isolate keeps each card layer inside the list. */}
           <ol className="reveal group/list isolate space-y-10 lg:space-y-4">
             {experience.map((role) => {
-              const external = role.href.startsWith("http");
+              const external = role.href?.startsWith("http");
               const Arrow = external ? ArrowUpRightIcon : ArrowRightIcon;
               return (
                 <li
-                  key={role.org}
-                  className="group relative grid gap-3 transition-opacity duration-150 sm:grid-cols-[8rem_1fr] sm:gap-8 lg:py-4 lg:group-has-[li:focus-within]/list:opacity-90 lg:group-has-[li:hover]/list:opacity-90 lg:focus-within:opacity-100! lg:hover:opacity-100!"
+                  key={`${role.org} ${role.period}`}
+                  data-linked={role.href ? "" : undefined}
+                  className="group relative grid gap-3 transition-opacity duration-150 sm:grid-cols-[8rem_1fr] sm:gap-8 lg:py-4 lg:group-has-[li[data-linked]:focus-within]/list:opacity-90 lg:group-has-[li[data-linked]:hover]/list:opacity-90 lg:focus-within:opacity-100! lg:hover:opacity-100!"
                 >
-                  {/* The card grows outward from the text, so the text stays aligned with the column. */}
-                  <div
-                    aria-hidden
-                    className="absolute -inset-x-6 inset-y-0 -z-10 hidden rounded-xl border border-transparent transition-colors duration-150 motion-reduce:transition-none lg:block lg:group-focus-within:border-line lg:group-focus-within:bg-surface lg:group-hover:border-line lg:group-hover:bg-surface"
-                  />
+                  {/* Linked entries only: the card grows outward from the text, so the text stays aligned. */}
+                  {role.href && (
+                    <div
+                      aria-hidden
+                      className="absolute -inset-x-6 inset-y-0 -z-10 hidden rounded-xl border border-transparent transition-colors duration-150 motion-reduce:transition-none lg:block lg:group-focus-within:border-line lg:group-focus-within:bg-surface lg:group-hover:border-line lg:group-hover:bg-surface"
+                    />
+                  )}
                   <p className="pt-1 font-mono text-xs text-muted">{role.period}</p>
                   <div>
                     <h3 className="font-semibold tracking-tight">
-                      <a
-                        href={role.href}
-                        {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-                        className="inline-flex items-baseline gap-1.5 transition-colors after:absolute after:inset-0 group-hover:text-star-ink lg:after:-inset-x-6"
-                      >
-                        {role.title}, {role.org}
-                        <Arrow
-                          className="size-3.5 self-center transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
-                          aria-hidden
-                        />
-                      </a>
+                      {role.href ? (
+                        <a
+                          href={role.href}
+                          {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                          className="inline-flex items-baseline gap-1.5 transition-colors after:absolute after:inset-0 group-hover:text-star-ink lg:after:-inset-x-6"
+                        >
+                          {role.title}, {role.org}
+                          <Arrow
+                            className="size-3.5 self-center transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+                            aria-hidden
+                          />
+                        </a>
+                      ) : (
+                        `${role.title}, ${role.org}`
+                      )}
                     </h3>
                     <p className="mt-2 max-w-[62ch] leading-relaxed text-muted">{role.summary}</p>
+                    {role.highlights && (
+                      <ul className="mt-3 max-w-[62ch] list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted marker:text-star">
+                        {role.highlights.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    )}
                     <div className="mt-4">
                       <StackList items={role.stack} />
                     </div>
@@ -164,6 +182,31 @@ function Story() {
               );
             })}
           </ol>
+        </section>
+
+        <section id="education" aria-labelledby="education-title" className="scroll-mt-20 pt-24 md:pt-32">
+          <BandLabel id="education-title">Education</BandLabel>
+          <div className="reveal grid gap-3 sm:grid-cols-[8rem_1fr] sm:gap-8">
+            <p className="pt-1 font-mono text-xs text-muted">{education.period}</p>
+            <div>
+              <h3 className="font-semibold tracking-tight">
+                {education.degree}, {education.school}
+              </h3>
+              <p className="mt-2 max-w-[62ch] leading-relaxed text-muted">{education.thesis}</p>
+              <div className="mt-4">
+                <StackList items={education.stack} />
+              </div>
+            </div>
+          </div>
+          <h3 className="mt-14 font-semibold tracking-tight">Certifications</h3>
+          <ul className="reveal mt-5 space-y-3">
+            {certifications.map((cert) => (
+              <li key={cert.name} className="grid gap-1 sm:grid-cols-[8rem_1fr] sm:gap-8">
+                <span className="font-mono text-xs leading-6 text-muted">{cert.date}</span>
+                <span className="leading-6">{cert.name}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </div>

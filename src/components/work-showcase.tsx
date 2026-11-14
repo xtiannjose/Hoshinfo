@@ -78,7 +78,7 @@ function Preview({ item }: { item: WorkItem }) {
   return (
     <div className="flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-xl border border-line bg-surface p-6 text-center">
       <LockSimpleIcon className="size-6 text-star" aria-hidden />
-      <p className="max-w-[32ch] text-sm text-muted">An internal tool, so its screens stay with the company.</p>
+      <p className="max-w-[32ch] text-sm text-muted">Screens from this one stay with the company.</p>
     </div>
   );
 }

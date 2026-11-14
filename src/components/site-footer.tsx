@@ -1,6 +1,4 @@
-import { GithubLogoIcon } from "@phosphor-icons/react/ssr";
-
-import { Boop } from "@/components/boop";
+import { SocialLinks } from "@/components/social-links";
 import { StarButton } from "@/components/star-button";
 import { site } from "@/content/site";
 
@@ -18,21 +16,10 @@ export function SiteFooter() {
         <p>
           {site.name}, {site.role.toLowerCase()}.
         </p>
-        <p className="flex items-center gap-2">
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 underline underline-offset-4 hover:text-ink"
-          >
-            <Boop rotate={-10} scale={1.1} fromParent>
-              <GithubLogoIcon className="size-4" aria-hidden />
-            </Boop>
-            GitHub
-          </a>
-          <span aria-hidden>/</span>
-          Built with Next.js, hosted on Vercel.
-        </p>
+        <div className="flex items-center gap-4">
+          <p>Built with Next.js, hosted on Vercel.</p>
+          <SocialLinks size="sm" />
+        </div>
       </div>
     </footer>
   );

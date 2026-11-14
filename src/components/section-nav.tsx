@@ -41,6 +41,7 @@ function useActiveSection(ids: string[], band = "-45% 0px -50% 0px") {
 const headerLinks = [
   { id: "about", label: "About", show: "hidden md:block lg:hidden" },
   { id: "experience", label: "Experience", show: "hidden md:block lg:hidden" },
+  { id: "education", label: "Education", show: "hidden md:block lg:hidden" },
   { id: "projects", label: "Projects", show: "" },
   { id: "work", label: "Work", show: "" },
   { id: "toolbox", label: "Toolbox", show: "hidden md:block" },

@@ -79,7 +79,7 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
 }
 
 :focus-visible {
-  outline: 2px solid var(--star);
+  outline: 2px solid var(--star-ink);
   outline-offset: 3px;
 }
 
