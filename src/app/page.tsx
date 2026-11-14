@@ -1,18 +1,13 @@
-import { ArrowRightIcon, ArrowUpRightIcon, TestTubeIcon } from "@phosphor-icons/react/ssr";
-import type { CSSProperties } from "react";
+import { ArrowRightIcon, ArrowUpRightIcon, LockSimpleIcon, TestTubeIcon } from "@phosphor-icons/react/ssr";
 
 import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
-import { ProjectRail } from "@/components/project-rail";
+import { ProjectCarousel } from "@/components/project-carousel";
 import { BandNav } from "@/components/section-nav";
 import { PhoneInset } from "@/components/shot";
 import { SocialLinks } from "@/components/social-links";
-import { WorkShowcase } from "@/components/work-showcase";
-import { projects, toolbox, usedIn, work, type Project } from "@/content/projects";
+import { projects, toolbox, usedIn, work, type Project, type WorkItem } from "@/content/projects";
 import { experience, site } from "@/content/site";
-
-// Stagger for the intro card's load-in (see .rise in globals.css).
-const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
 // A project's desktop screens, cover first.
 const screens = (project: Project) => [project.cover, ...project.gallery.filter((shot) => shot.kind === "desktop")];
@@ -30,22 +25,10 @@ const slides = projects.map((project) => ({
 export default function Home() {
   return (
     <>
-      <ProjectRail lead={{ name: site.name, role: site.role }} slides={slides} more={site.github}>
-        <div>
-          <h1
-            className="rise text-3xl font-semibold leading-[1.05] tracking-tighter text-balance md:text-4xl"
-            style={step(0)}
-          >
-            I build web apps for orders, tickets and groceries.
-          </h1>
-          <p className="rise mt-5 text-lg leading-relaxed text-muted" style={step(1)}>
-            Next.js, Laravel and Postgres, built test-first with the business rules written down before the code.
-          </p>
-        </div>
-        <div className="rise" style={step(2)}>
-          <SocialLinks />
-        </div>
-      </ProjectRail>
+      <h1 className="sr-only">
+        {site.name}, {site.role.toLowerCase()}. I build web apps for orders, tickets and groceries.
+      </h1>
+      <ProjectCarousel slides={slides} />
       <Story />
     </>
   );
@@ -71,10 +54,10 @@ function Story() {
   const now = experience[0];
   return (
     // scroll-mt-28 on links and buttons: keyboard focus never lands hidden under the sticky header and labels.
-    <div className="mx-auto grid max-w-page gap-x-14 px-4 pt-28 sm:px-6 md:pt-36 lg:grid-cols-12 lg:px-8 [&_:is(a,button)]:scroll-mt-28">
-      <aside className="hidden lg:col-span-4 lg:block">
-        <div className="sticky top-28 flex flex-col gap-10">
-          <p className="max-w-[30ch] text-muted">
+    <div className="mx-auto grid max-w-page gap-x-10 px-4 pt-24 sm:px-6 md:pt-28 lg:grid-cols-12 lg:px-8 [&_:is(a,button)]:scroll-mt-28">
+      <aside className="hidden lg:col-span-3 lg:block">
+        <div className="sticky top-28 flex flex-col gap-8">
+          <p className="max-w-[26ch] text-sm leading-relaxed text-muted">
             {now.title} at <span className="text-ink">{now.org}</span>, and maker of Hoshikopi, Hoshimono and Hoshiask.
           </p>
           <BandNav
@@ -88,7 +71,7 @@ function Story() {
         </div>
       </aside>
 
-      <div className="lg:col-span-8">
+      <div className="lg:col-span-9">
         <Experience />
         <Projects />
         <Toolbox />
@@ -156,14 +139,6 @@ function Experience() {
         })}
       </ol>
 
-      {/* The company work sits with the role it came from. */}
-      <div id="work" className="scroll-mt-20 pt-20">
-        <h3 className="text-xl font-semibold tracking-tight">At iOne Resources</h3>
-        <p className="mt-2 max-w-[60ch] text-muted">
-          Work I build for the company. The code is theirs, so these are here to look at, without links.
-        </p>
-        <WorkShowcase items={work} />
-      </div>
     </section>
   );
 }
@@ -173,11 +148,14 @@ function Projects() {
     <section id="projects" aria-labelledby="projects-title" className="scroll-mt-20 pt-24 md:pt-32">
       <BandLabel id="projects-title">Projects</BandLabel>
       <p className="max-w-[60ch] text-muted">
-        Three products I designed and built end to end, from the first planning doc to tested, working code.
+        Three products of my own, designed and built end to end, and two I build at iOne Resources.
       </p>
       <div className="mt-12 space-y-24">
         {projects.map((project) => (
           <ProjectShowcase key={project.slug} project={project} />
+        ))}
+        {work.map((item) => (
+          <CompanyShowcase key={item.slug} item={item} />
         ))}
       </div>
     </section>
@@ -187,8 +165,9 @@ function Projects() {
 /** One project's own showcase: its screens (phone in the corner), what it does, how it is built, and the links. */
 function ProjectShowcase({ project }: { project: Project }) {
   return (
-    <article aria-labelledby={`${project.slug}-title`} className="reveal">
-      <h3 id={`${project.slug}-title`} className="text-2xl font-semibold tracking-tight">
+    <article id={project.slug} aria-labelledby={`${project.slug}-title`} className="reveal scroll-mt-20">
+      <p className="text-sm text-muted">Personal project</p>
+      <h3 id={`${project.slug}-title`} className="mt-1 text-2xl font-semibold tracking-tight">
         {project.name}
       </h3>
       <p className="mt-2 max-w-[60ch] text-lg text-muted">{project.tagline}</p>
@@ -197,7 +176,7 @@ function ProjectShowcase({ project }: { project: Project }) {
           shots={screens(project)}
           label={`${project.name} case study`}
           href={`/projects/${project.slug}`}
-          sizes="(min-width: 1024px) 880px, 100vw"
+          sizes="(min-width: 1024px) 960px, 100vw"
           overlay={<PhoneInset shot={project.phone} />}
         />
       </div>
@@ -236,6 +215,33 @@ function ProjectShowcase({ project }: { project: Project }) {
         <LinkButton href={project.code} variant="secondary">
           Code <ArrowUpRightIcon className="size-4" aria-hidden />
         </LinkButton>
+      </div>
+    </article>
+  );
+}
+
+/** A project built at iOne Resources: shown, not linked, because the code is the company's. */
+function CompanyShowcase({ item }: { item: WorkItem }) {
+  return (
+    <article id={item.slug} aria-labelledby={`${item.slug}-title`} className="reveal scroll-mt-20">
+      <p className="text-sm text-muted">Company work at iOne Resources</p>
+      <h3 id={`${item.slug}-title`} className="mt-1 text-2xl font-semibold tracking-tight">
+        {item.name}
+      </h3>
+      <div className="mt-6">
+        {item.shots.length > 0 ? (
+          <Gallery shots={item.shots} label={item.name} sizes="(min-width: 1024px) 960px, 100vw" />
+        ) : (
+          <div className="flex aspect-[16/7] flex-col items-center justify-center gap-3 rounded-xl border border-line bg-surface p-6 text-center">
+            <LockSimpleIcon className="size-6 text-star" aria-hidden />
+            <p className="max-w-[36ch] text-sm text-muted">Screens from this one stay with the company.</p>
+          </div>
+        )}
+      </div>
+      <p className="mt-6 max-w-[65ch] leading-relaxed text-muted">{item.summary}</p>
+      <p className="mt-2 text-sm text-muted">The code belongs to the company, so there are no links.</p>
+      <div className="mt-5">
+        <StackList items={item.stack} />
       </div>
     </article>
   );

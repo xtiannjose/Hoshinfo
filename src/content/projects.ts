@@ -38,6 +38,8 @@ export type Project = {
 
 /** Work done at iOne Resources: shown, not linked (the code is the company's). */
 export type WorkItem = {
+  /** Anchor of its showcase on the home page. */
+  slug: string;
   name: string;
   summary: string;
   stack: string[];
@@ -226,6 +228,7 @@ export const projects: Project[] = [
 
 export const work: WorkItem[] = [
   {
+    slug: "ione-website",
     name: "iOne website",
     summary:
       "The new company site for an ICT provider, replacing an old WordPress site: solutions, case studies, a news section with an online editor, and a meeting request form.",
@@ -233,6 +236,7 @@ export const work: WorkItem[] = [
     shots: [desktop("ione", "website", "iOne Resources website home page", "The iOne Resources home page.")],
   },
   {
+    slug: "ione-helpdesk",
     name: "iOne Helpdesk",
     summary:
       "The support desk iOne runs with its clients: separate client and staff portals, SLA tracking, escalation, a knowledge base and audit logging.",
