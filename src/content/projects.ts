@@ -83,7 +83,7 @@ export const projects: Project[] = [
   {
     slug: "hoshikopi",
     name: "Hoshikopi",
-    tagline: "A concept cafe in Pasig with order-ahead pickup and a Stars loyalty card.",
+    tagline: "A concept cafe with order-ahead pickup and a Stars loyalty card.",
     summary:
       "The full website of an invented cafe: the menu, ordering ahead for a pickup time, Stars, events and a Bar Screen for the baristas. It is a portfolio piece, so the cafe is labelled as a concept and payments run in PayMongo test mode.",
     stack: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma 7", "Tailwind CSS 4", "Vitest", "Playwright", "Vercel"],
@@ -133,7 +133,7 @@ export const projects: Project[] = [
   {
     slug: "hoshimono",
     name: "Hoshimono",
-    tagline: "An online supermarket for Metro Manila households, with same-day delivery slots.",
+    tagline: "A concept online supermarket with same-day delivery slots.",
     summary:
       "Groceries from browsing to the doorstep: a searchable catalogue, a cart, delivery slots, cash on delivery or online payment, and the staff screens that pick, pack and send every order from one hub.",
     stack: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma 7", "Better Auth", "Tailwind CSS 4", "Vitest", "Playwright"],

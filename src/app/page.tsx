@@ -6,6 +6,7 @@ import {
   StarIcon,
   TestTubeIcon,
 } from "@phosphor-icons/react/ssr";
+import type { CSSProperties } from "react";
 
 import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
@@ -28,10 +29,20 @@ const slides = projects.map((project) => ({
 export default function Home() {
   return (
     <>
-      <h1 className="sr-only">
-        {site.name}, {site.role.toLowerCase()}. I build web apps for orders, tickets and groceries.
-      </h1>
-      <ProjectCarousel slides={slides} />
+      <ProjectCarousel
+        slides={slides}
+        heading={
+          <div>
+            <h1 className="rise text-2xl font-semibold tracking-tight md:text-3xl" style={{ "--i": 0 } as CSSProperties}>
+              {site.name}&apos;s Portfolio
+            </h1>
+            <p className="rise mt-1 flex items-center gap-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
+              <StarIcon weight="fill" className="size-3.5 text-star" aria-hidden />
+              Software Developer
+            </p>
+          </div>
+        }
+      />
       <Story />
     </>
   );
