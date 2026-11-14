@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Wide screen, fine pointer, motion allowed: the project rail pins and pans (project-rail.tsx uses the same query). */
+@custom-variant pinned (@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference));
+
 /* One accent: the gold of the Hoshi star. Neutrals are cool greys. */
 :root {
   --bg: #f6f6f7;
@@ -52,8 +55,31 @@ body {
   color: var(--ink);
 }
 
+/* A trailing arrow nudges toward where its link goes: right on this site, up and right for outside links. */
+a:hover .nudge > svg:last-child:not(:first-child),
+a.nudge:hover > svg:last-child:not(:first-child) {
+  translate: 3px 0;
+}
+
+a[data-out]:hover .nudge > svg:last-child:not(:first-child),
+a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
+  translate: 2px -2px;
+}
+
+/* Scroll length of the pinned project rail: how far the strip travels, set in CSS so it is right from the
+   first paint (hash links land correctly, nothing shifts). The numbers mirror project-rail.tsx: slide width,
+   1.5rem gaps, the 16rem GitHub card, the page gutter and the 0.92 settled scale. */
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .rail {
+    --slide: min(70vw, calc((100dvh - 24rem) * 1.6));
+    --gutter: max(2rem, calc((100vw - 88rem) / 2 + 2rem));
+    --track: calc(var(--slides) * (var(--slide) + 1.5rem) + 16rem + 2 * var(--gutter));
+    height: calc(100dvh - 4rem + max(0px, var(--track) * 0.92 - 100vw));
+  }
+}
+
 :focus-visible {
-  outline: 2px solid var(--star);
+  outline: 2px solid var(--star-ink);
   outline-offset: 3px;
 }
 
@@ -69,6 +95,10 @@ body {
       opacity: 0;
       transform: translateY(16px);
     }
+  }
+
+  .nudge > svg:last-child:not(:first-child) {
+    transition: translate 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .rise {
