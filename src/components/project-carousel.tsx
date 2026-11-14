@@ -1,11 +1,9 @@
 "use client";
 
-import { PauseIcon, PlayIcon } from "@phosphor-icons/react";
 import { useInView, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 
 import { Gallery } from "@/components/gallery";
-import { PhoneInset } from "@/components/shot";
 import { TierLink } from "@/components/tier-link";
 import type { Shot } from "@/content/projects";
 
@@ -16,13 +14,15 @@ export type CarouselSlide = {
   live?: string;
   code: string;
   shots: Shot[];
-  phone: Shot;
 };
 
 // Ruler geometry, in px: a 30px slot per card, then 4 one-pixel ticks, all 9px apart.
 const SLOT = 30;
 const GAP = 9;
 const TICKS = 4;
+// A mouse drag shorter than this is a click; one longer than DRAG_ON leans to the next card.
+const DRAG_CLICK = 5;
+const DRAG_ON = 60;
 // Lines the first card up with the page column (the same steps as max-w-page px-4 sm:px-6 lg:px-8).
 const GUTTER =
   "px-4 scroll-px-4 sm:px-6 sm:scroll-px-6 lg:px-[max(2rem,calc((100%-88rem)/2+2rem))] lg:scroll-px-[max(2rem,calc((100%-88rem)/2+2rem))]";
@@ -47,9 +47,9 @@ function placeItems(items: { left: number; right: number }[], lead: number, view
  * The top of the home page: the projects as a row of framed cards (desktop screens with the
  * phone in the corner) that moves on to the next card every 6s and loops. The gold fill in the
  * current ruler slot is the clock: its animationend advances the row (see .timer in globals.css),
- * so pausing the fill pauses the row. Hover, keyboard focus, the pause button, or the row being
- * off screen hold it; reduced motion turns the clock, and so the autoplay, off. Swipes and the
- * ruler's slots move it by hand.
+ * so pausing the fill pauses the row. It keeps moving; it only holds while a keyboard user is
+ * inside it or while it is off screen, and reduced motion turns the clock, and so the autoplay,
+ * off. Swipes, mouse drags and the ruler's slots move it by hand.
  */
 export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
   const section = useRef<HTMLElement>(null);
@@ -59,7 +59,9 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
   // Bumped on every tick so the clock restarts even when the row could not move.
   const [tick, setTick] = useState(0);
   const [held, setHeld] = useState(false);
-  const [stopped, setStopped] = useState(false);
+  // A mouse drag in progress: where it started, and whether it has moved far enough to count.
+  const drag = useRef<{ x: number; left: number; from: number; moved: boolean } | null>(null);
+  const [dragging, setDragging] = useState(false);
   const inView = useInView(section, { amount: 0.4 });
   const reduce = useReducedMotion();
   const { scrollXProgress } = useScroll({ container: track });
@@ -83,12 +85,14 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
   }, []);
 
   // The card nearest the scroll position is the current one, however the row got there.
-  useMotionValueEvent(scrollXProgress, "change", (p) => {
+  useMotionValueEvent(scrollXProgress, "change", (p) => setActive(nearestTo(p)));
+
+  function nearestTo(p: number) {
     const at = stops.current;
     let nearest = 0;
     for (let i = 1; i < at.length; i++) if (Math.abs(at[i] - p) < Math.abs(at[nearest] - p)) nearest = i;
-    setActive(nearest);
-  });
+    return nearest;
+  }
 
   function go(i: number) {
     const strip = track.current;
@@ -99,24 +103,65 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
 
   function advance() {
     setTick((t) => t + 1);
-    go((active + 1) % slides.length);
+    const p = scrollXProgress.get();
+    const next = stops.current.findIndex((stop) => stop > p + 0.01);
+    go(next === -1 ? 0 : next);
   }
 
-  const paused = held || stopped || !inView;
+  // Mouse drag: the row follows the pointer with snapping off, then settles on a card. Touch
+  // already scrolls the row natively, so only the mouse is handled here.
+  function dragStart(event: PointerEvent<HTMLDivElement>) {
+    const strip = track.current;
+    if (!strip || event.pointerType !== "mouse" || event.button !== 0) return;
+    drag.current = { x: event.clientX, left: strip.scrollLeft, from: active, moved: false };
+  }
+
+  function dragMove(event: PointerEvent<HTMLDivElement>) {
+    const strip = track.current;
+    const d = drag.current;
+    if (!strip || !d) return;
+    const dx = event.clientX - d.x;
+    if (!d.moved) {
+      if (Math.abs(dx) < DRAG_CLICK) return;
+      d.moved = true;
+      strip.setPointerCapture(event.pointerId);
+      strip.style.scrollSnapType = "none";
+      setDragging(true);
+    }
+    strip.scrollLeft = d.left - dx;
+  }
+
+  function dragEnd(event: PointerEvent<HTMLDivElement>) {
+    const strip = track.current;
+    const d = drag.current;
+    drag.current = null;
+    if (!strip || !d?.moved) return;
+    strip.style.scrollSnapType = "";
+    setDragging(false);
+    const max = strip.scrollWidth - strip.clientWidth;
+    let target = nearestTo(max > 0 ? strip.scrollLeft / max : 0);
+    // A firm drag that would land back on the same card moves one card that way instead.
+    const dx = event.clientX - d.x;
+    if (target === d.from && Math.abs(dx) > DRAG_ON) target = Math.min(slides.length - 1, Math.max(0, d.from + (dx < 0 ? 1 : -1)));
+    go(target);
+  }
+
+  const paused = held || dragging || !inView;
 
   return (
     <section
       ref={section}
       aria-roledescription="carousel"
-      aria-label="Projects"
+      aria-label="Featured projects"
       className="pt-8 md:pt-10"
-      onPointerEnter={(event) => event.pointerType === "mouse" && setHeld(true)}
-      onPointerLeave={() => setHeld(false)}
-      // Keyboard focus holds the row; a mouse click inside it should not.
+      // Keyboard focus holds the row so it does not slide away from the focused link; a mouse click does not.
       onFocus={(event) => event.target.matches(":focus-visible") && setHeld(true)}
-      onBlur={() => setHeld(false)}
+      // Only when focus leaves the carousel altogether.
+      onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && setHeld(false)}
+      // Any touch or click starts the 6s count over, so a card does not slide away mid-tap.
+      onPointerDownCapture={() => setTick((t) => t + 1)}
     >
-      <div className="mx-auto flex w-full max-w-page items-center justify-center gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-page justify-center px-4 sm:px-6 lg:px-8">
         <div role="group" aria-label="Choose a project" className="flex items-center" style={{ gap: GAP }}>
           {slides.map((slide, i) => (
             <span key={slide.slug} className="flex items-center" style={{ gap: GAP }}>
@@ -125,7 +170,7 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
                 onClick={() => go(i)}
                 aria-label={`Show ${slide.name}`}
                 aria-current={i === active}
-                className="relative h-[18px] overflow-hidden rounded-[3px] border border-muted transition-colors hover:border-ink"
+                className="relative h-[18px] overflow-hidden rounded-[3px] border border-muted transition-colors hover:border-ink aria-[current=true]:border-2 aria-[current=true]:border-star-ink"
                 style={{ width: SLOT }}
               >
                 {i === active && (
@@ -143,23 +188,29 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
             </span>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={() => setStopped(!stopped)}
-          aria-label={stopped ? "Play the project carousel" : "Pause the project carousel"}
-          className="rounded-full p-1.5 text-muted transition-colors hover:text-ink motion-reduce:hidden"
-        >
-          {stopped ? <PlayIcon className="size-3.5" aria-hidden /> : <PauseIcon className="size-3.5" aria-hidden />}
-        </button>
       </div>
 
       <div
         ref={track}
-        className={`relative mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${GUTTER}`}
+        onPointerDown={dragStart}
+        onPointerMove={dragMove}
+        onPointerUp={dragEnd}
+        onPointerCancel={dragEnd}
+        // A drag is not a click: swallow the click that ends one, and stop the browser dragging images and links.
+        onClickCapture={(event) => {
+          if (!dragging && !drag.current?.moved) return;
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+        onDragStart={(event) => event.preventDefault()}
+        className={`relative mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+          dragging ? "cursor-grabbing" : "cursor-grab"
+        } ${GUTTER}`}
       >
         {slides.map((slide, i) => (
           <article
             key={slide.slug}
+            onFocus={(event) => event.target.matches(":focus-visible") && go(i)}
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${slides.length}: ${slide.name}`}
             // Sized so a whole card (screens, caption, links) fits under the header on a desktop screen.
@@ -178,7 +229,7 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
                 label={`${slide.name} case study`}
                 href={`/projects/${slide.slug}`}
                 sizes="(min-width: 1024px) min(70vw, calc(160vh - 30.4rem)), (min-width: 640px) 70vw, 85vw"
-                overlay={<PhoneInset shot={slide.phone} />}
+                phones
               />
               <div className="mt-1 flex gap-1">
                 <TierLink href={`/projects/${slide.slug}`}>Case study</TierLink>

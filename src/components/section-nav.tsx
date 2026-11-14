@@ -39,66 +39,35 @@ function useActiveSection(ids: string[]) {
 
 // `show` sets where each header link appears; the bar stays on one line on a phone.
 const headerLinks = [
-  { id: "experience", label: "Experience", show: "hidden md:block" },
-  { id: "projects", label: "Projects", show: "" },
-  { id: "toolbox", label: "Toolbox", show: "" },
+  { id: "experience", label: "Experience" },
+  { id: "projects", label: "Projects" },
+  { id: "toolbox", label: "Toolbox" },
 ];
 
-/** Header links; a pill marks the current section, below lg (from lg the band's own nav marks it). */
+/** The header's section links; a small gold star slides to the section you are reading. */
 export function SectionNav() {
   const current = useActiveSection(headerLinks.map((l) => l.id));
 
-  return headerLinks.map(({ id, label, show }) => (
+  return headerLinks.map(({ id, label }) => (
     <Link
       key={id}
       href={`/#${id}`}
       aria-current={current === id ? "location" : undefined}
-      className={`relative isolate rounded-full px-3 py-2 transition-colors ${
+      className={`relative flex items-center py-2 pl-[1.125rem] pr-2 transition-colors sm:pl-5 sm:pr-3 ${
         current === id ? "text-ink" : "text-muted hover:text-ink"
-      } ${show}`}
+      }`}
     >
       {current === id && (
         <motion.span
-          layoutId="nav-current"
-          className="absolute inset-0 -z-10 rounded-full border border-line bg-surface lg:hidden"
-          transition={{ type: "spring", bounce: 0.15, visualDuration: 0.35 }}
-        />
+          layoutId="nav-star"
+          aria-hidden
+          className="absolute left-0 grid size-4 place-items-center text-star sm:left-0.5"
+          transition={{ type: "spring", bounce: 0.2, visualDuration: 0.35 }}
+        >
+          <StarIcon weight="fill" className="size-3.5" />
+        </motion.span>
       )}
       {label}
     </Link>
   ));
-}
-
-/** The Experience band's own vertical nav (wide screens); a small gold star slides to the current row. */
-export function BandNav({ items }: { items: { id: string; label: string }[] }) {
-  const current = useActiveSection(items.map((i) => i.id));
-
-  return (
-    <nav aria-label="Sections">
-      <ul className="space-y-1">
-        {items.map(({ id, label }) => (
-          <li key={id}>
-            <a
-              href={`#${id}`}
-              aria-current={current === id ? "location" : undefined}
-              className={`relative flex items-center py-1.5 pl-6 text-base font-medium tracking-tight transition-colors ${
-                current === id ? "text-ink" : "text-muted hover:text-ink"
-              }`}
-            >
-              {current === id && (
-                <motion.span
-                  layoutId="band-current"
-                  className="absolute left-0 grid size-4 place-items-center text-star"
-                  transition={{ type: "spring", bounce: 0.2, visualDuration: 0.3 }}
-                >
-                  <StarIcon weight="fill" className="size-3.5" aria-hidden />
-                </motion.span>
-              )}
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
 }
