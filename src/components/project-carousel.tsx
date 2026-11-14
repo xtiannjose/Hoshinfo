@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
-import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FocusEvent, type PointerEvent, type ReactNode } from "react";
 
 import { Gallery } from "@/components/gallery";
 import { TierLink } from "@/components/tier-link";
@@ -45,7 +45,9 @@ function placeItems(items: { left: number; right: number }[], lead: number, view
 
 /**
  * The top of the home page: the projects as a row of framed cards (desktop screens with the
- * phone in the corner) that moves on to the next card every 6s and loops. The gold fill in the
+ * phone in the corner) that moves on to the next card every 10s and loops forward for ever: a
+ * hidden second copy of the cards follows the real ones, and once the row comes to rest inside the
+ * copy it jumps back one lap, to the same picture. The gold fill in the
  * current ruler slot is the clock: its animationend advances the row (see .timer in globals.css),
  * so pausing the fill pauses the row. It keeps moving; it only holds while a keyboard user is
  * inside it or while it is off screen, and reduced motion turns the clock, and so the autoplay,
@@ -55,6 +57,10 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
   const section = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const stops = useRef<number[]>([]);
+  // Distance from a card to its copy; the row jumps back by this much once it rests on a copy.
+  const lap = useRef(0);
+  const settle = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const n = slides.length;
   const [active, setActive] = useState(0);
   // Bumped on every tick so the clock restarts even when the row could not move.
   const [tick, setTick] = useState(0);
@@ -75,17 +81,29 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
       const max = strip.scrollWidth - strip.clientWidth;
       const edges = items.map((el) => ({ left: el.offsetLeft, right: el.offsetLeft + el.offsetWidth }));
       stops.current = placeItems(edges, lead, strip.clientWidth, max);
+      lap.current = items[n] ? items[n].offsetLeft - items[0].offsetLeft : 0;
       // A card that cannot reach the start snaps by its end, which is exactly where its stop puts it.
       for (const el of items) el.style.scrollSnapAlign = el.offsetLeft - lead > max ? "end" : "";
     };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(strip);
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      observer.disconnect();
+      clearTimeout(settle.current);
+    };
+  }, [n]);
 
-  // The card nearest the scroll position is the current one, however the row got there.
-  useMotionValueEvent(scrollXProgress, "change", (p) => setActive(nearestTo(p)));
+  // The card nearest the scroll position is the current one, however the row got there. When the row
+  // comes to rest on a copy, it jumps back one lap: same picture, now on the real cards.
+  useMotionValueEvent(scrollXProgress, "change", (p) => {
+    setActive(nearestTo(p) % n);
+    clearTimeout(settle.current);
+    settle.current = setTimeout(() => {
+      const strip = track.current;
+      if (strip && !drag.current?.moved && lap.current && strip.scrollLeft >= lap.current - 1) strip.scrollLeft -= lap.current;
+    }, 150);
+  });
 
   function nearestTo(p: number) {
     const at = stops.current;
@@ -101,6 +119,13 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
     strip.scrollTo({ left: p * (strip.scrollWidth - strip.clientWidth), behavior: reduce ? "instant" : "smooth" });
   }
 
+  /** Show a project from the ruler, always moving forward (to its copy if it is behind). */
+  function show(real: number) {
+    const at = nearestTo(scrollXProgress.get());
+    const base = at >= n ? n : 0;
+    go(Math.min(2 * n - 1, base + real + (real < at % n ? n : 0)));
+  }
+
   function advance() {
     setTick((t) => t + 1);
     const p = scrollXProgress.get();
@@ -113,7 +138,7 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
   function dragStart(event: PointerEvent<HTMLDivElement>) {
     const strip = track.current;
     if (!strip || event.pointerType !== "mouse" || event.button !== 0) return;
-    drag.current = { x: event.clientX, left: strip.scrollLeft, from: active, moved: false };
+    drag.current = { x: event.clientX, left: strip.scrollLeft, from: nearestTo(scrollXProgress.get()), moved: false };
   }
 
   function dragMove(event: PointerEvent<HTMLDivElement>) {
@@ -145,7 +170,7 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
     let target = nearestTo(max > 0 ? strip.scrollLeft / max : 0);
     // A firm drag that would land back on the same card moves one card that way instead.
     const dx = event.clientX - d.x;
-    if (target === d.from && Math.abs(dx) > DRAG_ON) target = Math.min(slides.length - 1, Math.max(0, d.from + (dx < 0 ? 1 : -1)));
+    if (target === d.from && Math.abs(dx) > DRAG_ON) target = Math.min(2 * n - 1, Math.max(0, d.from + (dx < 0 ? 1 : -1)));
     go(target);
     // Snapping back on only after the glide has started, so the row does not jump to a snap point first.
     strip.style.scrollSnapType = "";
@@ -163,32 +188,38 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
       onFocus={(event) => event.target.matches(":focus-visible") && setHeld(true)}
       // Only when focus leaves the carousel altogether.
       onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && setHeld(false)}
-      // Any touch or click starts the 6s count over, so a card does not slide away mid-tap.
+      // Any touch or click starts the 10s count over, so a card does not slide away mid-tap.
       onPointerDownCapture={() => setTick((t) => t + 1)}
     >
       {/* The page title on the left, the ruler on the right; on a phone the ruler drops under the title. */}
       <div className="mx-auto flex w-full max-w-page flex-wrap items-end justify-between gap-x-6 gap-y-5 px-4 sm:px-6 lg:px-8">
         {heading}
-        <div role="group" aria-label="Choose a project" className="flex items-center" style={{ gap: GAP }}>
+        <div role="group" aria-label="Choose a project" className="flex items-start" style={{ gap: GAP }}>
           {slides.map((slide, i) => (
-            <span key={slide.slug} className="flex items-center" style={{ gap: GAP }}>
+            <span key={slide.slug} className="flex items-start" style={{ gap: GAP }}>
               <button
                 type="button"
-                onClick={() => go(i)}
-                aria-label={`Show ${slide.name}`}
+                onClick={() => show(i)}
                 aria-current={i === active}
-                className="relative h-[18px] overflow-hidden rounded-[3px] border border-muted transition-colors hover:border-ink aria-[current=true]:border-2 aria-[current=true]:border-star-ink"
-                style={{ width: SLOT }}
+                className="group flex flex-col items-center gap-1.5 text-xs"
               >
-                {i === active && (
-                  <span
-                    key={tick}
-                    aria-hidden
-                    className="timer absolute inset-0 origin-left bg-star forced-colors:bg-[Highlight]"
-                    style={{ animationPlayState: paused ? "paused" : "running" }}
-                    onAnimationEnd={advance}
-                  />
-                )}
+                <span
+                  className="relative h-[18px] overflow-hidden rounded-[3px] border border-muted transition-colors group-hover:border-ink group-aria-[current=true]:border-2 group-aria-[current=true]:border-star-ink"
+                  style={{ width: SLOT }}
+                >
+                  {i === active && (
+                    <span
+                      key={tick}
+                      aria-hidden
+                      className="timer absolute inset-0 origin-left bg-star forced-colors:bg-[Highlight]"
+                      style={{ animationPlayState: paused ? "paused" : "running" }}
+                      onAnimationEnd={advance}
+                    />
+                  )}
+                </span>
+                <span className="text-muted transition-colors group-hover:text-ink group-aria-[current=true]:font-medium group-aria-[current=true]:text-ink">
+                  {slide.name}
+                </span>
               </button>
               {i < slides.length - 1 &&
                 Array.from({ length: TICKS }, (_, t) => <span key={t} aria-hidden className="h-[18px] w-px bg-muted/50" />)}
@@ -214,12 +245,17 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
           dragging ? "cursor-grabbing" : "cursor-grab"
         } ${GUTTER}`}
       >
-        {slides.map((slide, i) => (
+        {[...slides, ...slides].map((slide, i) => (
           <article
-            key={slide.slug}
-            onFocus={(event) => event.target.matches(":focus-visible") && go(i)}
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${slides.length}: ${slide.name}`}
+            key={`${slide.slug}-${i < n ? "card" : "copy"}`}
+            {...(i < n
+              ? {
+                  onFocus: (event: FocusEvent) => event.target.matches(":focus-visible") && go(i),
+                  "aria-roledescription": "slide",
+                  "aria-label": `${i + 1} of ${n}: ${slide.name}`,
+                }
+              : // The copy is only there for the loop: not read out, not focusable, not clickable.
+                { "aria-hidden": true, inert: true })}
             // Sized so a whole card (screens, caption, links) fits under the header on a desktop screen.
             className="w-[85vw] shrink-0 snap-start sm:w-[70vw] lg:w-[min(70vw,calc((100dvh-22rem)*1.6))]"
           >

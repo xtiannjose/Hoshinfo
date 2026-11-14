@@ -92,7 +92,7 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
   }
 
   .timer {
-    animation: fill 6s linear both;
+    animation: fill 10s linear both;
   }
 
   .nudge > svg:last-child:not(:first-child) {
