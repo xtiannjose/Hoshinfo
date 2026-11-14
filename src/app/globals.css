@@ -67,13 +67,13 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
 }
 
 /* Scroll length of the pinned project rail: how far the strip travels, set in CSS so it is right from the
-   first paint (hash links land correctly, nothing shifts). The numbers mirror project-rail.tsx: slide width,
-   1.5rem gaps, the 16rem GitHub card, the page gutter and the 0.92 settled scale. */
+   first paint (hash links land correctly, nothing shifts). The numbers mirror project-rail.tsx: the 28rem
+   intro card, slide width, 1.5rem gaps, the 16rem GitHub card, the page gutter and the 0.92 settled scale. */
 @media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .rail {
-    --slide: min(70vw, calc((100dvh - 24rem) * 1.6));
+    --slide: min(70vw, calc((100dvh - 17rem) * 1.6), 54.5rem);
     --gutter: max(2rem, calc((100vw - 88rem) / 2 + 2rem));
-    --track: calc(var(--slides) * (var(--slide) + 1.5rem) + 16rem + 2 * var(--gutter));
+    --track: calc(28rem + 1.5rem + var(--slides) * (var(--slide) + 1.5rem) + 16rem + 2 * var(--gutter));
     height: calc(100dvh - 4rem + max(0px, var(--track) * 0.92 - 100vw));
   }
 }
@@ -86,7 +86,8 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
 /* Motion: the hero settles in on load and sections rise as they scroll in.
    Nothing moves for people who ask for reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  /* Smooth for in-page links, but not for the jump to a #hash on a fresh load (it would pan the whole strip). */
+  html:focus-within {
     scroll-behavior: smooth;
   }
 
@@ -104,17 +105,6 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
   .rise {
     animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(var(--i, 0) * 90ms);
-  }
-
-  /* Hero slideshow timer: the bar fills, and its animationend moves to the next project. */
-  @keyframes fill {
-    from {
-      transform: scaleX(0);
-    }
-  }
-
-  .timer {
-    animation: fill 6s linear both;
   }
 
   @supports (animation-timeline: view()) {

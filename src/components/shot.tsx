@@ -32,3 +32,12 @@ export function Shot({
     />
   );
 }
+
+/** A phone screen mounted in the bottom-right corner of a desktop screenshot, so both stay in view. */
+export function PhoneInset({ shot }: { shot: ShotData }) {
+  return (
+    <div className="pointer-events-none absolute bottom-3 right-3 w-[17%] max-w-36 rounded-[10px] border border-line bg-surface p-0.5 shadow-[0_16px_32px_-12px_rgb(0_0_0/0.45)] sm:bottom-4 sm:right-4">
+      <Shot shot={shot} bare sizes="150px" />
+    </div>
+  );
+}
