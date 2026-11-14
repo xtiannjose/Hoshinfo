@@ -8,7 +8,7 @@ import { BandNav } from "@/components/section-nav";
 import { SocialLinks } from "@/components/social-links";
 import { WorkShowcase } from "@/components/work-showcase";
 import { projects, toolbox, usedIn, work } from "@/content/projects";
-import { about, certifications, education, experience, site } from "@/content/site";
+import { experience, site } from "@/content/site";
 
 // Stagger for the hero's load-in (see .rise in globals.css).
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -69,8 +69,20 @@ function Hero() {
           <SocialLinks />
         </div>
       </div>
-      <div className="rise" style={step(2)}>
-        <HeroShowcase slides={projects.map(({ slug, name, label, cover, phone }) => ({ slug, name, label, cover, phone }))} />
+      {/* On short windows the card narrows so its buttons stay above the fold (media is 16:10, about 19rem of chrome). */}
+      <div className="rise w-full lg:max-w-[calc((100dvh-19rem)*1.6)] lg:justify-self-end" style={step(2)}>
+        <HeroShowcase
+          slides={projects.map(({ slug, name, label, tagline, live, code, cover, phone }) => ({
+            slug,
+            name,
+            label,
+            tagline,
+            live,
+            code,
+            cover,
+            phone,
+          }))}
+        />
       </div>
     </section>
   );
@@ -88,9 +100,8 @@ function BandLabel({ id, children }: { id: string; children: string }) {
   );
 }
 
-/** About, Experience and Education share one band: a pinned column on the left, the story scrolling on the right. */
+/** Experience in a band: a pinned column on the left (who, where to go next), the roles scrolling on the right. */
 function Story() {
-  const [lead, ...rest] = about;
   const now = experience[0];
   return (
     <div className="mx-auto grid max-w-page gap-x-14 px-4 pt-28 sm:px-6 md:pt-36 lg:grid-cols-12 lg:px-8">
@@ -101,9 +112,9 @@ function Story() {
           </p>
           <BandNav
             items={[
-              { id: "about", label: "About" },
               { id: "experience", label: "Experience" },
-              { id: "education", label: "Education" },
+              { id: "projects", label: "Projects" },
+              { id: "toolbox", label: "Toolbox" },
             ]}
           />
           <SocialLinks />
@@ -111,22 +122,7 @@ function Story() {
       </aside>
 
       <div className="lg:col-span-8">
-        <section id="about" aria-labelledby="about-title" className="scroll-mt-20">
-          <BandLabel id="about-title">About</BandLabel>
-          <div className="reveal">
-            <p className="text-2xl leading-snug tracking-tight text-balance md:text-3xl">{lead}</p>
-            {rest.map((paragraph) => (
-              <p key={paragraph} className="mt-6 max-w-[65ch] text-lg leading-relaxed text-muted">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-          <div className="mt-8 lg:hidden">
-            <SocialLinks />
-          </div>
-        </section>
-
-        <section id="experience" aria-labelledby="experience-title" className="scroll-mt-20 pt-24 md:pt-32">
+        <section id="experience" aria-labelledby="experience-title" className="scroll-mt-20">
           <BandLabel id="experience-title">Experience</BandLabel>
           {/* Pointing at one entry dims the others a little on wide screens (90% keeps muted text above 4.5:1).
               isolate keeps each card layer inside the list. */}
@@ -184,30 +180,6 @@ function Story() {
           </ol>
         </section>
 
-        <section id="education" aria-labelledby="education-title" className="scroll-mt-20 pt-24 md:pt-32">
-          <BandLabel id="education-title">Education</BandLabel>
-          <div className="reveal grid gap-3 sm:grid-cols-[8rem_1fr] sm:gap-8">
-            <p className="pt-1 font-mono text-xs text-muted">{education.period}</p>
-            <div>
-              <h3 className="font-semibold tracking-tight">
-                {education.degree}, {education.school}
-              </h3>
-              <p className="mt-2 max-w-[62ch] leading-relaxed text-muted">{education.thesis}</p>
-              <div className="mt-4">
-                <StackList items={education.stack} />
-              </div>
-            </div>
-          </div>
-          <h3 className="mt-14 font-semibold tracking-tight">Certifications</h3>
-          <ul className="reveal mt-5 space-y-3">
-            {certifications.map((cert) => (
-              <li key={cert.name} className="grid gap-1 sm:grid-cols-[8rem_1fr] sm:gap-8">
-                <span className="font-mono text-xs leading-6 text-muted">{cert.date}</span>
-                <span className="leading-6">{cert.name}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
       </div>
     </div>
   );

@@ -36,12 +36,10 @@ function useActiveSection(ids: string[], band = "-45% 0px -50% 0px") {
   return pathname === "/" ? active : null;
 }
 
-// `show` sets where each header link appears. About and Experience step aside on wide
-// screens, where the About band has its own nav, so only one marker moves at a time.
+// `show` sets where each header link appears. Experience steps aside on wide screens,
+// where the Experience band has its own nav, so only one marker moves at a time.
 const headerLinks = [
-  { id: "about", label: "About", show: "hidden md:block lg:hidden" },
   { id: "experience", label: "Experience", show: "hidden md:block lg:hidden" },
-  { id: "education", label: "Education", show: "hidden md:block lg:hidden" },
   { id: "projects", label: "Projects", show: "" },
   { id: "work", label: "Work", show: "" },
   { id: "toolbox", label: "Toolbox", show: "hidden md:block" },
@@ -72,7 +70,7 @@ export function SectionNav() {
   ));
 }
 
-/** The About band's own vertical nav (wide screens); a small gold star slides to the current row. */
+/** The Experience band's own vertical nav (wide screens); a small gold star slides to the current row. */
 export function BandNav({ items }: { items: { id: string; label: string }[] }) {
   // Band just under the header: a section reached through this nav sits at the top, so it counts as current.
   const current = useActiveSection(
@@ -81,7 +79,7 @@ export function BandNav({ items }: { items: { id: string; label: string }[] }) {
   );
 
   return (
-    <nav aria-label="About and experience">
+    <nav aria-label="Sections">
       <ul className="space-y-1">
         {items.map(({ id, label }) => (
           <li key={id}>

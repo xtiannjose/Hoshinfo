@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowRightIcon, ArrowUpRightIcon, GithubLogoIcon } from "@phosphor-icons/react";
+import { ArrowUpRightIcon, GithubLogoIcon } from "@phosphor-icons/react";
 import { motion, transform, useMotionValue, useReducedMotion, useScroll, useTransform } from "motion/react";
-import Link from "next/link";
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 import { Gallery } from "@/components/gallery";
+import { TierLink } from "@/components/tier-link";
 import { useMediaQuery } from "@/components/use-media-query";
 import type { Shot } from "@/content/projects";
 
@@ -186,9 +186,9 @@ export function ProjectRail({
                   sizes="(min-width: 1024px) min(70vw, calc(160vh - 38.4rem)), (min-width: 640px) 70vw, 85vw"
                 />
                 <div className="mt-1 flex gap-1">
-                  <Tier href={`/projects/${slide.slug}`}>Case study</Tier>
-                  {slide.live && <Tier href={slide.live}>Live site</Tier>}
-                  <Tier href={slide.code}>Code</Tier>
+                  <TierLink href={`/projects/${slide.slug}`}>Case study</TierLink>
+                  {slide.live && <TierLink href={slide.live}>Live site</TierLink>}
+                  <TierLink href={slide.code}>Code</TierLink>
                 </div>
               </div>
             </article>
@@ -212,25 +212,5 @@ export function ProjectRail({
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function Tier({ href, children }: { href: string; children: ReactNode }) {
-  const external = href.startsWith("http");
-  const Arrow = external ? ArrowUpRightIcon : ArrowRightIcon;
-  return (
-    <Link
-      href={href}
-      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-      className="group flex h-10 flex-1 items-center justify-center gap-1.5 rounded-lg bg-line/50 text-sm font-medium transition-colors hover:bg-line focus-visible:bg-line"
-    >
-      {children}
-      <Arrow
-        className={`size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none ${
-          external ? "group-hover:-translate-y-0.5 group-hover:translate-x-0.5" : "group-hover:translate-x-1"
-        }`}
-        aria-hidden
-      />
-    </Link>
   );
 }
