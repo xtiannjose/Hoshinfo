@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
 import { Gallery } from "@/components/gallery";
 import { TierLink } from "@/components/tier-link";
@@ -51,7 +51,7 @@ function placeItems(items: { left: number; right: number }[], lead: number, view
  * inside it or while it is off screen, and reduced motion turns the clock, and so the autoplay,
  * off. Swipes, mouse drags and the ruler's slots move it by hand.
  */
-export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
+export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slides: CarouselSlide[] }) {
   const section = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const stops = useRef<number[]>([]);
@@ -120,15 +120,19 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
     const strip = track.current;
     const d = drag.current;
     if (!strip || !d) return;
-    const dx = event.clientX - d.x;
+    // The button came up somewhere we never heard about (released off the row before the drag began).
+    if (!(event.buttons & 1)) return dragEnd(event);
     if (!d.moved) {
-      if (Math.abs(dx) < DRAG_CLICK) return;
+      if (Math.abs(event.clientX - d.x) < DRAG_CLICK) return;
       d.moved = true;
       strip.setPointerCapture(event.pointerId);
       strip.style.scrollSnapType = "none";
+      // Start from where the row is now: an autoplay glide may have moved it since the press.
+      d.x = event.clientX;
+      d.left = strip.scrollLeft;
       setDragging(true);
     }
-    strip.scrollLeft = d.left - dx;
+    strip.scrollLeft = d.left - (event.clientX - d.x);
   }
 
   function dragEnd(event: PointerEvent<HTMLDivElement>) {
@@ -136,7 +140,6 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
     const d = drag.current;
     drag.current = null;
     if (!strip || !d?.moved) return;
-    strip.style.scrollSnapType = "";
     setDragging(false);
     const max = strip.scrollWidth - strip.clientWidth;
     let target = nearestTo(max > 0 ? strip.scrollLeft / max : 0);
@@ -144,6 +147,8 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
     const dx = event.clientX - d.x;
     if (target === d.from && Math.abs(dx) > DRAG_ON) target = Math.min(slides.length - 1, Math.max(0, d.from + (dx < 0 ? 1 : -1)));
     go(target);
+    // Snapping back on only after the glide has started, so the row does not jump to a snap point first.
+    strip.style.scrollSnapType = "";
   }
 
   const paused = held || dragging || !inView;
@@ -161,7 +166,9 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
       // Any touch or click starts the 6s count over, so a card does not slide away mid-tap.
       onPointerDownCapture={() => setTick((t) => t + 1)}
     >
-      <div className="mx-auto flex w-full max-w-page justify-center px-4 sm:px-6 lg:px-8">
+      {/* The page title on the left, the ruler on the right; on a phone the ruler drops under the title. */}
+      <div className="mx-auto flex w-full max-w-page flex-wrap items-end justify-between gap-x-6 gap-y-5 px-4 sm:px-6 lg:px-8">
+        {heading}
         <div role="group" aria-label="Choose a project" className="flex items-center" style={{ gap: GAP }}>
           {slides.map((slide, i) => (
             <span key={slide.slug} className="flex items-center" style={{ gap: GAP }}>
@@ -214,7 +221,7 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${slides.length}: ${slide.name}`}
             // Sized so a whole card (screens, caption, links) fits under the header on a desktop screen.
-            className="w-[85vw] shrink-0 snap-start sm:w-[70vw] lg:w-[min(70vw,calc((100dvh-19rem)*1.6))]"
+            className="w-[85vw] shrink-0 snap-start sm:w-[70vw] lg:w-[min(70vw,calc((100dvh-22rem)*1.6))]"
           >
             <div className="mb-2 flex items-baseline gap-3 text-sm">
               <h2 className="shrink-0 font-medium text-ink">{slide.name}</h2>
@@ -228,7 +235,7 @@ export function ProjectCarousel({ slides }: { slides: CarouselSlide[] }) {
                 shots={slide.shots}
                 label={`${slide.name} case study`}
                 href={`/projects/${slide.slug}`}
-                sizes="(min-width: 1024px) min(70vw, calc(160vh - 30.4rem)), (min-width: 640px) 70vw, 85vw"
+                sizes="(min-width: 1024px) min(70vw, calc(160vh - 35.2rem)), (min-width: 640px) 70vw, 85vw"
                 phones
               />
               <div className="mt-1 flex gap-1">
