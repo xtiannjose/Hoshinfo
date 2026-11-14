@@ -52,7 +52,7 @@ export function WorkShowcase({ items }: { items: WorkItem[] }) {
       </div>
 
       <div className="hidden lg:block">
-        <div className="sticky top-8 grid">
+        <div className="sticky top-24 grid">
           {items.map((item, i) => (
             <motion.div
               key={item.name}

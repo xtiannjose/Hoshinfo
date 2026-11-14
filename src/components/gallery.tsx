@@ -16,12 +16,15 @@ export function Gallery({
   label,
   sizes,
   href,
+  bare = false,
 }: {
   shots: ShotData[];
   /** Names the group of buttons and, with `href`, the link. */
   label: string;
   sizes: string;
   href?: string;
+  /** Mounted inside a frame: no lift, inset controls, smaller caption. */
+  bare?: boolean;
 }) {
   const [index, setIndex] = useState(0);
   // The other shots load once someone shows interest, not with the page.
@@ -45,15 +48,18 @@ export function Gallery({
           transition={{ duration: 0.25, ease: "easeOut" }}
           aria-hidden={i !== index}
         >
-          <Shot shot={shot} sizes={sizes} />
+          <Shot shot={shot} sizes={sizes} bare={bare} />
         </motion.div>
       ),
   );
 
-  const frame = "grid transition duration-300 ease-out hover:-translate-y-1";
+  const frame = bare ? "grid" : "grid transition duration-300 ease-out hover:-translate-y-1";
+  const controls = bare ? "mt-1 px-3" : "mt-3";
+  const gap = shots.length > 1 ? (bare ? "" : "mt-1") : bare ? "mt-2" : "mt-3";
 
   return (
-    <figure onPointerEnter={() => setWarm(true)} onFocus={() => setWarm(true)}>
+    // Warm on real pointer movement: a pinned rail sliding under a still cursor fires pointerenter too.
+    <figure onPointerMove={() => setWarm(true)} onFocus={() => setWarm(true)}>
       {href ? (
         <Link href={href} aria-label={label} onPointerMove={scrub} className={frame}>
           {stack}
@@ -64,7 +70,7 @@ export function Gallery({
         </div>
       )}
       {shots.length > 1 && (
-        <div role="group" aria-label={`${label}: screenshots`} className="mt-3 flex gap-1.5">
+        <div role="group" aria-label={`${label}: screenshots`} className={`flex gap-1.5 ${controls}`}>
           {shots.map((shot, i) => (
             <button
               key={shot.src}
@@ -83,7 +89,11 @@ export function Gallery({
           ))}
         </div>
       )}
-      <figcaption className={`text-sm text-muted ${shots.length > 1 ? "mt-1" : "mt-3"}`}>{shots[index].caption}</figcaption>
+      <figcaption
+        className={`text-muted ${bare ? "px-3 pb-1 text-[13px]" : "text-sm"} ${gap}`}
+      >
+        {shots[index].caption}
+      </figcaption>
     </figure>
   );
 }
