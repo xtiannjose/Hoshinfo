@@ -27,7 +27,7 @@ export const experience: Role[] = [
     period: "Nov 2025 - Now",
     title: "Software Developer",
     org: "iOne Resources",
-    href: "#work",
+    href: "#ione-website",
     summary:
       "Web apps for the company, and monitoring and automation for its connectivity and election projects with DepEd and COMELEC.",
     highlights: [

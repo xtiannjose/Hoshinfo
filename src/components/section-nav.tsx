@@ -8,9 +8,8 @@ import { useEffect, useState } from "react";
 
 /**
  * The current section on the home page: of the sections inside a band from 12% to 50% down the
- * viewport, the last one in `ids` order. "Last" lets a nested section (Work inside Experience)
- * win while it is in view, and lets the final section win at the bottom of a tall window, where
- * it can never scroll up to the top. Both navs use the same band, so they always agree.
+ * viewport, the last one in `ids` order. "Last" lets the final section win at the bottom of a tall
+ * window, where it can never scroll up to the top. Both navs use the same band, so they agree.
  */
 function useActiveSection(ids: string[]) {
   const pathname = usePathname();
@@ -42,8 +41,7 @@ function useActiveSection(ids: string[]) {
 const headerLinks = [
   { id: "experience", label: "Experience", show: "hidden md:block" },
   { id: "projects", label: "Projects", show: "" },
-  { id: "work", label: "Work", show: "" },
-  { id: "toolbox", label: "Toolbox", show: "hidden md:block" },
+  { id: "toolbox", label: "Toolbox", show: "" },
 ];
 
 /** Header links; a pill marks the current section, below lg (from lg the band's own nav marks it). */
@@ -83,17 +81,17 @@ export function BandNav({ items }: { items: { id: string; label: string }[] }) {
             <a
               href={`#${id}`}
               aria-current={current === id ? "location" : undefined}
-              className={`relative flex items-center py-2 pl-7 text-lg font-medium tracking-tight transition-colors ${
+              className={`relative flex items-center py-1.5 pl-6 text-base font-medium tracking-tight transition-colors ${
                 current === id ? "text-ink" : "text-muted hover:text-ink"
               }`}
             >
               {current === id && (
                 <motion.span
                   layoutId="band-current"
-                  className="absolute left-0 grid size-5 place-items-center text-star"
+                  className="absolute left-0 grid size-4 place-items-center text-star"
                   transition={{ type: "spring", bounce: 0.2, visualDuration: 0.3 }}
                 >
-                  <StarIcon weight="fill" className="size-4" aria-hidden />
+                  <StarIcon weight="fill" className="size-3.5" aria-hidden />
                 </motion.span>
               )}
               {label}
