@@ -51,9 +51,12 @@ body {
   color: var(--ink);
 }
 
-/* Cream paper by day: Hoshikopi's 4 kB grain tile, never a live filter. */
-:root:not([data-theme="night"]) body {
-  background-image: url("/grain.png");
+/* Cream paper by day: Hoshikopi's 4 kB grain tile, never a live filter, under a cream wash that
+   halves it, so small text sits on calm ground. The header (.paper) wears the same paper, so there
+   is no flat band at the top of the page. The 50% is the knob: higher is calmer. */
+:root:not([data-theme="night"]) :is(body, .paper) {
+  --wash: color-mix(in oklab, var(--bg) 50%, transparent);
+  background-image: linear-gradient(var(--wash), var(--wash)), url("/grain.png");
 }
 
 /* Day and Night crossfade through a view transition; reduced motion switches at once. */
