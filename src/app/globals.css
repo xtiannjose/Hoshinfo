@@ -1,29 +1,31 @@
 @import "tailwindcss";
 
 
-/* One accent: the gold of the Hoshi star. Neutrals are cool greys. */
+/* Day and Night, as on Hoshikopi: cream paper and kopi brown by day, night ink and moonlight by
+   night, with the Hoshi star's gold in both. Day is the default; the theme script in the root layout
+   sets data-theme on <html> before first paint (components/theme.ts). */
 :root {
-  --bg: #f6f6f7;
-  --surface: #fdfdfd;
-  --ink: #18181b;
-  --muted: #5b5b66;
-  --line: #e2e2e6;
-  --star: #e3a008;
+  --bg: #fbf6ee;
+  --surface: #fffcf7;
+  --ink: #2b1d14;
+  --muted: #6e5a4b;
+  --line: #e2d6c4;
+  --star: #e8b74a;
   --star-ink: #8a5a00;
-  --star-soft: #fbf1d6;
+  --star-soft: #f6e8c8;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1013;
-    --surface: #17181c;
-    --ink: #ececf0;
-    --muted: #a1a1ab;
-    --line: #2a2b31;
-    --star: #f2b53a;
-    --star-ink: #f2c25e;
-    --star-soft: #251f12;
-  }
+[data-theme="night"] {
+  --bg: #141b2e;
+  --surface: #1c2540;
+  --ink: #eef0f7;
+  --muted: #b9bfd3;
+  --line: #334068;
+  --star: #e8b74a;
+  --star-ink: #e8b74a;
+  --star-soft: #2e2d31;
+  color-scheme: dark;
 }
 
 /* Page width: one value, used as max-w-page everywhere. */
@@ -44,13 +46,26 @@
   --font-mono: var(--font-geist-mono);
 }
 
-html {
-  color-scheme: light dark;
-}
-
 body {
   background: var(--bg);
   color: var(--ink);
+}
+
+/* Cream paper by day: Hoshikopi's 4 kB grain tile, never a live filter, under a cream wash that
+   halves it, so small text sits on calm ground. The header (.paper) wears the same paper, so there
+   is no flat band at the top of the page. The 50% is the knob: higher is calmer. */
+:root:not([data-theme="night"]) :is(body, .paper) {
+  --wash: color-mix(in oklab, var(--bg) 50%, transparent);
+  background-image: linear-gradient(var(--wash), var(--wash)), url("/grain.png");
+}
+
+/* Day and Night crossfade through a view transition; reduced motion switches at once. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* A trailing arrow nudges toward where its link goes: right on this site, up and right for outside links. */
