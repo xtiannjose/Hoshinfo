@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
-// The Hoshi star on the dark ink, readable on light and dark browser tabs.
+// The Hoshi star on the Night palette's ink, readable on light and dark browser tabs.
 export default function Icon() {
   return new ImageResponse(
     (
@@ -15,11 +15,11 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#18181b",
+          background: "#141b2e",
           borderRadius: 14,
         }}
       >
-        <StarIcon weight="fill" size={44} color="#f2b53a" />
+        <StarIcon weight="fill" size={44} color="#e8b74a" />
       </div>
     ),
     size,

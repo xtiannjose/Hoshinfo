@@ -1,5 +1,6 @@
 import { SocialLinks } from "@/components/social-links";
 import { StarButton } from "@/components/star-button";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { site } from "@/content/site";
 
 export function SiteFooter() {
@@ -11,6 +12,10 @@ export function SiteFooter() {
           <p className="mt-1 text-sm text-muted">If something here was worth a look, leave a star.</p>
         </div>
         <StarButton />
+        {/* Phones only: the header has no room for it there. */}
+        <div className="sm:hidden">
+          <ThemeSwitch name="theme-footer" />
+        </div>
       </div>
       <div className="flex flex-col gap-2 border-t border-line py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
         <p>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Boop } from "@/components/boop";
 import { SectionNav } from "@/components/section-nav";
 import { SocialLinks } from "@/components/social-links";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 
@@ -24,8 +25,13 @@ export function SiteHeader() {
           {/* Only what the menu shows goes to the client, not the whole project content. */}
           <SectionNav projects={projects.map(({ slug, name, tagline }) => ({ slug, name, tagline }))} />
         </nav>
-        <div className="hidden justify-self-end sm:block">
-          <SocialLinks />
+        {/* The Day and Night switch from sm up (phones have it in the footer); the profile links from lg up,
+            where the column has room for both (they are in the footer too). */}
+        <div className="hidden items-center gap-3 justify-self-end sm:flex">
+          <ThemeSwitch name="theme-header" />
+          <div className="hidden lg:block">
+            <SocialLinks />
+          </div>
         </div>
       </div>
     </header>
