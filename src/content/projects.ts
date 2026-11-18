@@ -137,6 +137,7 @@ export const projects: Project[] = [
     summary:
       "Groceries from browsing to the doorstep: a searchable catalogue, a cart, delivery slots, cash on delivery or online payment, and the staff screens that pick, pack and send every order from one hub.",
     stack: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma 7", "Better Auth", "Tailwind CSS 4", "Vitest", "Playwright"],
+    live: "https://hoshishimono.vercel.app",
     code: "https://github.com/xtiannjose/Hoshimono",
     cover: desktop("hoshimono", "home", "Hoshimono storefront home page", "The storefront: aisles, fresh picks and the delivery promise up top.", { file: "home-phone-412", size: [824, 1830] }),
     phone: phone("hoshimono", "home-phone-412", "Hoshimono storefront on a phone", "The storefront on a phone.", [824, 1830]),

@@ -258,27 +258,34 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
                 i === current ? "" : "opacity-40"
               } ${i === n ? "[scroll-initial-target:nearest]" : ""}`}
             >
-              {/* The card fills the page column, as wide as the sections below it. */}
+              {/* The whole card fits on screen under the header. --fit is the height left for the picture (23rem
+                  is the header, title row, name row and controls around it). Screens are 16:10, so to stay wide
+                  the picture is cropped from the bottom down to --fit, and the card narrows only past 2.4:1, which
+                  is also what keeps the phone inset inside the picture. The floors keep a landscape phone readable,
+                  where it cannot fit anyway. */}
               <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8">
-                <div className="mb-3 flex items-baseline gap-3">
-                  <h2 className="shrink-0 text-lg font-semibold tracking-tight text-ink">{slide.name}</h2>
-                  <p className="min-w-0 truncate text-muted">{slide.tagline}</p>
-                </div>
-                {/* Mounted look: a 4px rim and 12px corners around 8px-cornered media. */}
-                <div className="rounded-xl border border-line bg-surface p-1">
-                  <Gallery
-                    bare
-                    preload={i === n}
-                    shots={slide.shots}
-                    label={`${slide.name} case study`}
-                    href={`/projects/${slide.slug}`}
-                    sizes="(min-width: 1408px) 1344px, 100vw"
-                    phones
-                  />
-                  <div className="mt-1 flex gap-1">
-                    <TierLink href={`/projects/${slide.slug}`}>Case study</TierLink>
-                    {slide.live && <TierLink href={slide.live}>Live site</TierLink>}
-                    <TierLink href={slide.code}>Code</TierLink>
+                <div className="mx-auto max-w-[max(32rem,calc(var(--fit)*2.4))] [--fit:max(14rem,calc(100svh-23rem))]">
+                  <div className="mb-3 flex items-baseline gap-3">
+                    <h2 className="shrink-0 text-lg font-semibold tracking-tight text-ink">{slide.name}</h2>
+                    <p className="min-w-0 truncate text-muted">{slide.tagline}</p>
+                  </div>
+                  {/* Mounted look: a 4px rim and 12px corners around 8px-cornered media. */}
+                  <div className="rounded-xl border border-line bg-surface p-1">
+                    <Gallery
+                      bare
+                      preload={i === n}
+                      shots={slide.shots}
+                      label={`${slide.name} case study`}
+                      href={`/projects/${slide.slug}`}
+                      sizes="(min-width: 1408px) 1344px, 100vw"
+                      phones
+                      shotClass="max-h-(--fit) object-cover object-top"
+                    />
+                    <div className="mt-1 flex gap-1">
+                      <TierLink href={`/projects/${slide.slug}`}>Case study</TierLink>
+                      {slide.live && <TierLink href={slide.live}>Live site</TierLink>}
+                      <TierLink href={slide.code}>Code</TierLink>
+                    </div>
                   </div>
                 </div>
               </div>
