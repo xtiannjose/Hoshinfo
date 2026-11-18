@@ -184,21 +184,9 @@ function ProjectShowcase({ project }: { project: Project }) {
           {project.name}
         </h3>
         <p className="mt-2 text-lg text-muted">{project.tagline}</p>
+        {/* The general idea only; features and how it is built are on the case study. */}
         <p className="mt-5 leading-relaxed text-muted">{project.summary}</p>
-        <ul className="mt-4 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted marker:text-star">
-          {project.features.slice(0, 3).map((feature) => (
-            <li key={feature}>{feature}</li>
-          ))}
-        </ul>
-        <dl className="mt-6 space-y-4">
-          {project.build.slice(0, 2).map((item) => (
-            <div key={item.title}>
-              <dt className="text-sm font-medium">{item.title}</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-muted">{item.body}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="mt-5">
+        <div className="mt-6">
           <StackList items={project.stack} />
         </div>
         <div className="mt-7 flex flex-wrap gap-3">
