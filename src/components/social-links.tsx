@@ -1,15 +1,15 @@
 import { GithubLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react/ssr";
 
 import { Boop } from "@/components/boop";
-import { site } from "@/content/site";
-
-const links = [
-  { href: site.github, label: "GitHub", Icon: GithubLogoIcon },
-  { href: site.linkedin, label: "LinkedIn", Icon: LinkedinLogoIcon },
-];
+import { getSite } from "@/content";
 
 /** Round icon-only links to the owner's profiles. "md" sits next to a pill button; "sm" fits the footer. */
 export function SocialLinks({ size = "md" }: { size?: "sm" | "md" }) {
+  const site = getSite();
+  const links = [
+    { href: site.github, label: "GitHub", Icon: GithubLogoIcon },
+    { href: site.linkedin, label: "LinkedIn", Icon: LinkedinLogoIcon },
+  ];
   const box = size === "sm" ? "size-9" : "size-10";
   const icon = size === "sm" ? "size-4" : "size-5";
   return (

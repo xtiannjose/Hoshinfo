@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef, useState, type FocusEvent, type PointerEvent, 
 
 import { Gallery } from "@/components/gallery";
 import { TierLink } from "@/components/tier-link";
-import type { Shot } from "@/content/projects";
+import type { Shot } from "@/content";
 
 export type CarouselSlide = {
   slug: string;

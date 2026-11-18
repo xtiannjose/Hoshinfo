@@ -1,9 +1,10 @@
 import { SocialLinks } from "@/components/social-links";
 import { StarButton } from "@/components/star-button";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { site } from "@/content/site";
+import { getSite } from "@/content";
 
 export function SiteFooter() {
+  const site = getSite();
   return (
     <footer className="mx-auto mt-32 w-full max-w-page px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-start gap-6 border-t border-line py-10 sm:flex-row sm:items-center sm:justify-between">

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, type PointerEvent } from "react";
 
 import { PhoneInset, Shot } from "@/components/shot";
-import type { Shot as ShotData } from "@/content/projects";
+import type { Shot as ShotData } from "@/content";
 
 /**
  * A stack of screenshots. With a mouse, moving across the picture flips through them;

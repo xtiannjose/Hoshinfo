@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import type { Shot as ShotData } from "@/content/projects";
+import type { Shot as ShotData } from "@/content";
 
 export function Shot({
   shot,

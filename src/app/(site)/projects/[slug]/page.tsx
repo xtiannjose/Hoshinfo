@@ -5,14 +5,16 @@ import { notFound } from "next/navigation";
 
 import { LinkButton, StackList } from "@/components/link-button";
 import { Shot } from "@/components/shot";
-import { getProject, projects } from "@/content/projects";
+import { getProject, readProjects } from "@/content";
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return readProjects().map((project) => ({ slug: project.slug }));
 }
 
+// Reads only the JSON (no screenshots): it also runs at request time for unknown addresses.
 export async function generateMetadata({ params }: PageProps<"/projects/[slug]">): Promise<Metadata> {
-  const project = getProject((await params).slug);
+  const { slug } = await params;
+  const project = readProjects().find((p) => p.slug === slug);
   return project ? { title: project.name, description: project.tagline } : {};
 }
 
@@ -22,7 +24,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
   const desktops = project.gallery.filter((shot) => shot.kind === "desktop");
   const phones = [project.phone, ...project.gallery.filter((shot) => shot.kind === "phone")];
-  const next = projects[(projects.indexOf(project) + 1) % projects.length];
+  const all = readProjects();
+  const next = all[(all.findIndex((p) => p.slug === project.slug) + 1) % all.length];
 
   return (
     <article className="mx-auto max-w-page px-4 pt-8 sm:px-6 lg:px-8">
