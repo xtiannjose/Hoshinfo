@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { EditLink } from "@/components/edit-link";
 import { LinkButton, StackList } from "@/components/link-button";
 import { Shot } from "@/components/shot";
 import { getProject, readProjects } from "@/content";
@@ -34,7 +35,10 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       </Link>
 
       <header className="rise mt-8 max-w-3xl">
-        <h1 className="text-4xl font-semibold tracking-tighter md:text-5xl">{project.name}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-4xl font-semibold tracking-tighter md:text-5xl">{project.name}</h1>
+          <EditLink path={`collection/projects/item/${project.slug}`} label={`Edit ${project.name}`} />
+        </div>
         <p className="mt-4 text-xl leading-snug text-balance">{project.tagline}</p>
         <p className="mt-4 max-w-[62ch] leading-relaxed text-muted">{project.summary}</p>
         <div className="mt-6 flex flex-wrap gap-3">

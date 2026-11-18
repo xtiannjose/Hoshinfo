@@ -8,6 +8,7 @@ import {
 } from "@phosphor-icons/react/ssr";
 import type { CSSProperties, ReactNode } from "react";
 
+import { EditLink } from "@/components/edit-link";
 import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
 import { ProjectCarousel } from "@/components/project-carousel";
@@ -46,9 +47,12 @@ export default function Home() {
         slides={slides}
         heading={
           <div>
-            <h1 className="rise text-2xl font-semibold tracking-tight md:text-3xl" style={{ "--i": 0 } as CSSProperties}>
-              {site.name}&apos;s Portfolio
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="rise text-2xl font-semibold tracking-tight md:text-3xl" style={{ "--i": 0 } as CSSProperties}>
+                {site.name}&apos;s Portfolio
+              </h1>
+              <EditLink path="singleton/site" label="Edit site details: name, role, links and intro lines" />
+            </div>
             <p className="rise mt-1 flex items-center gap-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
               <StarIcon weight="fill" className="size-3.5 text-star" aria-hidden />
               {site.role}
@@ -65,11 +69,15 @@ export default function Home() {
   );
 }
 
-function SectionTitle({ id, children }: { id: string; children: string }) {
+/** A section heading; `edit` adds the editor's pencil beside it (only the signed-in owner sees it). */
+function SectionTitle({ id, children, edit }: { id: string; children: string; edit: { path: string; label: string } }) {
   return (
-    <h2 id={id} className="text-3xl font-semibold tracking-tight md:text-4xl">
-      {children}
-    </h2>
+    <div className="flex items-center gap-3">
+      <h2 id={id} className="text-3xl font-semibold tracking-tight md:text-4xl">
+        {children}
+      </h2>
+      <EditLink {...edit} />
+    </div>
   );
 }
 
@@ -86,7 +94,9 @@ function Story({ children }: { children: ReactNode }) {
 function Experience({ roles }: { roles: Role[] }) {
   return (
     <section id="experience" aria-labelledby="experience-title" className="scroll-mt-20">
-      <SectionTitle id="experience-title">Experience</SectionTitle>
+      <SectionTitle id="experience-title" edit={{ path: "singleton/experience", label: "Edit experience" }}>
+        Experience
+      </SectionTitle>
       {/* Pointing at one linked entry dims the others a little on wide screens (90% keeps muted text above 4.5:1).
           isolate keeps each card layer inside the list. */}
       <ol className="reveal group/list isolate mt-10 space-y-10 lg:space-y-4">
@@ -149,7 +159,9 @@ function Experience({ roles }: { roles: Role[] }) {
 function Projects({ intro, projects, work }: { intro: string; projects: Project[]; work: WorkItem[] }) {
   return (
     <section id="projects" aria-labelledby="projects-title" className="scroll-mt-20 pt-24 md:pt-32">
-      <SectionTitle id="projects-title">Projects</SectionTitle>
+      <SectionTitle id="projects-title" edit={{ path: "collection/projects", label: "Edit or add personal projects" }}>
+        Projects
+      </SectionTitle>
       <p className="mt-3 max-w-[60ch] text-muted">{intro}</p>
       <div className="mt-12 space-y-24">
         {work.map((item) => (
@@ -193,9 +205,12 @@ function ProjectShowcase({ project }: { project: Project }) {
       </div>
       <div className="lg:col-span-5">
         <Kind icon="star">Personal project</Kind>
-        <h3 id={`${project.slug}-title`} className="mt-4 text-3xl font-semibold tracking-tight">
-          {project.name}
-        </h3>
+        <div className="mt-4 flex items-center gap-3">
+          <h3 id={`${project.slug}-title`} className="text-3xl font-semibold tracking-tight">
+            {project.name}
+          </h3>
+          <EditLink path={`collection/projects/item/${project.slug}`} label={`Edit ${project.name}`} />
+        </div>
         <p className="mt-2 text-lg text-muted">{project.tagline}</p>
         {/* The general idea only; features and how it is built are on the case study. */}
         <p className="mt-5 leading-relaxed text-muted">{project.summary}</p>
@@ -240,9 +255,12 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
       </div>
       <div className="lg:col-span-5">
         <Kind icon="company">Company work at iOne Resources</Kind>
-        <h3 id={`${item.slug}-title`} className="mt-4 text-3xl font-semibold tracking-tight">
-          {item.name}
-        </h3>
+        <div className="mt-4 flex items-center gap-3">
+          <h3 id={`${item.slug}-title`} className="text-3xl font-semibold tracking-tight">
+            {item.name}
+          </h3>
+          <EditLink path={`collection/work/item/${item.slug}`} label={`Edit ${item.name}`} />
+        </div>
         <p className="mt-5 leading-relaxed text-muted">{item.summary}</p>
         <p className="mt-2 text-sm text-muted">The code belongs to the company, so there are no links.</p>
         <div className="mt-5">
@@ -256,7 +274,9 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
 function Toolbox({ groups, items }: { groups: { group: string; tools: Tool[] }[]; items: { name: string; stack: string[] }[] }) {
   return (
     <section id="toolbox" aria-labelledby="toolbox-title" className="scroll-mt-20 pt-24 md:pt-32">
-      <SectionTitle id="toolbox-title">Toolbox</SectionTitle>
+      <SectionTitle id="toolbox-title" edit={{ path: "singleton/toolbox", label: "Edit the toolbox" }}>
+        Toolbox
+      </SectionTitle>
       <p className="mt-3 max-w-[60ch] text-muted">What I build with, and where each tool is used.</p>
       <div className="reveal mt-10 grid gap-10 sm:grid-cols-3 lg:gap-14">
         {groups.map(({ group, tools }) => (

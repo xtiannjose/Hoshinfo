@@ -4,6 +4,7 @@ import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useInView, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { useLayoutEffect, useRef, useState, type FocusEvent, type PointerEvent, type ReactNode } from "react";
 
+import { EditLink } from "@/components/edit-link";
 import { Gallery } from "@/components/gallery";
 import { TierLink } from "@/components/tier-link";
 import type { Shot } from "@/content";
@@ -268,6 +269,7 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
                   <div className="mb-3 flex items-baseline gap-3">
                     <h2 className="shrink-0 text-lg font-semibold tracking-tight text-ink">{slide.name}</h2>
                     <p className="min-w-0 truncate text-muted">{slide.tagline}</p>
+                    <EditLink path={`collection/projects/item/${slide.slug}`} label={`Edit ${slide.name}`} />
                   </div>
                   {/* Mounted look: a 4px rim and 12px corners around 8px-cornered media. */}
                   <div className="rounded-xl border border-line bg-surface p-1">
