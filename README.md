@@ -37,12 +37,13 @@ Keystatic names screenshot files after their place in the form (`gallery/2/image
 
 ### One-time GitHub setup for the live editor
 
-1. Create `.env.local` with `NEXT_PUBLIC_KEYSTATIC_STORAGE=github`, run `npm run dev` and open http://127.0.0.1:3000/keystatic.
-2. Follow Keystatic's prompt to create a GitHub App for this repository. It writes `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET` and `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` to `.env`, which git ignores. Keep the two secrets out of the repository.
-3. Install the new GitHub App on the Hoshinfo repository.
-4. In the app's settings on GitHub, add the callback URL `https://hoshinfo.vercel.app/api/keystatic/github/oauth/callback`.
-5. Add the four variables to the Vercel project (Settings, Environment Variables, Production) and redeploy.
-6. Remove `NEXT_PUBLIC_KEYSTATIC_STORAGE` from `.env.local` to edit local files again.
+1. Create `.env.local` with `NEXT_PUBLIC_KEYSTATIC_STORAGE=github`, run `npm run dev` and open http://127.0.0.1:3000/keystatic, then **Log in with GitHub**, which leads to Keystatic's setup page.
+2. Under **Deployed App URL** enter `https://hoshinfo.vercel.app` (this registers the live site's sign-in callback), leave the organization blank, and click **Create GitHub App**. On GitHub, confirm the app name and create it. Keystatic writes `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET` and `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` to `.env`, which git ignores. Keep the two secrets out of the repository and out of chats.
+3. Install the new GitHub App on the Hoshinfo repository only (GitHub offers this right after creating it).
+4. Add the four variables to the Vercel project (Settings, Environment Variables, Production) and redeploy.
+5. Remove `NEXT_PUBLIC_KEYSTATIC_STORAGE` from `.env.local` to edit local files again.
+
+If the Deployed App URL was left blank, add `https://hoshinfo.vercel.app/api/keystatic/github/oauth/callback` as a callback URL in the app's settings on GitHub.
 
 Until the variables are on Vercel, the live editor's API answers 404 and the rest of the site is unaffected.
 
