@@ -8,15 +8,18 @@ Next.js 16 (Cache Components), TypeScript, Tailwind CSS 4, Geist and Phosphor ic
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build, the check before a push
+npm run dev        # http://localhost:3000
+npm run build      # production build (also type-checks)
+npm run test:e2e   # Playwright checks against that build; first time: npx playwright install chromium
 ```
+
+CI (`.github/workflows/ci.yml`) runs lint, the build and the Playwright checks on every pull request and every push to `main`, editor saves included. The checks in `e2e/` cover every page at four widths (no errors, no sideways scroll, link previews), the 404 pages, WCAG 2.2 AA in Day and Night with axe, the skip link, the Projects dropdown, the clock-driven theme, the carousel fitting on screen, the editor's pencils, the security headers, and `robots.txt` and the sitemap.
 
 ## Where things are
 
 | What | Where |
 | --- | --- |
-| Name, role, links, intro lines | `content/site.json` |
+| Name, role, links, email, intro lines | `content/site.json` |
 | Experience, Toolbox | `content/experience.json`, `content/toolbox.json` |
 | Projects and case studies | `content/projects/<address>.json` |
 | iOne work | `content/work/<address>.json` |

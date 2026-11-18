@@ -25,6 +25,9 @@ import {
   type WorkItem,
 } from "@/content";
 
+// A text link inside a line of muted text.
+const inlineLink = "text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-muted";
+
 // A project's desktop screens, cover first.
 const screens = (project: Project) => [project.cover, ...project.gallery.filter((shot) => shot.kind === "desktop")];
 
@@ -53,9 +56,13 @@ export default function Home() {
               </h1>
               <EditLink path="singleton/site" label="Edit site details: name, role, links and intro lines" />
             </div>
-            <p className="rise mt-1 flex items-center gap-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
+            <p className="rise mt-1 flex flex-wrap items-center gap-x-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
               <StarIcon weight="fill" className="size-3.5 text-star" aria-hidden />
               {site.role}
+              <span aria-hidden>·</span>
+              <a href={`mailto:${site.email}`} className={inlineLink}>
+                Get in touch
+              </a>
             </p>
           </div>
         }
@@ -254,7 +261,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
         )}
       </div>
       <div className="lg:col-span-5">
-        <Kind icon="company">Company work at iOne Resources</Kind>
+        <Kind icon="company">{`Company work at ${item.company}`}</Kind>
         <div className="mt-4 flex items-center gap-3">
           <h3 id={`${item.slug}-title`} className="text-3xl font-semibold tracking-tight">
             {item.name}
@@ -262,7 +269,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
           <EditLink path={`collection/work/item/${item.slug}`} label={`Edit ${item.name}`} />
         </div>
         <p className="mt-5 leading-relaxed text-muted">{item.summary}</p>
-        <p className="mt-2 text-sm text-muted">The code belongs to the company, so there are no links.</p>
+        <p className="mt-2 text-sm text-muted">The code belongs to {item.company}, so there are no links.</p>
         <div className="mt-5">
           <StackList items={item.stack} />
         </div>

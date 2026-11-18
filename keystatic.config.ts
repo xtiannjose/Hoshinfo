@@ -101,6 +101,7 @@ export default config({
           slug: { label: "Address", description: "Its anchor on the home page: /#<address>. Experience entries can link to it." },
         }),
         order: fields.integer({ label: "Order", description: "Lower numbers show first.", defaultValue: 100, ...required }),
+        company: text("Company", "Who it was built for. Shown as \"Company work at <company>\"."),
         summary: paragraph("Summary"),
         stack,
         shots: fields.array(screen("Screenshot"), {
@@ -122,6 +123,11 @@ export default config({
         role: text("Role", "Under the page title, e.g. Software Developer."),
         description: paragraph("Search description", "The summary search engines and link previews show."),
         projectsIntro: paragraph("Projects intro", "The line under the Projects heading on the home page."),
+        email: fields.text({
+          label: "Contact email",
+          description: "Behind every \"Get in touch\" button and the envelope icon.",
+          validation: { isRequired: true, pattern: { regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "An email address" } },
+        }),
         github: fields.url({ label: "GitHub profile", ...required }),
         linkedin: fields.url({ label: "LinkedIn profile", ...required }),
         url: fields.url({ label: "Site address", description: "The live site's own address.", ...required }),

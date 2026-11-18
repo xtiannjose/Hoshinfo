@@ -44,6 +44,8 @@ export type WorkItem = {
   /** Anchor of its showcase on the home page. */
   slug: string;
   name: string;
+  /** Who it was built for, e.g. iOne Resources. */
+  company: string;
   summary: string;
   stack: string[];
   /** Empty when the screens cannot be shown. */
@@ -135,6 +137,7 @@ export const getSite = () =>
     role: string;
     description: string;
     projectsIntro: string;
+    email: string;
     github: string;
     linkedin: string;
     url: string;
@@ -171,7 +174,14 @@ export function getProject(slug: string): Project | undefined {
 }
 
 export const getWork = (): WorkItem[] =>
-  entries<RawWork>("work").map((w) => ({ slug: w.slug, name: w.name, summary: w.summary, stack: w.stack, shots: w.shots.map((s) => shot(s, "desktop")) }));
+  entries<RawWork>("work").map((w) => ({
+    slug: w.slug,
+    name: w.name,
+    company: w.company,
+    summary: w.summary,
+    stack: w.stack,
+    shots: w.shots.map((s) => shot(s, "desktop")),
+  }));
 
 /** The SVG path of a Simple Icons logo, by its slug. An unknown slug gets the generic glyph, not a failed build. */
 function logo(slug: string): string | undefined {

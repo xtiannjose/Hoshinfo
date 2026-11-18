@@ -1,6 +1,7 @@
 {
   "name": "iOne website",
   "order": 10,
+  "company": "iOne Resources",
   "summary": "The new company site for an ICT provider, replacing an old WordPress site: solutions, case studies, a news section with an online editor, and a meeting request form.",
   "stack": [
     "Next.js",

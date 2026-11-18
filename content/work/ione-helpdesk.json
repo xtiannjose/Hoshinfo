@@ -1,6 +1,7 @@
 {
   "name": "iOne Helpdesk",
   "order": 20,
+  "company": "iOne Resources",
   "summary": "The support desk iOne runs with its clients: separate client and staff portals, SLA tracking, escalation, a knowledge base and audit logging.",
   "stack": [
     "Laravel",

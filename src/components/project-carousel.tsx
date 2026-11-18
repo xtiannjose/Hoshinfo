@@ -213,7 +213,7 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
                   </span>
                 </button>
                 {i < n - 1 &&
-                  Array.from({ length: TICKS }, (_, t) => <span key={t} aria-hidden className="h-[18px] w-px bg-muted/50" />)}
+                  Array.from({ length: TICKS }, (_, t) => <span key={t} aria-hidden className="h-[18px] w-px bg-muted/50 max-[24rem]:hidden" />)}
               </span>
             ))}
           </div>

@@ -20,6 +20,8 @@ export function LinkButton({
   variant?: keyof typeof look;
 }) {
   const external = href.startsWith("http");
+  // Email links are plain anchors: the router has no page to fetch for them.
+  const Anchor = href.startsWith("mailto:") ? "a" : Link;
   const props = {
     href,
     ...(external ? { target: "_blank", rel: "noreferrer" } : {}),
@@ -27,15 +29,15 @@ export function LinkButton({
   };
   if (variant === "primary") {
     return (
-      <Link {...props} className="group/button inline-flex rounded-full bg-star-ink">
+      <Anchor {...props} className="group/button inline-flex rounded-full bg-star-ink">
         <span className={`${base} ${look.primary}`}>{children}</span>
-      </Link>
+      </Anchor>
     );
   }
   return (
-    <Link {...props} className={`${base} ${look.secondary}`}>
+    <Anchor {...props} className={`${base} ${look.secondary}`}>
       {children}
-    </Link>
+    </Anchor>
   );
 }
 
