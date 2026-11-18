@@ -19,6 +19,7 @@ export function Gallery({
   bare = false,
   preload = false,
   phones = false,
+  shotClass,
 }: {
   shots: ShotData[];
   /** Names the group of buttons and, with `href`, the link. */
@@ -31,6 +32,8 @@ export function Gallery({
   preload?: boolean;
   /** Show each screen's phone version in its corner; it changes with the screen and hides when there is none. */
   phones?: boolean;
+  /** Extra classes for each screenshot, such as a height cap that crops it. */
+  shotClass?: string;
 }) {
   const [index, setIndex] = useState(0);
   // The other shots load once someone shows interest, not with the page.
@@ -55,7 +58,7 @@ export function Gallery({
           transition={{ duration: 0.25, ease: "easeOut" }}
           aria-hidden={i !== index}
         >
-          <Shot shot={shot} sizes={sizes} bare={bare} preload={preload && i === 0} />
+          <Shot shot={shot} sizes={sizes} bare={bare} preload={preload && i === 0} className={shotClass} />
           {phones && shot.phone && <PhoneInset shot={shot.phone} />}
         </motion.div>
       ),
