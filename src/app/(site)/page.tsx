@@ -6,27 +6,40 @@ import {
   StarIcon,
   TestTubeIcon,
 } from "@phosphor-icons/react/ssr";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
 import { ProjectCarousel } from "@/components/project-carousel";
-import { projects, toolbox, usedIn, work, type Project, type WorkItem } from "@/content/projects";
-import { experience, site } from "@/content/site";
+import {
+  getExperience,
+  getProjects,
+  getSite,
+  getToolbox,
+  getWork,
+  usedIn,
+  type Project,
+  type Role,
+  type Tool,
+  type WorkItem,
+} from "@/content";
 
 // A project's desktop screens, cover first.
 const screens = (project: Project) => [project.cover, ...project.gallery.filter((shot) => shot.kind === "desktop")];
 
-const slides = projects.map((project) => ({
-  slug: project.slug,
-  name: project.name,
-  tagline: project.tagline,
-  live: project.live,
-  code: project.code,
-  shots: screens(project),
-}));
-
 export default function Home() {
+  const site = getSite();
+  const projects = getProjects();
+  const work = getWork();
+  const slides = projects.map((project) => ({
+    slug: project.slug,
+    name: project.name,
+    tagline: project.tagline,
+    live: project.live,
+    code: project.code,
+    shots: screens(project),
+  }));
+
   return (
     <>
       <ProjectCarousel
@@ -38,12 +51,16 @@ export default function Home() {
             </h1>
             <p className="rise mt-1 flex items-center gap-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
               <StarIcon weight="fill" className="size-3.5 text-star" aria-hidden />
-              Software Developer
+              {site.role}
             </p>
           </div>
         }
       />
-      <Story />
+      <Story>
+        <Experience roles={getExperience()} />
+        <Projects intro={site.projectsIntro} projects={projects} work={work} />
+        <Toolbox groups={getToolbox()} items={[...projects, ...work]} />
+      </Story>
     </>
   );
 }
@@ -57,25 +74,23 @@ function SectionTitle({ id, children }: { id: string; children: string }) {
 }
 
 /** Everything under the carousel, full width. The header nav's star marks the section in view. */
-function Story() {
+function Story({ children }: { children: ReactNode }) {
   return (
     // scroll-mt-28 on links and buttons: keyboard focus never lands hidden under the sticky header.
     <div className="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-28 lg:px-8 [&_:is(a,button)]:scroll-mt-28">
-      <Experience />
-      <Projects />
-      <Toolbox />
+      {children}
     </div>
   );
 }
 
-function Experience() {
+function Experience({ roles }: { roles: Role[] }) {
   return (
     <section id="experience" aria-labelledby="experience-title" className="scroll-mt-20">
       <SectionTitle id="experience-title">Experience</SectionTitle>
       {/* Pointing at one linked entry dims the others a little on wide screens (90% keeps muted text above 4.5:1).
           isolate keeps each card layer inside the list. */}
       <ol className="reveal group/list isolate mt-10 space-y-10 lg:space-y-4">
-        {experience.map((role) => {
+        {roles.map((role) => {
           const external = role.href?.startsWith("http");
           const Arrow = external ? ArrowUpRightIcon : ArrowRightIcon;
           return (
@@ -131,13 +146,11 @@ function Experience() {
   );
 }
 
-function Projects() {
+function Projects({ intro, projects, work }: { intro: string; projects: Project[]; work: WorkItem[] }) {
   return (
     <section id="projects" aria-labelledby="projects-title" className="scroll-mt-20 pt-24 md:pt-32">
       <SectionTitle id="projects-title">Projects</SectionTitle>
-      <p className="mt-3 max-w-[60ch] text-muted">
-        Two I build at iOne Resources, and three products of my own, designed and built end to end.
-      </p>
+      <p className="mt-3 max-w-[60ch] text-muted">{intro}</p>
       <div className="mt-12 space-y-24">
         {work.map((item) => (
           <CompanyShowcase key={item.slug} item={item} />
@@ -240,13 +253,13 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
   );
 }
 
-function Toolbox() {
+function Toolbox({ groups, items }: { groups: { group: string; tools: Tool[] }[]; items: { name: string; stack: string[] }[] }) {
   return (
     <section id="toolbox" aria-labelledby="toolbox-title" className="scroll-mt-20 pt-24 md:pt-32">
       <SectionTitle id="toolbox-title">Toolbox</SectionTitle>
       <p className="mt-3 max-w-[60ch] text-muted">What I build with, and where each tool is used.</p>
       <div className="reveal mt-10 grid gap-10 sm:grid-cols-3 lg:gap-14">
-        {toolbox.map(({ group, tools }) => (
+        {groups.map(({ group, tools }) => (
           <div key={group}>
             <h3 className="text-sm text-muted">{group}</h3>
             <ul className="mt-5 space-y-5">
@@ -258,13 +271,13 @@ function Toolbox() {
                         <path d={tool.logo} />
                       </svg>
                     ) : (
-                      // Only the test runners lack a Simple Icons logo.
+                      // Tools without a Simple Icons logo, such as the test runners.
                       <TestTubeIcon className="size-5" aria-hidden />
                     )}
                   </span>
                   <span>
                     <span className="block font-medium">{tool.name}</span>
-                    <span className="block text-sm text-muted">{usedIn(tool.name).join(", ")}</span>
+                    <span className="block text-sm text-muted">{usedIn(tool.name, items).join(", ")}</span>
                   </span>
                 </li>
               ))}

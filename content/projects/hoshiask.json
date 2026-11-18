@@ -1,0 +1,95 @@
+{
+  "name": "Hoshiask",
+  "order": 30,
+  "tagline": "A help desk for organisations with field offices: a client portal and a staff console.",
+  "summary": "Clients file tickets in their own portal. Staff assign, answer, escalate, merge and close them, with SLA reminders, a knowledge base, reports and a full audit trail.",
+  "code": "https://github.com/xtiannjose/Hoshiask",
+  "stack": [
+    "Laravel 13",
+    "PHP 8.3",
+    "PostgreSQL",
+    "Alpine.js",
+    "Tailwind CSS 4",
+    "PHPUnit",
+    "Playwright"
+  ],
+  "cover": {
+    "image": "/shots/hoshiask/cover/image.png",
+    "alt": "Hoshiask staff dashboard",
+    "caption": "The staff dashboard: open, aging and Severity 1 tickets at a glance."
+  },
+  "phone": {
+    "image": "/shots/hoshiask/phone/image.png",
+    "alt": "Hoshiask client portal on a phone",
+    "caption": "The client portal on a phone."
+  },
+  "gallery": [
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshiask/gallery/0/image.png",
+      "alt": "Hoshiask staff ticket list with filters",
+      "caption": "The ticket list: tabs, saved views, filters by office and severity, and bulk actions."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshiask/gallery/1/image.png",
+      "alt": "A ticket with public replies and internal notes",
+      "caption": "What staff see: public replies and internal notes on one thread."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshiask/gallery/2/image.png",
+      "alt": "The same ticket in the client portal",
+      "caption": "What the client sees: the same ticket, public replies only.",
+      "phone": "/shots/hoshiask/gallery/2/phone.png"
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshiask/gallery/3/image.png",
+      "alt": "Hoshiask monthly reports chart",
+      "caption": "Reports compare tickets received and completed over 12 months."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshiask/gallery/4/image.png",
+      "alt": "Hoshiask staff dashboard in dark mode",
+      "caption": "The staff dashboard in dark mode."
+    },
+    {
+      "kind": "phone",
+      "image": "/shots/hoshiask/gallery/5/image.png",
+      "alt": "A client ticket on a phone",
+      "caption": "A ticket and its conversation on a phone."
+    }
+  ],
+  "features": [
+    "Clients file and follow tickets in their own portal; staff work them in a separate console.",
+    "Tickets move from Open to Closed or Cancelled, with several assignees, escalation and merging of duplicates.",
+    "Public replies and internal notes share one thread, and clients only ever see the public side.",
+    "SLA reminders, and stale tickets close or cancel themselves after a warning.",
+    "Monthly and custom reports, CSV and PDF export, and saved ticket views.",
+    "An audit trail, consent tracking and a clean-up that removes personal details from old tickets."
+  ],
+  "build": [
+    {
+      "title": "The office lives on the ticket",
+      "body": "Each ticket stores its own field office, so reports stay right when a client moves or their account is deleted."
+    },
+    {
+      "title": "Privacy that keeps the numbers",
+      "body": "The clean-up removes names and contact details but keeps the ticket row, so past reports and response times never change."
+    },
+    {
+      "title": "One clock for every SLA",
+      "body": "Every cut-off goes through one business-hours clock that can count around the clock or only working hours."
+    },
+    {
+      "title": "No inline scripts",
+      "body": "A strict Content Security Policy, made possible by Alpine's CSP build. Backups are encrypted with AES-256-GCM and can be verified and restored."
+    },
+    {
+      "title": "Tested on two databases",
+      "body": "1,182 PHPUnit tests run on SQLite and again on PostgreSQL 16, with 105 Vitest tests and 20 Playwright tests that include axe accessibility checks."
+    }
+  ]
+}

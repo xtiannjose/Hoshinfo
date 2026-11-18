@@ -1,0 +1,114 @@
+{
+  "name": "Hoshimono",
+  "order": 20,
+  "tagline": "A concept online supermarket with same-day delivery slots.",
+  "summary": "Groceries from browsing to the doorstep: a searchable catalogue, a cart, delivery slots, cash on delivery or online payment, and the staff screens that pick, pack and send every order from one hub.",
+  "live": "https://hoshishimono.vercel.app",
+  "code": "https://github.com/xtiannjose/Hoshimono",
+  "stack": [
+    "Next.js 16",
+    "TypeScript",
+    "PostgreSQL",
+    "Prisma 7",
+    "Better Auth",
+    "Tailwind CSS 4",
+    "Vitest",
+    "Playwright"
+  ],
+  "cover": {
+    "image": "/shots/hoshimono/cover/image.png",
+    "alt": "Hoshimono storefront home page",
+    "caption": "The storefront: aisles, fresh picks and the delivery promise up top.",
+    "phone": "/shots/hoshimono/cover/phone.png"
+  },
+  "phone": {
+    "image": "/shots/hoshimono/phone/image.png",
+    "alt": "Hoshimono storefront on a phone",
+    "caption": "The storefront on a phone."
+  },
+  "gallery": [
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/0/image.png",
+      "alt": "Chicken Adobo recipe with its ingredients list",
+      "caption": "Recipe to cart: ingredients scale with the servings, and pantry staples start unticked."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/1/image.png",
+      "alt": "Search results for gatas",
+      "caption": "Search understands Filipino and typos: \"gatas\" finds six kinds of milk."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/2/image.png",
+      "alt": "Carabao Mangoes product page, sold by weight",
+      "caption": "A Product sold by weight, with a plain note on how the final price is set.",
+      "phone": "/shots/hoshimono/gallery/2/phone.png"
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/3/image.png",
+      "alt": "Hoshimono cart with substitution choices",
+      "caption": "The cart, with a substitute choice and picker notes for every item."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/4/image.png",
+      "alt": "Checkout with two-hour delivery slots",
+      "caption": "Checkout holds the chosen two-hour slot while the shopper pays."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/5/image.png",
+      "alt": "Staff stock screen",
+      "caption": "Staff see what is on the shelf, reserved and free, with low stock flagged."
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshimono/gallery/6/image.png",
+      "alt": "Hoshimono storefront in dark mode",
+      "caption": "The storefront in dark mode, which follows the system setting."
+    },
+    {
+      "kind": "phone",
+      "image": "/shots/hoshimono/gallery/7/image.png",
+      "alt": "A product page on a phone",
+      "caption": "A Product page on a phone."
+    }
+  ],
+  "features": [
+    "Browse aisles or search in English or Filipino, typos included.",
+    "Fill a cart, choose a substitute for each item, and leave notes for the picker.",
+    "Pick a two-hour delivery slot, then pay by GCash, card or cash on delivery.",
+    "Recipes that add their ingredients to the cart, scaled to the servings.",
+    "Staff screens for orders, picking, dispatch, cash, stock, slots and refunds.",
+    "The whole shop in Filipino, and an installable app with offline basics."
+  ],
+  "build": [
+    {
+      "title": "Weighed items, settled fairly",
+      "body": "Items sold by weight charge an estimate at checkout, settle to the packed weight at picking (never above the estimate) and refund the difference in one go."
+    },
+    {
+      "title": "The last unit sells once",
+      "body": "Tests race orders for the last unit and carts for one slot against a real Postgres database."
+    },
+    {
+      "title": "Payments behind one interface",
+      "body": "PayMongo and a stand-in provider share one interface, and every webhook is deduplicated before it touches an Order."
+    },
+    {
+      "title": "A modular monolith",
+      "body": "13 modules talk only through their index files, enforced by an ESLint rule that has its own test."
+    },
+    {
+      "title": "Search on plain Postgres",
+      "body": "Full-text search, trigrams and a Filipino and English synonym list, with no search service to run."
+    },
+    {
+      "title": "Checked on every merge",
+      "body": "391 Vitest tests, 81 Playwright tests with axe accessibility checks, and Lighthouse budgets. 22 decision records explain the choices."
+    }
+  ]
+}

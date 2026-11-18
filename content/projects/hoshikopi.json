@@ -1,0 +1,102 @@
+{
+  "name": "Hoshikopi",
+  "order": 10,
+  "tagline": "A concept cafe with order-ahead pickup and a Stars loyalty card.",
+  "summary": "The full website of an invented cafe: the menu, ordering ahead for a pickup time, Stars, events and a Bar Screen for the baristas. It is a portfolio piece, so the cafe is labelled as a concept and payments run in PayMongo test mode.",
+  "live": "https://hoshikopi.vercel.app",
+  "code": "https://github.com/xtiannjose/Hoshikopi",
+  "stack": [
+    "Next.js 16",
+    "TypeScript",
+    "PostgreSQL",
+    "Prisma 7",
+    "Tailwind CSS 4",
+    "Vitest",
+    "Playwright",
+    "Vercel"
+  ],
+  "cover": {
+    "image": "/shots/hoshikopi/cover/image.png",
+    "alt": "Hoshikopi home page in the Night palette",
+    "caption": "Home after 6 PM Manila time, in the Night palette.",
+    "phone": "/shots/hoshikopi/cover/phone.png"
+  },
+  "phone": {
+    "image": "/shots/hoshikopi/phone/image.png",
+    "alt": "Hoshi Latte page on a phone",
+    "caption": "A drink page on a phone."
+  },
+  "gallery": [
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshikopi/gallery/0/image.png",
+      "alt": "Hoshikopi home page in the Day palette",
+      "caption": "The same home page by day: the palette follows the cafe's clock.",
+      "phone": "/shots/hoshikopi/gallery/0/phone.png"
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshikopi/gallery/1/image.png",
+      "alt": "Coffee section of the Hoshikopi menu",
+      "caption": "The menu, with prices from the server and Barista Pick badges.",
+      "phone": "/shots/hoshikopi/gallery/1/phone.png"
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshikopi/gallery/2/image.png",
+      "alt": "Hoshi Latte with size, milk, sugar and ice choices",
+      "caption": "Build a drink: every choice and its price change is checked again at checkout.",
+      "phone": "/shots/hoshikopi/gallery/2/phone.png"
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshikopi/gallery/3/image.png",
+      "alt": "Hoshikopi events page",
+      "caption": "Events with sign-ups, plus the weekly ones that need no booking.",
+      "phone": "/shots/hoshikopi/gallery/3/phone.png"
+    },
+    {
+      "kind": "desktop",
+      "image": "/shots/hoshikopi/gallery/4/image.png",
+      "alt": "Hoshikopi visit page with hours and amenities",
+      "caption": "Hours, directions and amenities for planning a visit.",
+      "phone": "/shots/hoshikopi/gallery/4/phone.png"
+    },
+    {
+      "kind": "phone",
+      "image": "/shots/hoshikopi/gallery/5/image.png",
+      "alt": "Hoshikopi home page on a phone",
+      "caption": "Home on a phone."
+    }
+  ],
+  "features": [
+    "Order ahead: pick a size, milk and add-ons, then a 15-minute pickup window.",
+    "Pickup windows fill up, and two people can never book the last slot.",
+    "Stars loyalty: a Star for every drink, rewards to spend, and a birthday treat.",
+    "Events with seat sign-ups and an add-to-calendar file.",
+    "A Bar Screen for baristas that refreshes on its own as orders move.",
+    "Staff sign in with a second factor, and the manager gets sales reports."
+  ],
+  "build": [
+    {
+      "title": "The server prices everything",
+      "body": "Money is whole centavos, never floats. The cart and checkout recompute every price, so a changed number in the browser does nothing."
+    },
+    {
+      "title": "One door for order status",
+      "body": "Every status change goes through a single transition function and a table of allowed moves. Payment status only comes from verified webhooks."
+    },
+    {
+      "title": "Capacity under a row lock",
+      "body": "Placing an order locks the pickup window's row in Postgres, so the last slot cannot be sold twice."
+    },
+    {
+      "title": "Prerendered, refreshed by tag",
+      "body": "Public pages are static and refresh when the menu, hours or content change, using Next.js 16 Cache Components."
+    },
+    {
+      "title": "Tested against a real database",
+      "body": "193 Vitest tests run against a Postgres test database, and 194 Playwright tests drive a real browser. 14 decision records explain the choices."
+    }
+  ]
+}

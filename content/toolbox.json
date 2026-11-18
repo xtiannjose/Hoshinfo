@@ -1,0 +1,71 @@
+{
+  "groups": [
+    {
+      "name": "Frontend",
+      "tools": [
+        {
+          "name": "Next.js",
+          "logo": "nextdotjs"
+        },
+        {
+          "name": "TypeScript",
+          "logo": "typescript"
+        },
+        {
+          "name": "Tailwind CSS",
+          "logo": "tailwindcss"
+        },
+        {
+          "name": "Alpine.js",
+          "logo": "alpinedotjs"
+        }
+      ]
+    },
+    {
+      "name": "Backend and data",
+      "tools": [
+        {
+          "name": "Laravel",
+          "logo": "laravel"
+        },
+        {
+          "name": "PHP",
+          "logo": "php"
+        },
+        {
+          "name": "PostgreSQL",
+          "logo": "postgresql"
+        },
+        {
+          "name": "Prisma",
+          "logo": "prisma"
+        },
+        {
+          "name": "Better Auth",
+          "logo": "betterauth"
+        }
+      ]
+    },
+    {
+      "name": "Testing and shipping",
+      "tools": [
+        {
+          "name": "Vitest",
+          "logo": "vitest"
+        },
+        {
+          "name": "Playwright",
+          "logo": ""
+        },
+        {
+          "name": "PHPUnit",
+          "logo": ""
+        },
+        {
+          "name": "Vercel",
+          "logo": "vercel"
+        }
+      ]
+    }
+  ]
+}

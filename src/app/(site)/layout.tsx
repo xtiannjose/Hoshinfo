@@ -6,9 +6,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Spotlight } from "@/components/spotlight";
 import { THEME_SCRIPT } from "@/components/theme";
-import { site } from "@/content/site";
+import { getSite } from "@/content";
 
-import "./globals.css";
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,15 +20,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name}, ${site.role.toLowerCase()}`,
-    template: `%s | ${site.brand}`,
-  },
-  description:
-    "Projects by Christian Jose: Hoshikopi, Hoshimono and Hoshiask. Web apps for orders, groceries and help desks, built test-first.",
-};
+export function generateMetadata(): Metadata {
+  const site = getSite();
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${site.name}, ${site.role.toLowerCase()}`,
+      template: `%s | ${site.brand}`,
+    },
+    description: site.description,
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
