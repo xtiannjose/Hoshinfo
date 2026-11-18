@@ -137,10 +137,16 @@ export const getSite = () =>
     role: string;
     description: string;
     projectsIntro: string;
+    email: string;
+    /** A CV under public/, if one is uploaded. */
+    cv?: string | null;
     github: string;
     linkedin: string;
     url: string;
   }>("site.json");
+
+/** The CV's name when saved: "Christian_Jose_CV.pdf". */
+export const cvFileName = (name: string) => `${name.replace(/\s+/g, "_")}_CV.pdf`;
 
 export const getExperience = (): Role[] =>
   read<{ roles: Role[] }>("experience.json").roles.map((role) => ({ ...role, href: role.href || undefined }));

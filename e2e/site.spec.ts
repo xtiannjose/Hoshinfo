@@ -116,6 +116,15 @@ test("the carousel card fits on screen", async ({ page }) => {
   }
 });
 
+test("contact: Get in touch emails the owner; Download CV only once a CV is uploaded", async ({ page }) => {
+  await page.goto("/");
+  const contact = page.getByRole("link", { name: "Get in touch" });
+  await expect(contact).toHaveCount(2); // under the page title and in the footer
+  for (const link of await contact.all()) await expect(link).toHaveAttribute("href", /^mailto:[^@\s]+@[^@\s]+\.\w+$/);
+  await expect(page.getByRole("link", { name: /^Email / })).toHaveCount(2); // header and footer icons
+  await expect(page.getByRole("link", { name: "Download CV" })).toHaveCount(0); // content/site.json has no cv yet
+});
+
 test("edit pencils: hidden from visitors, shown to the signed-in owner", async ({ page, context }) => {
   const pencils = page.locator('a[href^="/keystatic/"]:not([inert] *)');
   await page.goto("/");

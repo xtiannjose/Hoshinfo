@@ -13,6 +13,7 @@ import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
 import { ProjectCarousel } from "@/components/project-carousel";
 import {
+  cvFileName,
   getExperience,
   getProjects,
   getSite,
@@ -24,6 +25,9 @@ import {
   type Tool,
   type WorkItem,
 } from "@/content";
+
+// A text link inside a line of muted text.
+const inlineLink = "text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-muted";
 
 // A project's desktop screens, cover first.
 const screens = (project: Project) => [project.cover, ...project.gallery.filter((shot) => shot.kind === "desktop")];
@@ -53,9 +57,21 @@ export default function Home() {
               </h1>
               <EditLink path="singleton/site" label="Edit site details: name, role, links and intro lines" />
             </div>
-            <p className="rise mt-1 flex items-center gap-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
+            <p className="rise mt-1 flex flex-wrap items-center gap-x-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
               <StarIcon weight="fill" className="size-3.5 text-star" aria-hidden />
               {site.role}
+              <span aria-hidden>·</span>
+              <a href={`mailto:${site.email}`} className={inlineLink}>
+                Get in touch
+              </a>
+              {site.cv && (
+                <>
+                  <span aria-hidden>·</span>
+                  <a href={site.cv} download={cvFileName(site.name)} className={inlineLink}>
+                    Download CV
+                  </a>
+                </>
+              )}
             </p>
           </div>
         }

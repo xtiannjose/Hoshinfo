@@ -14,28 +14,34 @@ export function LinkButton({
   href,
   children,
   variant = "primary",
+  download,
 }: {
   href: string;
   children: ReactNode;
   variant?: keyof typeof look;
+  /** Save the file under this name instead of opening it. */
+  download?: string;
 }) {
   const external = href.startsWith("http");
+  // Email links and downloads are plain anchors: the router has no page to fetch for them.
+  const Anchor = download || href.startsWith("mailto:") ? "a" : Link;
   const props = {
     href,
+    download,
     ...(external ? { target: "_blank", rel: "noreferrer" } : {}),
     "data-out": external || undefined,
   };
   if (variant === "primary") {
     return (
-      <Link {...props} className="group/button inline-flex rounded-full bg-star-ink">
+      <Anchor {...props} className="group/button inline-flex rounded-full bg-star-ink">
         <span className={`${base} ${look.primary}`}>{children}</span>
-      </Link>
+      </Anchor>
     );
   }
   return (
-    <Link {...props} className={`${base} ${look.secondary}`}>
+    <Anchor {...props} className={`${base} ${look.secondary}`}>
       {children}
-    </Link>
+    </Anchor>
   );
 }
 
