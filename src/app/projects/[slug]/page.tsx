@@ -26,8 +26,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
   return (
     <article className="mx-auto max-w-page px-4 pt-8 sm:px-6 lg:px-8">
-      <Link href="/#projects" className="inline-flex items-center gap-2 text-sm text-muted hover:text-ink">
-        <ArrowLeftIcon className="size-4" aria-hidden /> All projects
+      <Link href="/#projects" className="inline-flex items-center gap-2 text-base text-muted hover:text-ink">
+        <ArrowLeftIcon className="size-5" aria-hidden /> All projects
       </Link>
 
       <header className="rise mt-8 max-w-3xl">
