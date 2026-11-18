@@ -27,15 +27,11 @@ const editorCsp = "frame-ancestors 'none'; object-src 'none'; base-uri 'self'";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
-  experimental: {
-    // One 404 page for unknown addresses, though the site and the editor have separate root layouts.
-    globalNotFound: true,
-  },
   // Development only: Keystatic's GitHub sign-in returns to 127.0.0.1, which the dev server
   // otherwise refuses (it trusts only localhost), leaving the editor blank.
   allowedDevOrigins: ["127.0.0.1"],
-  // Pages read content/*.json with fs (src/content/index.ts). Every page is prerendered, but an unknown
-  // /projects/<slug> renders at request time, so the JSON ships with the server functions.
+  // Pages read content/*.json with fs (src/content/index.ts) and src/proxy.ts checks content/projects on
+  // each case study request, so the JSON ships with the server functions.
   outputFileTracingIncludes: {
     "/**/*": ["./content/**/*.json"],
   },

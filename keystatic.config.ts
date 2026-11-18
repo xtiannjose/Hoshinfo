@@ -128,12 +128,6 @@ export default config({
           description: "Behind every \"Get in touch\" button and the envelope icon.",
           validation: { isRequired: true, pattern: { regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "An email address" } },
         }),
-        cv: fields.file({
-          label: "CV (PDF)",
-          description: "Optional. Shows a Download CV button. Public: leave out references' contact details and your phone number.",
-          directory: "public/files",
-          publicPath: "/files/",
-        }),
         github: fields.url({ label: "GitHub profile", ...required }),
         linkedin: fields.url({ label: "LinkedIn profile", ...required }),
         url: fields.url({ label: "Site address", description: "The live site's own address.", ...required }),

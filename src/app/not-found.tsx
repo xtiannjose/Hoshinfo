@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { MissingPage } from "@/components/missing-page";
-import { SiteDocument } from "@/components/site-document";
+import { SiteChrome } from "@/components/site-chrome";
 import { getSite } from "@/content";
 
 export function generateMetadata(): Metadata {
@@ -9,11 +9,12 @@ export function generateMetadata(): Metadata {
   return { title: `Page not found | ${site.brand}`, description: site.description };
 }
 
-// Any address no route matches, e.g. /foo. It skips layouts, so it brings the whole site document.
-export default function GlobalNotFound() {
+// Any address no route matches (e.g. /foo), and unknown case studies, which src/proxy.ts sends here.
+// It renders outside the site's layout, so it brings the site's chrome itself.
+export default function NotFound() {
   return (
-    <SiteDocument>
+    <SiteChrome>
       <MissingPage />
-    </SiteDocument>
+    </SiteChrome>
   );
 }

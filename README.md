@@ -19,7 +19,7 @@ CI (`.github/workflows/ci.yml`) runs lint, the build and the Playwright checks o
 
 | What | Where |
 | --- | --- |
-| Name, role, links, email, CV, intro lines | `content/site.json` (CV file in `public/files/`) |
+| Name, role, links, email, intro lines | `content/site.json` |
 | Experience, Toolbox | `content/experience.json`, `content/toolbox.json` |
 | Projects and case studies | `content/projects/<address>.json` |
 | iOne work | `content/work/<address>.json` |

@@ -7,13 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-// Its own root layout: the editor is a separate app, without the site's header, footer and theme.
+// The editor is a separate app inside the root document: none of the site's styles, header or footer.
 export default function KeystaticLayout() {
-  return (
-    <html lang="en">
-      <body>
-        <KeystaticApp />
-      </body>
-    </html>
-  );
+  return <KeystaticApp />;
 }

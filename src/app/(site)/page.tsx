@@ -13,7 +13,6 @@ import { Gallery } from "@/components/gallery";
 import { LinkButton, StackList } from "@/components/link-button";
 import { ProjectCarousel } from "@/components/project-carousel";
 import {
-  cvFileName,
   getExperience,
   getProjects,
   getSite,
@@ -64,14 +63,6 @@ export default function Home() {
               <a href={`mailto:${site.email}`} className={inlineLink}>
                 Get in touch
               </a>
-              {site.cv && (
-                <>
-                  <span aria-hidden>·</span>
-                  <a href={site.cv} download={cvFileName(site.name)} className={inlineLink}>
-                    Download CV
-                  </a>
-                </>
-              )}
             </p>
           </div>
         }

@@ -1,9 +1,9 @@
-import { DownloadSimpleIcon, EnvelopeSimpleIcon } from "@phosphor-icons/react/ssr";
+import { EnvelopeSimpleIcon } from "@phosphor-icons/react/ssr";
 
 import { LinkButton } from "@/components/link-button";
 import { SocialLinks } from "@/components/social-links";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { cvFileName, getSite } from "@/content";
+import { getSite } from "@/content";
 
 export function SiteFooter() {
   const site = getSite();
@@ -17,18 +17,13 @@ export function SiteFooter() {
             <a href={`mailto:${site.email}`} className="text-ink underline decoration-line underline-offset-4 hover:decoration-muted">
               {site.email}
             </a>
-            {site.cv ? ", or download my CV." : "."}
+            .
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <LinkButton href={`mailto:${site.email}`}>
             <EnvelopeSimpleIcon className="size-4" aria-hidden /> Get in touch
           </LinkButton>
-          {site.cv && (
-            <LinkButton href={site.cv} download={cvFileName(site.name)} variant="secondary">
-              <DownloadSimpleIcon className="size-4" aria-hidden /> Download CV
-            </LinkButton>
-          )}
         </div>
         {/* Phones only: the header has no room for it there. */}
         <div className="sm:hidden">

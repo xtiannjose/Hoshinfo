@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SiteDocument } from "@/components/site-document";
+import { SiteChrome } from "@/components/site-chrome";
 import { getSite } from "@/content";
 
 export function generateMetadata(): Metadata {
@@ -18,5 +18,5 @@ export function generateMetadata(): Metadata {
 }
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
-  return <SiteDocument>{children}</SiteDocument>;
+  return <SiteChrome>{children}</SiteChrome>;
 }

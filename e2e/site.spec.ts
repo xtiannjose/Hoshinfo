@@ -34,15 +34,11 @@ test.describe("every page", () => {
   }
 
   for (const path of ["/foo", "/projects/does-not-exist"]) {
-    test(`${path} is a 404 with a way back`, async ({ page, request }) => {
-      await page.goto(path);
+    test(`${path} is a 404 with a way back`, async ({ page }) => {
+      expect((await page.goto(path))?.status()).toBe(404);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText("This page could not be found.");
       await expect(page.getByRole("link", { name: "Home page" })).toBeVisible();
-      await expect(page.locator('meta[name="robots"][content*="noindex"]').first()).toBeAttached();
-      // An unknown case study streams its page shell (200) to browsers before it knows the project is
-      // missing; crawlers wait for the whole render and get the 404.
-      const crawler = await request.get(path, { headers: { "user-agent": "Googlebot/2.1" } });
-      expect(crawler.status()).toBe(404);
+      await expect(page.getByRole("link", { name: "Skip to content" })).toBeAttached(); // the site's chrome
     });
   }
 });
@@ -116,13 +112,12 @@ test("the carousel card fits on screen", async ({ page }) => {
   }
 });
 
-test("contact: Get in touch emails the owner; Download CV only once a CV is uploaded", async ({ page }) => {
+test("contact: Get in touch emails the owner", async ({ page }) => {
   await page.goto("/");
   const contact = page.getByRole("link", { name: "Get in touch" });
   await expect(contact).toHaveCount(2); // under the page title and in the footer
   for (const link of await contact.all()) await expect(link).toHaveAttribute("href", /^mailto:[^@\s]+@[^@\s]+\.\w+$/);
   await expect(page.getByRole("link", { name: /^Email / })).toHaveCount(2); // header and footer icons
-  await expect(page.getByRole("link", { name: "Download CV" })).toHaveCount(0); // content/site.json has no cv yet
 });
 
 test("edit pencils: hidden from visitors, shown to the signed-in owner", async ({ page, context }) => {
@@ -132,6 +127,19 @@ test("edit pencils: hidden from visitors, shown to the signed-in owner", async (
   await context.addCookies([{ name: "keystatic-gh-access-token", value: "x", domain: "localhost", path: "/" }]);
   await page.reload();
   await expect(page.getByRole("link", { name: "Edit experience" })).toHaveAttribute("href", "/keystatic/singleton/experience");
+});
+
+test("the editor loads none of the site's styles", async ({ request }) => {
+  // Both share the root layout's font file; the site's own stylesheet (its tokens, Tailwind's reset)
+  // must stay off the editor, or it would restyle Keystatic.
+  const sheets = async (path: string) => {
+    const html = await (await request.get(path)).text();
+    const hrefs = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map((m) => m[1]);
+    return Promise.all(hrefs.map(async (href) => (await request.get(href)).text()));
+  };
+  const hasSiteStyles = (css: string) => css.includes("--star-soft");
+  expect((await sheets("/")).some(hasSiteStyles)).toBe(true);
+  expect((await sheets("/keystatic")).some(hasSiteStyles)).toBe(false);
 });
 
 test("security headers: strict policy on the site, framing blocked on the editor", async ({ request }) => {

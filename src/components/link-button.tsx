@@ -14,20 +14,16 @@ export function LinkButton({
   href,
   children,
   variant = "primary",
-  download,
 }: {
   href: string;
   children: ReactNode;
   variant?: keyof typeof look;
-  /** Save the file under this name instead of opening it. */
-  download?: string;
 }) {
   const external = href.startsWith("http");
-  // Email links and downloads are plain anchors: the router has no page to fetch for them.
-  const Anchor = download || href.startsWith("mailto:") ? "a" : Link;
+  // Email links are plain anchors: the router has no page to fetch for them.
+  const Anchor = href.startsWith("mailto:") ? "a" : Link;
   const props = {
     href,
-    download,
     ...(external ? { target: "_blank", rel: "noreferrer" } : {}),
     "data-out": external || undefined,
   };
