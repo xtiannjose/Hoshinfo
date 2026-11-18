@@ -33,6 +33,8 @@ Open `/keystatic` to add or change projects, company work, experience, the toolb
 - **On your computer:** `npm run dev`, then http://127.0.0.1:3000/keystatic. Saving writes the files in `content/` and `public/shots/`; commit and push them like any change.
 - **On the live site:** https://hoshinfo.vercel.app/keystatic, after the one-time GitHub setup below. You sign in with GitHub, and only accounts with write access to this repository can save. Each save is a commit to `main`, which Vercel deploys in about a minute.
 
+Once you are signed in to the editor, pencil buttons appear on the site itself (on the page title, each section heading, each project and the case studies) and open that content's form; visitors never see them, and in `npm run dev` they always show.
+
 Keystatic names screenshot files after their place in the form (`gallery/2/image.png`), so reordering screenshots renames their files; that is expected.
 
 ### One-time GitHub setup for the live editor
