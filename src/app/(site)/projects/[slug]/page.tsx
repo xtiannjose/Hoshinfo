@@ -8,6 +8,10 @@ import { LinkButton, StackList } from "@/components/link-button";
 import { Shot } from "@/components/shot";
 import { getProject, readProjects } from "@/content";
 
+// Every known case study is prerendered whole, so it still opens instantly; only an unknown address
+// (rendered on request) waits for its params. This tells Next's dev-time instant-navigation check so.
+export const instant = false;
+
 export function generateStaticParams() {
   return readProjects().map((project) => ({ slug: project.slug }));
 }
@@ -16,7 +20,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const project = readProjects().find((p) => p.slug === slug);
-  return project ? { title: project.name, description: project.tagline } : {};
+  if (!project) return {};
+  const url = `/projects/${project.slug}`;
+  return {
+    title: project.name,
+    description: project.tagline,
+    alternates: { canonical: url },
+    openGraph: { type: "article", title: project.name, description: project.tagline, url },
+  };
 }
 
 export default async function ProjectPage({ params }: PageProps<"/projects/[slug]">) {

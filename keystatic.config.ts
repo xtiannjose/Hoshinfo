@@ -101,6 +101,7 @@ export default config({
           slug: { label: "Address", description: "Its anchor on the home page: /#<address>. Experience entries can link to it." },
         }),
         order: fields.integer({ label: "Order", description: "Lower numbers show first.", defaultValue: 100, ...required }),
+        company: text("Company", "Who it was built for. Shown as \"Company work at <company>\"."),
         summary: paragraph("Summary"),
         stack,
         shots: fields.array(screen("Screenshot"), {

@@ -73,7 +73,6 @@ export function StarButton() {
         type="button"
         onClick={give}
         aria-disabled={full}
-        aria-label={full ? `Thanks, ${MAX} of ${MAX} stars given` : `Leave a star, ${stars} of ${MAX} given`}
         className="group inline-flex items-center gap-2.5 rounded-full border border-line bg-surface py-2 pl-3 pr-4 text-sm font-medium transition hover:border-muted active:translate-y-px aria-disabled:cursor-default aria-disabled:hover:border-line"
       >
         <span ref={scope} className="relative grid size-6 place-items-center">
@@ -90,9 +89,10 @@ export function StarButton() {
             <Burst key={id} turn={id} />
           ))}
         </span>
-        <span aria-hidden>{full ? "Thanks for the stars" : "Leave a star"}</span>
-        <span aria-hidden className="font-mono text-xs text-muted">
+        <span>{full ? "Thanks for the stars" : "Leave a star"}</span>
+        <span className="font-mono text-xs text-muted">
           {stars}/{MAX}
+          <span className="sr-only"> given</span>
         </span>
       </button>
       <span aria-live="polite" className="sr-only">

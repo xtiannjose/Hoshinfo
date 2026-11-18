@@ -254,7 +254,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
         )}
       </div>
       <div className="lg:col-span-5">
-        <Kind icon="company">Company work at iOne Resources</Kind>
+        <Kind icon="company">{`Company work at ${item.company}`}</Kind>
         <div className="mt-4 flex items-center gap-3">
           <h3 id={`${item.slug}-title`} className="text-3xl font-semibold tracking-tight">
             {item.name}
@@ -262,7 +262,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
           <EditLink path={`collection/work/item/${item.slug}`} label={`Edit ${item.name}`} />
         </div>
         <p className="mt-5 leading-relaxed text-muted">{item.summary}</p>
-        <p className="mt-2 text-sm text-muted">The code belongs to the company, so there are no links.</p>
+        <p className="mt-2 text-sm text-muted">The code belongs to {item.company}, so there are no links.</p>
         <div className="mt-5">
           <StackList items={item.stack} />
         </div>

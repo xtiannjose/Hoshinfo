@@ -119,7 +119,7 @@ function ProjectsMenu({ projects, children }: { projects: NavProject[]; children
             pressedWith.current = "";
             setOpen((o) => mouse || !o);
           }}
-          className="-ml-1.5 grid size-6 place-items-center sm:size-7 rounded-full text-muted transition-colors hover:text-ink aria-expanded:text-ink sm:-ml-2"
+          className="grid size-6 place-items-center sm:size-7 rounded-full text-muted transition-colors hover:text-ink aria-expanded:text-ink"
         >
           <CaretDownIcon
             weight="bold"
