@@ -21,8 +21,9 @@ const siteCsp = [
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
+  // No upgrade-insecure-requests: every resource is this site's own, and HSTS already keeps the site on
+  // https. Safari also applied it to http://localhost, so `next start` served a page with no styles or scripts.
   "frame-ancestors 'none'",
-  ...(dev ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");
 
 // The editor talks to GitHub from the browser; it gets only the rules that cannot break it.
