@@ -17,12 +17,17 @@ async function scrollThrough(page: Page) {
 test.describe("every page", () => {
   for (const path of pages) {
     test(`${path} loads without errors, sideways scroll or missing previews`, async ({ page }) => {
+      test.slow(); // four widths per page; Firefox needs the extra time
       const errors: string[] = [];
-      page.on("pageerror", (e) => errors.push(e.message));
-      page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+      // Safari reports a background prefetch (?_rsc=) that the next navigation cancels, sometimes as a
+      // console error and sometimes as an uncaught one; neither is a fault in the page.
+      const record = (text: string) => !/_rsc=.*access control checks/.test(text) && errors.push(text);
+      page.on("pageerror", (e) => record(e.message));
+      page.on("console", (m) => m.type() === "error" && record(m.text()));
       for (const width of [1440, 768, 390, 360]) {
         await page.setViewportSize({ width, height: 800 });
-        expect((await page.goto(path))?.status()).toBe(200);
+        // Firefox revalidates a page it has just loaded and reports 304 Not Modified.
+        expect([200, 304]).toContain((await page.goto(path))?.status());
         await scrollThrough(page);
         const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
         expect(scrollWidth, `page wider than ${width}px`).toBeLessThanOrEqual(width);
@@ -47,6 +52,7 @@ test.describe("accessibility (WCAG 2.2 AA)", () => {
   for (const [theme, hour] of [["Day", 10], ["Night", 21]] as const) {
     for (const path of ["/", "/projects/hoshikopi"]) {
       test(`${path} in ${theme}`, async ({ page }) => {
+        test.slow(); // axe on the full home page takes longer in Firefox
         await page.clock.setFixedTime(new Date(2026, 10, 19, hour));
         await page.goto(path);
         await scrollThrough(page);
@@ -60,11 +66,15 @@ test.describe("accessibility (WCAG 2.2 AA)", () => {
     }
   }
 
-  test("the first Tab is a skip link to the content", async ({ page }) => {
+  test("the first Tab is a skip link to the content", async ({ page, browserName }) => {
     await page.goto("/");
-    await page.keyboard.press("Tab");
     const skip = page.getByRole("link", { name: "Skip to content" });
+    // Safari's Tab skips links on every site unless the user turns on "Press Tab to highlight each item"
+    // (or uses Option+Tab, which this WebKit build cannot press), so there it is focused directly.
+    if (browserName === "webkit") await skip.focus();
+    else await page.keyboard.press("Tab");
     await expect(skip).toBeFocused();
+    await expect(skip).toBeVisible();
     await page.keyboard.press("Enter");
     await expect(page.locator("main")).toBeFocused();
   });
@@ -97,7 +107,7 @@ test.describe("header", () => {
     await page.clock.setFixedTime(new Date(2026, 10, 19, 20));
     await page.reload();
     expect(await theme()).toBe("night");
-    await page.getByTitle("Day").first().click();
+    await page.getByTitle("Day").filter({ visible: true }).first().click(); // header switch, or the footer's on phones
     await page.reload();
     expect(await theme()).toBe("day");
   });
@@ -117,7 +127,7 @@ test("contact: Get in touch emails the owner", async ({ page }) => {
   const contact = page.getByRole("link", { name: "Get in touch" });
   await expect(contact).toHaveCount(2); // under the page title and in the footer
   for (const link of await contact.all()) await expect(link).toHaveAttribute("href", /^mailto:[^@\s]+@[^@\s]+\.\w+$/);
-  await expect(page.getByRole("link", { name: /^Email / })).toHaveCount(2); // header and footer icons
+  expect(await page.getByRole("link", { name: /^Email / }).count()).toBeGreaterThan(0); // footer icon, and the header's from lg up
 });
 
 test("edit pencils: hidden from visitors, shown to the signed-in owner", async ({ page, context }) => {
