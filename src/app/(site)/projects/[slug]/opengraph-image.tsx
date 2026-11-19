@@ -17,5 +17,5 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
   const project = readProjects().find((p) => p.slug === slug);
   if (!project) notFound();
   const site = getSite();
-  return ogCard({ label: `${site.brand}  ·  Case study`, title: project.name, line: project.tagline, footer: `${site.name}, ${site.role}` });
+  return ogCard({ label: "Case study", title: project.name, line: project.tagline, footer: `${site.name}, ${site.role}` });
 }
