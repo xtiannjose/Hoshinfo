@@ -113,6 +113,20 @@ test.describe("header", () => {
   });
 });
 
+test("case studies show How it fits together: numbered tiers, plain words, technical names", async ({ page }) => {
+  await page.goto("/projects/hoshiask");
+  const diagram = page.locator("section[aria-labelledby=architecture-title]");
+  await expect(diagram.getByRole("heading", { level: 2 })).toHaveText("How it fits together");
+  // The tier numbers are hidden from screen readers, so the headings' names are the words alone.
+  const tiers = diagram.getByRole("heading", { level: 3 });
+  await expect(tiers).toHaveCount(3);
+  for (const [i, name] of ["People who use it", "The help desk", "What the website relies on"].entries()) {
+    await expect(tiers.nth(i)).toHaveAccessibleName(name);
+  }
+  await expect(diagram.getByText("Database", { exact: true })).toBeVisible();
+  await expect(diagram.getByText("PostgreSQL 16")).toBeVisible(); // the technical name, small
+});
+
 test("the carousel card fits on screen", async ({ page }) => {
   for (const [width, height] of [[1920, 950], [1440, 800], [1280, 720]]) {
     await page.setViewportSize({ width, height });

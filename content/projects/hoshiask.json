@@ -91,5 +91,65 @@
       "title": "Tested on two databases",
       "body": "1,182 PHPUnit tests run on SQLite and again on PostgreSQL 16, with 105 Vitest tests and 20 Playwright tests that include axe accessibility checks."
     }
+  ],
+  "architecture": [
+    {
+      "label": "People who use it",
+      "highlight": false,
+      "nodes": [
+        {
+          "name": "Clients",
+          "detail": "Report a problem, follow its progress and reply, in their own part of the site.",
+          "tech": ""
+        },
+        {
+          "name": "Staff",
+          "detail": "Take on problems, answer them, pass urgent ones up, and see reports.",
+          "tech": ""
+        }
+      ]
+    },
+    {
+      "label": "The help desk",
+      "highlight": true,
+      "nodes": [
+        {
+          "name": "The Hoshiask website",
+          "detail": "One website with two sides: one for clients and one for staff. A single clock decides when each reply is due, counting office hours only or the whole day.",
+          "tech": "Laravel 13 · PHP 8.3"
+        },
+        {
+          "name": "Timed jobs",
+          "detail": "Run every minute: send reminders, close old tickets, and back everything up each night.",
+          "tech": "Laravel scheduler"
+        },
+        {
+          "name": "Email sender",
+          "detail": "Sends the emails in the background, so no page ever waits for them.",
+          "tech": "Laravel queue"
+        }
+      ]
+    },
+    {
+      "label": "What the website relies on",
+      "highlight": false,
+      "nodes": [
+        {
+          "name": "Database",
+          "detail": "Keeps every ticket, every office and a record of every change.",
+          "tech": "PostgreSQL 16"
+        },
+        {
+          "name": "Email",
+          "detail": "Delivers ticket updates to clients and reminders to staff.",
+          "tech": "SMTP"
+        },
+        {
+          "name": "File storage",
+          "detail": "Keeps attachments and the nightly backups, locked with encryption.",
+          "tech": "AES-256-GCM"
+        }
+      ]
+    }
   ]
 }

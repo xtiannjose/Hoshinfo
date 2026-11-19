@@ -87,6 +87,29 @@ export default config({
           description: "Shown on the case study.",
           itemLabel: (props) => props.fields.title.value,
         }),
+        architecture: fields.array(
+          fields.object({
+            label: text("Tier", "Plain words, e.g. People who use it, The website, What the website relies on."),
+            highlight: fields.checkbox({ label: "Highlight", description: "Draw this tier in gold, usually the app itself." }),
+            nodes: fields.array(
+              fields.object({
+                name: text("Name", "What it is, in plain words, e.g. Database."),
+                detail: fields.text({
+                  label: "What it does",
+                  description: "Optional. One or two short lines anyone can follow, without jargon.",
+                  multiline: true,
+                }),
+                tech: fields.text({ label: "Technical name", description: "Optional. Shown small, for technical readers, e.g. PostgreSQL." }),
+              }),
+              { label: "Boxes", itemLabel: (props) => props.fields.name.value },
+            ),
+          }),
+          {
+            label: "How it fits together",
+            description: "Optional diagram on the case study: tiers from top to bottom, joined by arrows. Leave empty for none.",
+            itemLabel: (props) => props.fields.label.value,
+          },
+        ),
       },
     }),
     work: collection({
