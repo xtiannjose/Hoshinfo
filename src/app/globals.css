@@ -5,14 +5,14 @@
    night, with the Hoshi star's gold in both. Day is the default; the theme script in the root layout
    sets data-theme on <html> before first paint (components/theme.ts). */
 :root {
-  --bg: #fbf6ee;
-  --surface: #fffcf7;
+  --bg: #efe6d8;
+  --surface: #f6f0e6;
   --ink: #2b1d14;
-  --muted: #6e5a4b;
-  --line: #e2d6c4;
+  --muted: #69564a;
+  --line: #d8c9b3;
   --star: #e8b74a;
   --star-ink: #8a5a00;
-  --star-soft: #f6e8c8;
+  --star-soft: #ecdab4;
   color-scheme: light;
 }
 
