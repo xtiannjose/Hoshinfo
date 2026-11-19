@@ -41,3 +41,27 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  # Lighthouse (mobile) on the home page and a case study, three runs each, on a clean runner instead
+  # of a busy laptop. Budgets are in lighthouserc.json; a PR fails below them. Separate from the job
+  # Vercel's Deployment Checks wait on, so a slow runner cannot hold a deploy.
+  lighthouse:
+    name: Lighthouse budgets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx -y @lhci/cli@0.16.1 autorun
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lighthouse
+          path: .lighthouseci/
+          include-hidden-files: true
+          retention-days: 7
