@@ -1,0 +1,11 @@
+# Keeps the pinned GitHub Actions in ci.yml current (one PR a month at most). npm security fixes come
+# from Dependabot security updates, switched on in the repository's settings.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

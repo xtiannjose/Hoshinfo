@@ -6,13 +6,18 @@ const dev = process.env.NODE_ENV === "development";
 // make every page dynamic, so scripts keep 'unsafe-inline' (Hoshikopi's ADR 0013 makes the same call).
 // What it does block: scripts, styles and fonts from other sites, sending data anywhere but this site
 // (connect-src, img-src), plugins, <base> tricks, and being framed. Development adds what hot reload needs.
+// Preview deployments (VERCEL_ENV, set at build time) also allow Vercel's toolbar and comments, with the
+// hosts Vercel's docs list; production never does.
+const preview = process.env.VERCEL_ENV === "preview";
+const toolbar = (hosts: string) => (preview ? ` ${hosts}` : "");
 const siteCsp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""}`,
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
-  "font-src 'self'",
-  `connect-src 'self'${dev ? " ws:" : ""}`,
+  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""}${toolbar("https://vercel.live")}`,
+  `style-src 'self' 'unsafe-inline'${toolbar("https://vercel.live")}`,
+  `img-src 'self' data: blob:${toolbar("https://vercel.live https://vercel.com")}`,
+  `font-src 'self'${toolbar("https://vercel.live https://assets.vercel.com")}`,
+  `connect-src 'self'${dev ? " ws:" : ""}${toolbar("https://vercel.live wss://ws-us3.pusher.com")}`,
+  ...(preview ? ["frame-src https://vercel.live"] : []),
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
