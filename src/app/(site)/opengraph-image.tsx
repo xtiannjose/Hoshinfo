@@ -9,7 +9,7 @@ export const contentType = "image/png";
 export default function OpengraphImage() {
   const site = getSite();
   return ogCard({
-    label: site.brand,
+    label: "Portfolio",
     title: site.name,
     line: site.role,
     footer: readProjects()

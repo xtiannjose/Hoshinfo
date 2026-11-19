@@ -64,6 +64,10 @@
         {
           "name": "Vercel",
           "logo": "vercel"
+        },
+        {
+          "name": "Docker",
+          "logo": "docker"
         }
       ]
     }

@@ -141,7 +141,7 @@ export default config({
       path: "content/site",
       format: { data: "json" },
       schema: {
-        brand: text("Brand", "The name in the header, e.g. Hoshinfo."),
+        brand: text("Brand", "The name in the header, e.g. Christian Jose."),
         name: text("Your name"),
         role: text("Role", "Under the page title, e.g. Software Developer."),
         description: paragraph("Search description", "The summary search engines and link previews show."),
