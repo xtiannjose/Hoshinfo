@@ -58,4 +58,6 @@ Desktop shots are 1440x900 at 2x (2880x1800 px), phone shots 390 or 412 px wide 
 
 ## Deploy
 
-Vercel, imported from GitHub. The site needs no environment variables; the live editor needs the four from the GitHub setup above.
+Vercel, imported from GitHub. The site needs no environment variables; the live editor needs the four from the GitHub setup above. Node 24 (`engines` in `package.json`), the same in CI.
+
+With Deployment Checks on (Vercel project, Settings, Build and Deployment, Deployment Checks, GitHub: **Lint, build and browser tests**), a production deploy, editor saves included, goes live only after CI passes; a failing one stays built but unpublished, and Force Promote overrides that.

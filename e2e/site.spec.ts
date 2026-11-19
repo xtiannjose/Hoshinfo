@@ -146,6 +146,7 @@ test("security headers: strict policy on the site, framing blocked on the editor
   const site = (await request.get("/")).headers();
   expect(site["content-security-policy"]).toContain("frame-ancestors 'none'");
   expect(site["content-security-policy"]).toContain("connect-src 'self'");
+  expect(site["content-security-policy"]).not.toContain("vercel.live"); // the toolbar is for previews only
   expect(site["x-content-type-options"]).toBe("nosniff");
   const editor = (await request.get("/keystatic")).headers();
   expect(editor["content-security-policy"]).toBe("frame-ancestors 'none'; object-src 'none'; base-uri 'self'");
