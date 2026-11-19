@@ -3,10 +3,25 @@
   "order": 20,
   "company": "iOne Resources",
   "summary": "The support desk iOne runs with its clients: separate client and staff portals, SLA tracking, escalation, a knowledge base and audit logging.",
+  "live": "https://ionesupport.net",
   "stack": [
     "Laravel",
     "PHP",
-    "PostgreSQL"
+    "PostgreSQL",
+    "Alpine.js",
+    "Tailwind CSS",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "PHPUnit",
+    "Vitest",
+    "Playwright"
   ],
-  "shots": []
+  "shots": [
+    {
+      "image": "/shots/ione-helpdesk/shots/0/image.png",
+      "alt": "iOne Helpdesk sign-in page",
+      "caption": "The iOne Helpdesk sign-in page."
+    }
+  ]
 }

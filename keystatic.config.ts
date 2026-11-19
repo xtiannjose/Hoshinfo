@@ -126,6 +126,7 @@ export default config({
         order: fields.integer({ label: "Order", description: "Lower numbers show first.", defaultValue: 100, ...required }),
         company: text("Company", "Who it was built for. Shown as \"Company work at <company>\"."),
         summary: paragraph("Summary"),
+        live: fields.url({ label: "Live site", description: "Optional. The code stays private; only the site is linked." }),
         stack,
         shots: fields.array(screen("Screenshot"), {
           label: "Screenshots",

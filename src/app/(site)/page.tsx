@@ -242,7 +242,7 @@ function ProjectShowcase({ project }: { project: Project }) {
   );
 }
 
-/** A project built at iOne Resources: shown, not linked, because the code is the company's. */
+/** A project built at iOne Resources: the code is the company's, so only a live site is linked. */
 function CompanyShowcase({ item }: { item: WorkItem }) {
   return (
     <article
@@ -269,10 +269,19 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
           <EditLink path={`collection/work/item/${item.slug}`} label={`Edit ${item.name}`} />
         </div>
         <p className="mt-5 leading-relaxed text-muted">{item.summary}</p>
-        <p className="mt-2 text-sm text-muted">The code belongs to {item.company}, so there are no links.</p>
+        <p className="mt-2 text-sm text-muted">
+          The code belongs to {item.company}, so {item.live ? "only the live site is linked" : "there are no links"}.
+        </p>
         <div className="mt-5">
           <StackList items={item.stack} />
         </div>
+        {item.live && (
+          <div className="mt-7">
+            <LinkButton href={item.live}>
+              Live site <ArrowUpRightIcon className="size-4" aria-hidden />
+            </LinkButton>
+          </div>
+        )}
       </div>
     </article>
   );

@@ -18,6 +18,18 @@
         {
           "name": "Alpine.js",
           "logo": "alpinedotjs"
+        },
+        {
+          "name": "HTML",
+          "logo": "html5"
+        },
+        {
+          "name": "CSS",
+          "logo": "css"
+        },
+        {
+          "name": "JavaScript",
+          "logo": "javascript"
         }
       ]
     },
