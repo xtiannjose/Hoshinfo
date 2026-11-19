@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Architecture } from "@/components/architecture";
 import { EditLink } from "@/components/edit-link";
 import { LinkButton, StackList } from "@/components/link-button";
 import { Shot } from "@/components/shot";
@@ -100,6 +101,15 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </section>
           )}
         </div>
+      )}
+
+      {project.architecture.length > 0 && (
+        <section className="reveal mt-24" aria-labelledby="architecture-title">
+          <h2 id="architecture-title" className="text-2xl font-semibold tracking-tight">
+            How it fits together
+          </h2>
+          <Architecture tiers={project.architecture} />
+        </section>
       )}
 
       {desktops.length > 0 && (

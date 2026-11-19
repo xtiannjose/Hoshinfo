@@ -98,5 +98,65 @@
       "title": "Tested against a real database",
       "body": "193 Vitest tests run against a Postgres test database, and 194 Playwright tests drive a real browser. 14 decision records explain the choices."
     }
+  ],
+  "architecture": [
+    {
+      "label": "People who use it",
+      "highlight": false,
+      "nodes": [
+        {
+          "name": "Customers",
+          "detail": "Browse the menu, order ahead for a pickup time and collect Stars, on a phone or laptop.",
+          "tech": ""
+        },
+        {
+          "name": "Baristas",
+          "detail": "See new orders on a tablet behind the counter. The screen updates by itself.",
+          "tech": ""
+        },
+        {
+          "name": "Managers",
+          "detail": "Change the menu, opening hours and events, and see the sales.",
+          "tech": ""
+        }
+      ]
+    },
+    {
+      "label": "The website",
+      "highlight": true,
+      "nodes": [
+        {
+          "name": "The Hoshikopi website",
+          "detail": "One website that shows the menu, takes the orders and keeps everyone's Stars. Its pages are prepared ahead of time, so they open fast.",
+          "tech": "Next.js 16 · Vercel"
+        }
+      ]
+    },
+    {
+      "label": "What the website relies on",
+      "highlight": false,
+      "nodes": [
+        {
+          "name": "Database",
+          "detail": "Keeps the menu, every order, the pickup times and the Stars.",
+          "tech": "PostgreSQL on Neon"
+        },
+        {
+          "name": "Online payments",
+          "detail": "Takes payments in test mode, so no real money changes hands.",
+          "tech": "PayMongo"
+        },
+        {
+          "name": "Email",
+          "detail": "Sends order updates and sign-in links.",
+          "tech": "Resend"
+        },
+        {
+          "name": "Photo storage",
+          "detail": "Holds the photos of drinks, events and news posts.",
+          "tech": "Vercel Blob"
+        }
+      ]
+    }
   ]
 }

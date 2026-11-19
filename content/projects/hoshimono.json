@@ -110,5 +110,55 @@
       "title": "Checked on every merge",
       "body": "391 Vitest tests, 81 Playwright tests with axe accessibility checks, and Lighthouse budgets. 22 decision records explain the choices."
     }
+  ],
+  "architecture": [
+    {
+      "label": "People who use it",
+      "highlight": false,
+      "nodes": [
+        {
+          "name": "Shoppers",
+          "detail": "Find groceries, fill a cart, choose a delivery time and pay, in English or Filipino.",
+          "tech": ""
+        },
+        {
+          "name": "Staff",
+          "detail": "Pick and pack the orders, send them out, and keep the stock and refunds in order.",
+          "tech": ""
+        }
+      ]
+    },
+    {
+      "label": "The website",
+      "highlight": true,
+      "nodes": [
+        {
+          "name": "The Hoshimono shop",
+          "detail": "One website for shoppers and staff, made of 13 parts that each look after one job: the catalogue, the cart, prices, orders, payments, stock, delivery and more.",
+          "tech": "Next.js 16 · Vercel"
+        }
+      ]
+    },
+    {
+      "label": "What the website relies on",
+      "highlight": false,
+      "nodes": [
+        {
+          "name": "Database",
+          "detail": "Keeps the products, stock, orders and delivery times, and powers the search.",
+          "tech": "PostgreSQL"
+        },
+        {
+          "name": "Online payments",
+          "detail": "Takes payments and gives refunds. Each payment message is checked, so the same payment is never counted twice.",
+          "tech": "PayMongo"
+        },
+        {
+          "name": "Emails and text messages",
+          "detail": "Ready to plug in: for now the messages are only written to a log, until real accounts are set up.",
+          "tech": "Resend · SMS, later"
+        }
+      ]
+    }
   ]
 }

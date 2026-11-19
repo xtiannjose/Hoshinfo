@@ -37,7 +37,12 @@ export type Project = {
   gallery: Shot[];
   features: string[];
   build: { title: string; body: string }[];
+  /** "How it fits together": tiers from top to bottom. Empty when the project has no diagram. */
+  architecture: Tier[];
 };
+
+/** One row of a project's diagram: who uses it, the app, what it talks to. */
+export type Tier = { label: string; highlight: boolean; nodes: { name: string; detail: string; tech?: string }[] };
 
 /** Work done at iOne Resources: shown, not linked (the code is the company's). */
 export type WorkItem = {
@@ -69,7 +74,8 @@ export type Tool = { name: string; logo?: string };
 
 // The JSON as Keystatic writes it. Optional fields can be missing, null or "".
 type RawScreen = { kind?: "desktop" | "phone"; image: string; alt: string; caption: string; phone?: string | null };
-type RawProject = Omit<Project, "slug" | "live" | "cover" | "phone" | "gallery"> & {
+type RawProject = Omit<Project, "slug" | "live" | "cover" | "phone" | "gallery" | "architecture"> & {
+  architecture?: Tier[];
   slug: string;
   order: number;
   live?: string | null;
@@ -163,6 +169,7 @@ function project(raw: RawProject & { slug: string }): Project {
     gallery: raw.gallery.map((s) => shot(s)),
     features: raw.features,
     build: raw.build,
+    architecture: raw.architecture ?? [],
   };
 }
 
