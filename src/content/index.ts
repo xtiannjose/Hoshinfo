@@ -44,7 +44,7 @@ export type Project = {
 /** One row of a project's diagram: who uses it, the app, what it talks to. */
 export type Tier = { label: string; highlight: boolean; nodes: { name: string; detail: string; tech?: string }[] };
 
-/** Work done at iOne Resources: shown, not linked (the code is the company's). */
+/** Work done at iOne Resources: the code is the company's, so at most the live site is linked. */
 export type WorkItem = {
   /** Anchor of its showcase on the home page. */
   slug: string;
@@ -52,6 +52,7 @@ export type WorkItem = {
   /** Who it was built for, e.g. iOne Resources. */
   company: string;
   summary: string;
+  live?: string;
   stack: string[];
   /** Empty when the screens cannot be shown. */
   shots: Shot[];
@@ -83,7 +84,7 @@ type RawProject = Omit<Project, "slug" | "live" | "cover" | "phone" | "gallery" 
   phone: RawScreen;
   gallery: RawScreen[];
 };
-type RawWork = Omit<WorkItem, "slug" | "shots"> & { slug: string; order: number; shots: RawScreen[] };
+type RawWork = Omit<WorkItem, "slug" | "live" | "shots"> & { slug: string; order: number; live?: string | null; shots: RawScreen[] };
 
 const root = path.join(process.cwd(), "content");
 const read = <T>(file: string): T => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
@@ -186,6 +187,7 @@ export const getWork = (): WorkItem[] =>
     name: w.name,
     company: w.company,
     summary: w.summary,
+    live: w.live || undefined,
     stack: w.stack,
     shots: w.shots.map((s) => shot(s, "desktop")),
   }));

@@ -10,10 +10,12 @@
     "TypeScript",
     "PostgreSQL",
     "Prisma 7",
+    "Better Auth",
     "Tailwind CSS 4",
     "Vitest",
     "Playwright",
-    "Vercel"
+    "Vercel",
+    "Docker"
   ],
   "cover": {
     "image": "/shots/hoshikopi/cover/image.png",

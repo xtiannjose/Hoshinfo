@@ -13,7 +13,9 @@
     "Better Auth",
     "Tailwind CSS 4",
     "Vitest",
-    "Playwright"
+    "Playwright",
+    "Vercel",
+    "Docker"
   ],
   "cover": {
     "image": "/shots/hoshimono/cover/image.png",
