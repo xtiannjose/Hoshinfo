@@ -142,7 +142,6 @@ export const getSite = () =>
     brand: string;
     name: string;
     role: string;
-    intro: string;
     description: string;
     projectsIntro: string;
     email: string;

@@ -145,7 +145,6 @@ export default config({
         brand: text("Brand", "The name in the header, e.g. Christian Jose."),
         name: text("Your name"),
         role: text("Role", "Under your name, in sentence case, e.g. Software developer. The newest Experience entry's company follows it."),
-        intro: text("Intro line", "Under your role on the home page: what you build, in one line without a full stop."),
         description: paragraph("Search description", "The summary search engines and link previews show."),
         projectsIntro: paragraph("Projects intro", "The line under the Projects heading on the home page."),
         email: fields.text({

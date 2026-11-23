@@ -66,9 +66,6 @@ export default function Home() {
                 Get in touch
               </a>
             </p>
-            <p className="rise mt-3 text-ink" style={{ "--i": 2 } as CSSProperties}>
-              {site.intro}
-            </p>
           </div>
         }
       />
