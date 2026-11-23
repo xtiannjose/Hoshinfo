@@ -84,8 +84,9 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
   outline-offset: 3px;
 }
 
-/* Motion: the hero settles in on load and sections rise as they scroll in.
-   Nothing moves for people who ask for reduced motion. */
+/* Motion: one ease-out curve, cubic-bezier(0.22, 1, 0.36, 1), with no overshoot anywhere on the site.
+   The hero settles in on load; the sections below stay still. Nothing moves for people who ask for
+   reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
   /* Smooth for in-page links, but not for the jump to a #hash on a fresh load. */
   html:focus-within {
@@ -111,19 +112,11 @@ a.nudge[data-out]:hover > svg:last-child:not(:first-child) {
   }
 
   .nudge > svg:last-child:not(:first-child) {
-    transition: translate 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: translate 180ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .rise {
-    animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
-  }
-
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 35%;
-    }
+    animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
   }
 }

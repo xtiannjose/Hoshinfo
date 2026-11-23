@@ -3,11 +3,11 @@
 import { useAnimate, useReducedMotion } from "motion/react";
 import { useEffect, useRef, type ReactNode } from "react";
 
-// One spring for every boop on the site, so they read as one system.
-const spring = { type: "spring", stiffness: 300, damping: 10 } as const;
+// One ease-out tween for every boop on the site, no overshoot, so they read as one system with the rest of the motion.
+const tween = { duration: 0.18, ease: [0.22, 1, 0.36, 1] } as const;
 
 /**
- * A quick springy twitch when the pointer arrives, then back to rest after `hold` ms.
+ * A quick twitch when the pointer arrives, then back to rest after `hold` ms.
  * Taps trigger it on touch. Does nothing for people who ask for reduced motion.
  */
 export function Boop({
@@ -33,8 +33,8 @@ export function Boop({
 
   function boop() {
     if (reduce || !scope.current) return;
-    animate(scope.current, { rotate, scale, x, y }, spring);
-    setTimeout(() => scope.current && animate(scope.current, { rotate: 0, scale: 1, x: 0, y: 0 }, spring), hold);
+    animate(scope.current, { rotate, scale, x, y }, tween);
+    setTimeout(() => scope.current && animate(scope.current, { rotate: 0, scale: 1, x: 0, y: 0 }, tween), hold);
   }
   // The listener on the parent always calls the latest boop.
   const latest = useRef(boop);

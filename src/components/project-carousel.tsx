@@ -267,7 +267,7 @@ export function ProjectCarousel({ heading, slides }: { heading: ReactNode; slide
               <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-[max(32rem,calc(var(--fit)*2.4))] [--fit:max(14rem,calc(100svh-23rem))]">
                   <div className="mb-3 flex items-baseline gap-3">
-                    <h2 className="shrink-0 text-lg font-semibold tracking-tight text-ink">{slide.name}</h2>
+                    <h2 className="shrink-0 text-lg font-semibold text-ink">{slide.name}</h2>
                     <p className="min-w-0 truncate text-muted">{slide.tagline}</p>
                     <EditLink path={`collection/projects/item/${slide.slug}`} label={`Edit ${slide.name}`} />
                   </div>

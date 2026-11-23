@@ -17,7 +17,6 @@ export function SiteFooter() {
             <a href={`mailto:${site.email}`} className="text-ink underline decoration-line underline-offset-4 hover:decoration-muted">
               {site.email}
             </a>
-            .
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -32,10 +31,10 @@ export function SiteFooter() {
       </div>
       <div className="flex flex-col gap-2 border-t border-line py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
         <p>
-          {site.name}, {site.role.toLowerCase()}.
+          {site.name}, {site.role.toLowerCase()}
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-          <p>Built with Next.js, hosted on Vercel.</p>
+          <p>Built with Next.js, hosted on Vercel</p>
           <SocialLinks size="sm" />
         </div>
       </div>

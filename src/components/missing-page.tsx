@@ -9,7 +9,7 @@ export function MissingPage() {
   return (
     <section className="mx-auto max-w-page px-4 pt-20 sm:px-6 md:pt-28 lg:px-8">
       <p className="font-mono text-sm text-muted">404</p>
-      <h1 className="mt-3 text-4xl font-semibold tracking-tighter md:text-5xl">This page could not be found.</h1>
+      <h1 className="mt-3 text-4xl font-semibold tracking-tighter md:text-5xl">This page could not be found</h1>
       <p className="mt-4 max-w-[52ch] text-lg leading-relaxed text-muted">
         The address may be mistyped, or the page has moved. These are the places to look:
       </p>

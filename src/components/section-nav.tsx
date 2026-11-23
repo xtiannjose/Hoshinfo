@@ -172,7 +172,7 @@ function SectionLink({ id, label, current }: { id: string; label: string; curren
           layoutId="nav-star"
           aria-hidden
           className="absolute left-0 grid size-4 place-items-center text-star sm:left-0.5 sm:size-5"
-          transition={{ type: "spring", bounce: 0.2, visualDuration: 0.35 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <StarIcon weight="fill" className="size-3.5 sm:size-4" />
         </motion.span>
