@@ -175,7 +175,7 @@ function Projects({ intro, projects, work }: { intro: string; projects: Project[
       <SectionTitle id="projects-title" edit={{ path: "collection/projects", label: "Edit or add personal projects" }}>
         Projects
       </SectionTitle>
-      <p className="mt-3 max-w-[60ch] text-muted">{intro}</p>
+      <p className="mt-3 max-w-[72ch] text-muted">{intro}</p>
       <div className="mt-12 space-y-24">
         {work.map((item) => (
           <CompanyShowcase key={item.slug} item={item} />
