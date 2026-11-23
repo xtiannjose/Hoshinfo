@@ -66,7 +66,7 @@ export function Gallery({
 
   const frame = bare
     ? "relative grid"
-    : "relative grid transition duration-300 ease-out hover:-translate-y-1 motion-reduce:transition-none";
+    : "relative grid transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 motion-reduce:transition-none";
   const controls = bare ? "mt-1 px-3" : "mt-3";
   const gap = shots.length > 1 ? (bare ? "" : "mt-1") : bare ? "mt-2" : "mt-3";
 

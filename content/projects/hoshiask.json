@@ -20,50 +20,50 @@
   "cover": {
     "image": "/shots/hoshiask/cover/image.png",
     "alt": "Hoshiask staff dashboard",
-    "caption": "The staff dashboard: open, aging and Severity 1 tickets at a glance."
+    "caption": "The staff dashboard: open, aging and Severity 1 tickets at a glance"
   },
   "phone": {
     "image": "/shots/hoshiask/phone/image.png",
     "alt": "Hoshiask client portal on a phone",
-    "caption": "The client portal on a phone."
+    "caption": "The client portal on a phone"
   },
   "gallery": [
     {
       "kind": "desktop",
       "image": "/shots/hoshiask/gallery/0/image.png",
       "alt": "Hoshiask staff ticket list with filters",
-      "caption": "The ticket list: tabs, saved views, filters by office and severity, and bulk actions."
+      "caption": "The ticket list: tabs, saved views, filters by office and severity, and bulk actions"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshiask/gallery/1/image.png",
       "alt": "A ticket with public replies and internal notes",
-      "caption": "What staff see: public replies and internal notes on one thread."
+      "caption": "What staff see: public replies and internal notes on one thread"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshiask/gallery/2/image.png",
       "alt": "The same ticket in the client portal",
-      "caption": "What the client sees: the same ticket, public replies only.",
+      "caption": "What the client sees: the same ticket, public replies only",
       "phone": "/shots/hoshiask/gallery/2/phone.png"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshiask/gallery/3/image.png",
       "alt": "Hoshiask monthly reports chart",
-      "caption": "Reports compare tickets received and completed over 12 months."
+      "caption": "Reports compare tickets received and completed over 12 months"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshiask/gallery/4/image.png",
       "alt": "Hoshiask staff dashboard in dark mode",
-      "caption": "The staff dashboard in dark mode."
+      "caption": "The staff dashboard in dark mode"
     },
     {
       "kind": "phone",
       "image": "/shots/hoshiask/gallery/5/image.png",
       "alt": "A client ticket on a phone",
-      "caption": "A ticket and its conversation on a phone."
+      "caption": "A ticket and its conversation on a phone"
     }
   ],
   "features": [

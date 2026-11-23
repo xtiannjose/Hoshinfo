@@ -33,6 +33,7 @@ const screens = (project: Project) => [project.cover, ...project.gallery.filter(
 
 export default function Home() {
   const site = getSite();
+  const roles = getExperience();
   const projects = getProjects();
   const work = getWork();
   const slides = projects.map((project) => ({
@@ -52,13 +53,14 @@ export default function Home() {
           <div>
             <div className="flex items-center gap-3">
               <h1 className="rise text-2xl font-semibold tracking-tight md:text-3xl" style={{ "--i": 0 } as CSSProperties}>
-                {site.name}&apos;s Portfolio
+                {site.name}
               </h1>
               <EditLink path="singleton/site" label="Edit site details: name, role, links and intro lines" />
             </div>
             <p className="rise mt-1 flex flex-wrap items-center gap-x-2 text-muted" style={{ "--i": 1 } as CSSProperties}>
               <StarIcon weight="fill" className="size-3.5 text-star" aria-hidden />
-              {site.role}
+              {/* Roles are newest first, so the first one is the current job. */}
+              {roles[0] ? `${site.role} at ${roles[0].org}` : site.role}
               <span aria-hidden>·</span>
               <a href={`mailto:${site.email}`} className={inlineLink}>
                 Get in touch
@@ -68,7 +70,7 @@ export default function Home() {
         }
       />
       <Story>
-        <Experience roles={getExperience()} />
+        <Experience roles={roles} />
         <Projects intro={site.projectsIntro} projects={projects} work={work} />
         <Toolbox groups={getToolbox()} items={[...projects, ...work]} />
       </Story>
@@ -106,7 +108,7 @@ function Experience({ roles }: { roles: Role[] }) {
       </SectionTitle>
       {/* Pointing at one linked entry dims the others a little on wide screens (90% keeps muted text above 4.5:1).
           isolate keeps each card layer inside the list. */}
-      <ol className="reveal group/list isolate mt-10 space-y-10 lg:space-y-4">
+      <ol className="group/list isolate mt-10 space-y-10 lg:space-y-4">
         {roles.map((role) => {
           const external = role.href?.startsWith("http");
           const Arrow = external ? ArrowUpRightIcon : ArrowRightIcon;
@@ -125,7 +127,7 @@ function Experience({ roles }: { roles: Role[] }) {
               )}
               <p className="pt-1 font-mono text-xs text-muted">{role.period}</p>
               <div>
-                <h3 className="font-semibold tracking-tight">
+                <h3 className="font-semibold">
                   {role.href ? (
                     <a
                       href={role.href}
@@ -144,7 +146,7 @@ function Experience({ roles }: { roles: Role[] }) {
                 </h3>
                 <p className="mt-2 max-w-[62ch] leading-relaxed text-muted">{role.summary}</p>
                 {role.highlights && (
-                  <ul className="mt-3 max-w-[62ch] list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted marker:text-star">
+                  <ul className="mt-3 max-w-[62ch] list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted marker:text-muted">
                     {role.highlights.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
@@ -169,7 +171,7 @@ function Projects({ intro, projects, work }: { intro: string; projects: Project[
       <SectionTitle id="projects-title" edit={{ path: "collection/projects", label: "Edit or add personal projects" }}>
         Projects
       </SectionTitle>
-      <p className="mt-3 max-w-[60ch] text-muted">{intro}</p>
+      <p className="mt-3 max-w-[72ch] text-muted">{intro}</p>
       <div className="mt-12 space-y-24">
         {work.map((item) => (
           <CompanyShowcase key={item.slug} item={item} />
@@ -199,7 +201,7 @@ function ProjectShowcase({ project }: { project: Project }) {
     <article
       id={project.slug}
       aria-labelledby={`${project.slug}-title`}
-      className="reveal grid scroll-mt-20 gap-8 lg:grid-cols-12 lg:gap-12"
+      className="grid scroll-mt-20 gap-8 lg:grid-cols-12 lg:gap-12"
     >
       <div className="lg:col-span-7">
         <Gallery
@@ -248,7 +250,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
     <article
       id={item.slug}
       aria-labelledby={`${item.slug}-title`}
-      className="reveal grid scroll-mt-20 gap-8 lg:grid-cols-12 lg:gap-12"
+      className="grid scroll-mt-20 gap-8 lg:grid-cols-12 lg:gap-12"
     >
       <div className="lg:col-span-7">
         {item.shots.length > 0 ? (
@@ -256,7 +258,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
         ) : (
           <div className="flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-xl border border-line bg-surface p-6 text-center">
             <LockSimpleIcon className="size-6 text-star" aria-hidden />
-            <p className="max-w-[36ch] text-sm text-muted">Screens from this one stay with the company.</p>
+            <p className="max-w-[36ch] text-sm text-muted">Screens from this one stay with the company</p>
           </div>
         )}
       </div>
@@ -294,7 +296,7 @@ function Toolbox({ groups, items }: { groups: { group: string; tools: Tool[] }[]
         Toolbox
       </SectionTitle>
       <p className="mt-3 max-w-[60ch] text-muted">What I build with, and where each tool is used.</p>
-      <div className="reveal mt-10 grid gap-10 sm:grid-cols-3 lg:gap-14">
+      <div className="mt-10 grid gap-10 sm:grid-cols-3 lg:gap-14">
         {groups.map(({ group, tools }) => (
           <div key={group}>
             <h3 className="text-sm text-muted">{group}</h3>

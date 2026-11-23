@@ -7,14 +7,14 @@ import { SocialLinks } from "@/components/social-links";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { getSite, readProjects } from "@/content";
 
-// Layers: the header is z-20, the cursor glow -z-10 under everything.
+// Layers: the header is z-20, above the page content.
 // Three columns with the nav centred between the brand and the profile links.
 export function SiteHeader() {
   const site = getSite();
   return (
     <header className="paper sticky top-0 z-20 bg-bg/90 backdrop-blur-md">
       <div className="mx-auto grid h-16 w-full max-w-page grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 justify-self-start font-semibold tracking-tight sm:text-lg">
+        <Link href="/" className="flex items-center gap-2 justify-self-start font-semibold sm:text-lg">
           <Boop rotate={24} scale={1.18} fromParent>
             <StarIcon weight="fill" className="size-5 text-star sm:size-6" aria-hidden />
           </Boop>

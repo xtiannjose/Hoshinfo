@@ -144,7 +144,7 @@ export default config({
       schema: {
         brand: text("Brand", "The name in the header, e.g. Christian Jose."),
         name: text("Your name"),
-        role: text("Role", "Under the page title, e.g. Software Developer."),
+        role: text("Role", "Under your name, in sentence case, e.g. Software developer. The newest Experience entry's company follows it."),
         description: paragraph("Search description", "The summary search engines and link previews show."),
         projectsIntro: paragraph("Projects intro", "The line under the Projects heading on the home page."),
         email: fields.text({

@@ -20,55 +20,55 @@
   "cover": {
     "image": "/shots/hoshikopi/cover/image.png",
     "alt": "Hoshikopi home page in the Night palette",
-    "caption": "Home after 6 PM Manila time, in the Night palette.",
+    "caption": "Home after 6 PM Manila time, in the Night palette",
     "phone": "/shots/hoshikopi/cover/phone.png"
   },
   "phone": {
     "image": "/shots/hoshikopi/phone/image.png",
     "alt": "Hoshi Latte page on a phone",
-    "caption": "A drink page on a phone."
+    "caption": "A drink page on a phone"
   },
   "gallery": [
     {
       "kind": "desktop",
       "image": "/shots/hoshikopi/gallery/0/image.png",
       "alt": "Hoshikopi home page in the Day palette",
-      "caption": "The same home page by day: the palette follows the cafe's clock.",
+      "caption": "The same home page by day: the palette follows the cafe's clock",
       "phone": "/shots/hoshikopi/gallery/0/phone.png"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshikopi/gallery/1/image.png",
       "alt": "Coffee section of the Hoshikopi menu",
-      "caption": "The menu, with prices from the server and Barista Pick badges.",
+      "caption": "The menu, with prices from the server and Barista Pick badges",
       "phone": "/shots/hoshikopi/gallery/1/phone.png"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshikopi/gallery/2/image.png",
       "alt": "Hoshi Latte with size, milk, sugar and ice choices",
-      "caption": "Build a drink: every choice and its price change is checked again at checkout.",
+      "caption": "Build a drink: every choice and its price change is checked again at checkout",
       "phone": "/shots/hoshikopi/gallery/2/phone.png"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshikopi/gallery/3/image.png",
       "alt": "Hoshikopi events page",
-      "caption": "Events with sign-ups, plus the weekly ones that need no booking.",
+      "caption": "Events with sign-ups, plus the weekly ones that need no booking",
       "phone": "/shots/hoshikopi/gallery/3/phone.png"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshikopi/gallery/4/image.png",
       "alt": "Hoshikopi visit page with hours and amenities",
-      "caption": "Hours, directions and amenities for planning a visit.",
+      "caption": "Hours, directions and amenities for planning a visit",
       "phone": "/shots/hoshikopi/gallery/4/phone.png"
     },
     {
       "kind": "phone",
       "image": "/shots/hoshikopi/gallery/5/image.png",
       "alt": "Hoshikopi home page on a phone",
-      "caption": "Home on a phone."
+      "caption": "Home on a phone"
     }
   ],
   "features": [

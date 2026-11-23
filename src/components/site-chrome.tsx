@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { MotionRoot } from "@/components/motion-root";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { Spotlight } from "@/components/spotlight";
 
 import "../app/globals.css";
 
@@ -22,7 +21,6 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <MotionRoot>
-        <Spotlight />
         <SiteHeader />
         <main id="main" tabIndex={-1} className="flex-1 scroll-mt-20 focus:outline-none">
           {children}

@@ -20,63 +20,63 @@
   "cover": {
     "image": "/shots/hoshimono/cover/image.png",
     "alt": "Hoshimono storefront home page",
-    "caption": "The storefront: aisles, fresh picks and the delivery promise up top.",
+    "caption": "The storefront: aisles, fresh picks and the delivery promise up top",
     "phone": "/shots/hoshimono/cover/phone.png"
   },
   "phone": {
     "image": "/shots/hoshimono/phone/image.png",
     "alt": "Hoshimono storefront on a phone",
-    "caption": "The storefront on a phone."
+    "caption": "The storefront on a phone"
   },
   "gallery": [
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/0/image.png",
       "alt": "Chicken Adobo recipe with its ingredients list",
-      "caption": "Recipe to cart: ingredients scale with the servings, and pantry staples start unticked."
+      "caption": "Recipe to cart: ingredients scale with the servings, and pantry staples start unticked"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/1/image.png",
       "alt": "Search results for gatas",
-      "caption": "Search understands Filipino and typos: \"gatas\" finds six kinds of milk."
+      "caption": "Search understands Filipino and typos: \"gatas\" finds six kinds of milk"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/2/image.png",
       "alt": "Carabao Mangoes product page, sold by weight",
-      "caption": "A Product sold by weight, with a plain note on how the final price is set.",
+      "caption": "A Product sold by weight, with a plain note on how the final price is set",
       "phone": "/shots/hoshimono/gallery/2/phone.png"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/3/image.png",
       "alt": "Hoshimono cart with substitution choices",
-      "caption": "The cart, with a substitute choice and picker notes for every item."
+      "caption": "The cart, with a substitute choice and picker notes for every item"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/4/image.png",
       "alt": "Checkout with two-hour delivery slots",
-      "caption": "Checkout holds the chosen two-hour slot while the shopper pays."
+      "caption": "Checkout holds the chosen two-hour slot while the shopper pays"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/5/image.png",
       "alt": "Staff stock screen",
-      "caption": "Staff see what is on the shelf, reserved and free, with low stock flagged."
+      "caption": "Staff see what is on the shelf, reserved and free, with low stock flagged"
     },
     {
       "kind": "desktop",
       "image": "/shots/hoshimono/gallery/6/image.png",
       "alt": "Hoshimono storefront in dark mode",
-      "caption": "The storefront in dark mode, which follows the system setting."
+      "caption": "The storefront in dark mode, which follows the system setting"
     },
     {
       "kind": "phone",
       "image": "/shots/hoshimono/gallery/7/image.png",
       "alt": "A product page on a phone",
-      "caption": "A Product page on a phone."
+      "caption": "A Product page on a phone"
     }
   ],
   "features": [

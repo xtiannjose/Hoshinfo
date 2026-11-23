@@ -14,7 +14,7 @@ export function TierLink({ href, children }: { href: string; children: ReactNode
     >
       {children}
       <Arrow
-        className={`size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none ${
+        className={`size-3.5 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
           external ? "group-hover:-translate-y-0.5 group-hover:translate-x-0.5" : "group-hover:translate-x-1"
         }`}
         aria-hidden

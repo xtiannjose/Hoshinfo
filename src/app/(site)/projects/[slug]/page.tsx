@@ -76,7 +76,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       {(project.features.length > 0 || project.build.length > 0) && (
         <div className="mt-20 grid gap-14 lg:grid-cols-[2fr_3fr] lg:gap-16">
           {project.features.length > 0 && (
-            <section className="reveal">
+            <section>
               <h2 className="text-2xl font-semibold tracking-tight">What it does</h2>
               <ul className="mt-6 space-y-4">
                 {project.features.map((feature) => (
@@ -88,7 +88,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </section>
           )}
           {project.build.length > 0 && (
-            <section className="reveal">
+            <section>
               <h2 className="text-2xl font-semibold tracking-tight">How it is built</h2>
               <dl className="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2">
                 {project.build.map((item) => (
@@ -104,7 +104,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       )}
 
       {project.architecture.length > 0 && (
-        <section className="reveal mt-24" aria-labelledby="architecture-title">
+        <section className="mt-24" aria-labelledby="architecture-title">
           <h2 id="architecture-title" className="text-2xl font-semibold tracking-tight">
             How it fits together
           </h2>
@@ -117,7 +117,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <h2 className="text-2xl font-semibold tracking-tight">A closer look</h2>
           <div className="mt-8 grid gap-x-8 gap-y-12 md:grid-cols-2">
             {desktops.map((shot, i) => (
-              <figure key={shot.src} className={`reveal ${i === 0 && desktops.length % 2 === 1 ? "md:col-span-2" : ""}`}>
+              <figure key={shot.src} className={i === 0 && desktops.length % 2 === 1 ? "md:col-span-2" : undefined}>
                 <Shot shot={shot} sizes={i === 0 && desktops.length % 2 === 1 ? "(min-width: 1408px) 1344px, 100vw" : "(min-width: 768px) 660px, 100vw"} />
                 <figcaption className="mt-3 text-sm text-muted">{shot.caption}</figcaption>
               </figure>
@@ -130,7 +130,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         <h2 className="text-2xl font-semibold tracking-tight">On a phone</h2>
         <div className="mt-8 grid grid-cols-2 gap-6 sm:max-w-xl">
           {phones.map((shot) => (
-            <figure key={shot.src} className="reveal">
+            <figure key={shot.src}>
               <Shot shot={shot} sizes="(min-width: 640px) 280px, 45vw" />
               <figcaption className="mt-3 text-sm text-muted">{shot.caption}</figcaption>
             </figure>

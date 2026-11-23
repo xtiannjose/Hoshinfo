@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const pages = ["/", "/projects/hoshikopi", "/projects/hoshimono", "/projects/hoshiask"];
 
-/** Scrolls the page through once, so scroll-driven reveals have run before checks. */
+/** Scrolls the page through once, so lazy images have loaded before checks. */
 async function scrollThrough(page: Page) {
   await page.evaluate(async () => {
     for (let y = 0; y < document.body.scrollHeight; y += 600) {
@@ -41,7 +41,7 @@ test.describe("every page", () => {
   for (const path of ["/foo", "/projects/does-not-exist"]) {
     test(`${path} is a 404 with a way back`, async ({ page }) => {
       expect((await page.goto(path))?.status()).toBe(404);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText("This page could not be found.");
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText("This page could not be found");
       await expect(page.getByRole("link", { name: "Home page" })).toBeVisible();
       await expect(page.getByRole("link", { name: "Skip to content" })).toBeAttached(); // the site's chrome
     });

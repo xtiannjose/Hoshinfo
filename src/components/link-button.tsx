@@ -6,7 +6,7 @@ const base = "nudge inline-flex items-center gap-2 whitespace-nowrap rounded-ful
 const look = {
   // A pushable pill: the face sits 2px above a gold edge, lifts on hover and drops on press.
   primary:
-    "bg-ink text-bg -translate-y-0.5 transition-transform duration-300 ease-[cubic-bezier(0.3,0.7,0.4,1)] group-hover/button:-translate-y-1 group-active/button:translate-y-0 group-active/button:duration-75 motion-reduce:transition-none",
+    "bg-ink text-bg -translate-y-0.5 transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:-translate-y-1 group-active/button:translate-y-0 group-active/button:duration-75 motion-reduce:transition-none",
   secondary: "border border-line text-ink transition hover:border-muted active:translate-y-px",
 };
 
@@ -41,12 +41,15 @@ export function LinkButton({
   );
 }
 
+/** The tools behind a project or role: one quiet line of meta, not a row of tags. */
 export function StackList({ items }: { items: string[] }) {
   return (
-    <ul className="flex flex-wrap gap-2" aria-label="Built with">
-      {items.map((item) => (
-        <li key={item} className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted">
+    <ul className="flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs leading-5 text-muted" aria-label="Built with">
+      {/* Each dot belongs to the item before it, so a wrapped line never starts with one. */}
+      {items.map((item, i) => (
+        <li key={item}>
           {item}
+          {i < items.length - 1 && <span aria-hidden>&nbsp;·</span>}
         </li>
       ))}
     </ul>
