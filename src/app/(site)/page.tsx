@@ -4,7 +4,6 @@ import {
   BuildingsIcon,
   LockSimpleIcon,
   StarIcon,
-  UserIcon,
   TestTubeIcon,
 } from "@phosphor-icons/react/ssr";
 import type { CSSProperties, ReactNode } from "react";
@@ -188,12 +187,12 @@ function Projects({ intro, projects, work }: { intro: string; projects: Project[
   );
 }
 
-/** Says whose project it is: a quiet line above the name. The gold star stays for the logo and "you are here". */
-function Kind({ icon, children }: { icon: "personal" | "company"; children: string }) {
-  const Icon = icon === "personal" ? UserIcon : BuildingsIcon;
+/** Says whose project it is: a clear badge above the name. */
+function Kind({ icon, children }: { icon: "star" | "company"; children: string }) {
+  const Icon = icon === "star" ? StarIcon : BuildingsIcon;
   return (
-    <p className="flex items-center gap-2 text-sm text-muted">
-      <Icon className="size-4" aria-hidden />
+    <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-base font-medium text-ink">
+      <Icon weight="fill" className="size-4 text-star" aria-hidden />
       {children}
     </p>
   );
@@ -217,8 +216,8 @@ function ProjectShowcase({ project }: { project: Project }) {
         />
       </div>
       <div className="lg:col-span-5">
-        <Kind icon="personal">Personal project</Kind>
-        <div className="mt-2 flex items-center gap-3">
+        <Kind icon="star">Personal project</Kind>
+        <div className="mt-4 flex items-center gap-3">
           <h3 id={`${project.slug}-title`} className="text-3xl font-semibold tracking-tight">
             {project.name}
           </h3>
@@ -268,7 +267,7 @@ function CompanyShowcase({ item }: { item: WorkItem }) {
       </div>
       <div className="lg:col-span-5">
         <Kind icon="company">{`Company work at ${item.company}`}</Kind>
-        <div className="mt-2 flex items-center gap-3">
+        <div className="mt-4 flex items-center gap-3">
           <h3 id={`${item.slug}-title`} className="text-3xl font-semibold tracking-tight">
             {item.name}
           </h3>
